@@ -285,10 +285,7 @@ def plot_bigraph(
     out_dir = settings.pop('out_dir', None)
     filename = filename or settings.pop('filename', None)
 
-    # TODO -- validate bigraph_dict using bigraph-schema library
-
     # get the nodes and edges from the composite
-    # TODO -- this might just require remapping functions from bigraph-schema
     bigraph_network = get_bigraph_network(bigraph_schema)
 
     # make graphviz network
