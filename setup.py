@@ -1,4 +1,3 @@
-import re
 from setuptools import setup
 
 
@@ -29,7 +28,7 @@ if __name__ == '__main__':
         include_package_data=True,
         python_requires='>=3.8, <3.11',
         install_requires=[
-            'matplotlib>=3.5.1',
+            'graphviz',
         ],
         classifiers=[
             'Development Status :: 4 - Beta',
