@@ -7,15 +7,15 @@ VERSION = '0.0.8'
 
 with open("README.md", "r") as readme:
     long_description = readme.read()
-    # # Patch the relative links to absolute URLs that will work on PyPI.
-    # description2 = re.sub(
-    #     r']\(([\w/.-]+\.png)\)',
-    #     r'](https://github.com/vivarium-collective/bigraph-viz/raw/main/\1)',
-    #     description)
-    # long_description = re.sub(
-    #     r']\(([\w/.-]+)\)',
-    #     r'](https://github.com/vivarium-collective/bigraph-viz/blob/main/\1)',
-    #     description2)
+    # Patch the relative links to absolute URLs that will work on PyPI.
+    description2 = re.sub(
+        r']\(([\w/.-]+\.png)\)',
+        r'](https://github.com/vivarium-collective/bigraph-viz/raw/main/\1)',
+        description)
+    long_description = re.sub(
+        r']\(([\w/.-]+)\)',
+        r'](https://github.com/vivarium-collective/bigraph-viz/blob/main/\1)',
+        description2)
 
 setup(
     name="bigraph-viz",
