@@ -13,5 +13,5 @@ $ pip install bigraph-viz
 This requires [graphviz](https://pypi.org/project/graphviz/)
 
 <p align="center">
-    <img src="https://github.com/vivarium-collective/bigraph-viz/blob/main/doc/_static/nested_composite.png?raw=true" width="500">
+    <img src="https://github.com/vivarium-collective/bigraph-viz/blob/main/doc/_static/nested_composite.pdf?raw=true" width="340">
 </p>

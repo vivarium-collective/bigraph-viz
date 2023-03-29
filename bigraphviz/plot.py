@@ -271,29 +271,25 @@ def get_graphviz_graph(
 
 
 def plot_bigraph(
-        bigraph_dict,
+        bigraph_schema,
         settings=None,
-        out_dir=None,
-        filename=None,
+        filename=None
 ):
-    """
+    """ plot a bigraph from bigraph schema
 
-    :param bigraph_dict:
-    :param settings:
-    :param out_dir:
-    :param filename:
-    :return:
     """
     settings = copy.deepcopy(settings) or {}
     view = settings.pop('view', None)
     print_source = settings.pop('print_source', None)
     file_format = settings.pop('file_format', "png")
+    out_dir = settings.pop('out_dir')
+    filename = filename or settings.pop('filename')
 
     # TODO -- validate bigraph_dict using bigraph-schema library
 
     # get the nodes and edges from the composite
     # TODO -- this might just require remapping functions from bigraph-schema
-    bigraph_network = get_bigraph_network(bigraph_dict)
+    bigraph_network = get_bigraph_network(bigraph_schema)
 
     # make graphviz network
     graph = get_graphviz_graph(bigraph_network, **settings)
