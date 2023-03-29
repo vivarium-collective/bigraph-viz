@@ -3,7 +3,7 @@ A graphviz-based plotting tool for compositional bigraph schema
 
 ## Getting Started
 
-Bigraph-viz is available on PyPI [here](https://pypi.org/project/bigraph-viz/0.0.1/), and can be installed as a python 
+Bigraph-viz is available on PyPI [here](https://pypi.org/project/bigraph-viz/), and can be installed as a python 
 library like this:
 
 ```console
