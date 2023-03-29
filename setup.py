@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 VERSION = '0.0.1'
@@ -11,9 +11,7 @@ if __name__ == '__main__':
     setup(
         name='bigraph-viz',
         version=VERSION,
-        packages=[
-            'bigraph_viz',
-        ],
+        packages=find_packages,
         author='Eran Agmon',
         author_email='agmon.eran@gmail.com',
         url='https://github.com/vivarium-collective/bigraph-viz',
@@ -21,17 +19,14 @@ if __name__ == '__main__':
         license='MIT',
         entry_points={
             'console_scripts': []},
-        description=(),
-        # long_description=long_description,
-        # long_description_content_type='text/markdown',
+        description='plotting tool for compositional bigraph schema',
+        long_description=description,
+        long_description_content_type='text/markdown',
+        keywords='bigraph multi-scale network visualization',
         package_data={},
         include_package_data=True,
-        python_requires='>=3.8, <3.11',
-        install_requires=[
-            'graphviz',
-        ],
         classifiers=[
-            'Development Status :: 4 - Beta',
+            'Development Status :: 3 - Alpha',
             'Intended Audience :: Developers',
             'Intended Audience :: Education',
             'Intended Audience :: Science/Research',
@@ -45,5 +40,8 @@ if __name__ == '__main__':
             'Programming Language :: Python :: 3.11',
             'Topic :: Scientific/Engineering',
         ],
-        keywords='bigraph multi-scale network visualization',
+        python_requires='>=3.8',
+        install_requires=[
+            'graphviz',
+        ],
     )
