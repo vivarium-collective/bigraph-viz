@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = '0.0.1'
+VERSION = '0.0.2'
 
 
 with open("README.md", "r") as fh:
@@ -12,10 +12,10 @@ setup(
     version=VERSION,
     author="Eran Agmon",
     author_email="agmon.eran@gmail.com",
-    description="A short description of your package",
+    description="A graphviz-based plotting tool for compositional bigraph schema",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/your_username/your_project",
+    url="https://github.com/vivarium-collective/bigraph-viz",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",

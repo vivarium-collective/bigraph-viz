@@ -1,3 +1,11 @@
+"""
+====
+Plot
+====
+
+plotting tool
+"""
+
 import os
 import copy
 
@@ -268,6 +276,14 @@ def plot_bigraph(
         out_dir=None,
         filename=None,
 ):
+    """
+
+    :param bigraph_dict:
+    :param settings:
+    :param out_dir:
+    :param filename:
+    :return:
+    """
     settings = copy.deepcopy(settings) or {}
     view = settings.pop('view', None)
     print_source = settings.pop('print_source', None)
