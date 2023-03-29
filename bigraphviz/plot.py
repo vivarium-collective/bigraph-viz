@@ -1,7 +1,7 @@
 import os
 import copy
 
-from bigraph_viz.dict_utils import absolute_path
+from bigraphviz.dict_utils import absolute_path
 import graphviz
 
 
