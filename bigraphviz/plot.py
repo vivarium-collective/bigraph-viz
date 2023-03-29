@@ -283,7 +283,7 @@ def plot_bigraph(
     print_source = settings.pop('print_source', None)
     file_format = settings.pop('file_format', 'png')
     out_dir = settings.pop('out_dir', None)
-    filename = filename or settings.pop('filename')
+    filename = filename or settings.pop('filename', None)
 
     # TODO -- validate bigraph_dict using bigraph-schema library
 
