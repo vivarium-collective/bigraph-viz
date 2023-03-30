@@ -33,8 +33,8 @@ jobs:
       run: |
         git config --local user.email "eagmon@github.com"
         git config --local user.name "GitHub Action"
-        git fetch origin gh-pages:gh-pages
-        git checkout gh-pages
+        git fetch origin
+        git checkout gh-pages || git checkout -b gh-pages
         git add notebooks/basics.html
         git commit -m "Update HTML file"
         git push origin gh-pages
