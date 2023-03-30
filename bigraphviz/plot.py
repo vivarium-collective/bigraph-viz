@@ -113,6 +113,7 @@ def get_graphviz_graph(
         rankdir='TB',
         node_groups=None,
         invisible_edges=None,
+        remove_process_place_edges=False,
 ):
     """
     Args:
@@ -128,7 +129,8 @@ def get_graphviz_graph(
             Each sub-list is a grouping of nodes that will be aligned at the same rank.
             For example: [[('path to', 'group1 node1',), ('path to', 'group1 node2',)], [another group]]
         invisible_edges (list): a list of edge tuples. The edge tuples have the (source, target) node
-            according to the nodes's paths. For example: [(('top',), ('top', 'inner1')), (another edge)]
+            according to the nodes' paths. For example: [(('top',), ('top', 'inner1')), (another edge)]
+        remove_process_place_edges (bool): turn off process place edges from plotting
     Returns:
         A graphviz digraph
 
@@ -186,9 +188,11 @@ def get_graphviz_graph(
             graph.node(node_name, label=label)
 
     # process nodes
+    process_paths = []
     graph.attr('node', shape='box', penwidth='2', constraint='false')
     for node in bigraph_network['process_nodes']:
         node_path = node['path']
+        process_paths.append(node_path)
         node_name = str(node_path)
         node_names.append(node_name)
 
@@ -211,10 +215,18 @@ def get_graphviz_graph(
     # place edges
     graph.attr('edge', arrowhead='none', penwidth='2')
     for edge in bigraph_network['place_edges']:
+
+        # show edge or not
+        show_edge = True
+        if remove_process_place_edges and edge[1] in process_paths:
+            show_edge = False
         if edge in invisible_edges:
-            graph.attr('edge', style='invis')
-        else:
+            show_edge = False
+        if show_edge:
             graph.attr('edge', style='filled')
+        else:
+            graph.attr('edge', style='invis')
+
         node_name1 = str(edge[0])
         node_name2 = str(edge[1])
         graph.edge(node_name1, node_name2)
@@ -334,8 +346,8 @@ def test_bigraphviz():
             }
         }  # TODO -- wires without ports should not work.
     }
-    plot_settings1 = {**plot_settings, 'filename': 'test_composite'}
-    plot_bigraph(composite_spec, plot_settings)
+    plot_settings1 = {**plot_settings, 'filename': 'test_composite', 'remove_process_place_edges': True}
+    plot_bigraph(composite_spec, plot_settings1)
 
     # disconnected processes
     process_schema = {
