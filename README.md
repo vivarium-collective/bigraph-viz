@@ -10,7 +10,11 @@ library like this:
 $ pip install bigraph-viz
 ```
 
-This requires [graphviz](https://pypi.org/project/graphviz/)
+Installation requires [graphviz](https://pypi.org/project/graphviz/)
+
+## Tutorial
+
+[Bigraph Schema Basics](https://vivarium-collective.github.io/bigraph-viz/notebooks/basics.html)
 
 
 <p align="center">
