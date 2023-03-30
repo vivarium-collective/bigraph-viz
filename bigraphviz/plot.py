@@ -333,7 +333,7 @@ def plot_bigraph(
 
 
 def test_bigraphviz():
-    plot_settings = {'plot_schema': True, 'out_dir': 'out', 'filename': 'test_composite'}
+    plot_settings = {'plot_schema': True, 'out_dir': 'out'}
 
     # simple store
     simple_store_spec = {
@@ -342,8 +342,7 @@ def test_bigraphviz():
             '_type': 'float',
         },
     }
-    plot_settings1 = {**plot_settings, 'filename': 'simple_store'}
-    plot_bigraph(simple_store_spec, plot_settings1)
+    plot_bigraph(simple_store_spec, **plot_settings, filename='simple_store')
 
     # composite
     composite_spec = {
@@ -373,8 +372,7 @@ def test_bigraphviz():
             }
         }  # TODO -- wires without ports should not work.
     }
-    plot_settings1 = {**plot_settings, 'filename': 'test_composite', 'remove_process_place_edges': True}
-    plot_bigraph(composite_spec, plot_settings1)
+    plot_bigraph(composite_spec, **plot_settings, filename='nested_composite', remove_process_place_edges=True)
 
     # disconnected processes
     process_schema = {
@@ -388,8 +386,7 @@ def test_bigraphviz():
         'process2': process_schema,
         'process3': process_schema,
     }
-    plot_settings2 = {**plot_settings, 'rankdir': 'BT', 'filename': 'disconnected_processes'}
-    plot_bigraph(process_spec, plot_settings2)
+    plot_bigraph(process_spec, **plot_settings, rankdir='BT', filename='disconnected_processes')
 
 
 if __name__ == '__main__':
