@@ -115,29 +115,7 @@ def get_graphviz_graph(
         invisible_edges=None,
         remove_process_place_edges=False,
 ):
-    """
-    Args:
-        bigraph_network (bigraph schema):
-        graph_name:
-        size (str): the size of the output figure (example: '16,10')
-        plot_schema (bool): turn on schema text in nodes
-        port_labels (bool): turn on port labels
-        port_label_size (str): the font size of the port labels (example: '10pt')
-        engine (str): graphviz graphing engine. Try 'dot' or 'neato'
-        rankdir (str): sets direction of graph layout. 'TB'=top-to-bottom, 'LR'=left-to-right
-        node_groups (list): a list of lists of nodes.
-            Each sub-list is a grouping of nodes that will be aligned at the same rank.
-            For example: [[('path to', 'group1 node1',), ('path to', 'group1 node2',)], [another group]]
-        invisible_edges (list): a list of edge tuples. The edge tuples have the (source, target) node
-            according to the nodes' paths. For example: [(('top',), ('top', 'inner1')), (another edge)]
-        remove_process_place_edges (bool): turn off process place edges from plotting
-    Returns:
-        A graphviz digraph
-
-    Notes:
-        You can adjust node labels using HTML syntax for fonts, colors, sizes, subscript, superscript. For example:
-            H<sub><font point-size="8">2</font></sub>O will print H2O with 2 as a subscript with smaller font
-    """
+    """make a graphviz figure from a bigraph_network"""
     node_groups = node_groups or []
     invisible_edges = invisible_edges or []
     node_names = []
@@ -287,23 +265,61 @@ def get_graphviz_graph(
 
 def plot_bigraph(
         bigraph_schema,
-        settings=None,
+        graph_name='bigraph',
+        size='16,10',
+        node_label_size='12pt',
+        plot_schema=False,
+        port_labels=True,
+        port_label_size='10pt',
+        engine='dot',
+        rankdir='TB',
+        node_groups=None,
+        invisible_edges=None,
+        remove_process_place_edges=False,
+        view=None,
+        print_source=None,
+        file_format='png',
+        out_dir=None,
+        filename=None,
 ):
-    """ plot a bigraph from bigraph schema
+    """ Plot a bigraph from bigraph schema
 
+    Args:
+        graph_name:
+        size (str): the size of the output figure (example: '16,10')
+        plot_schema (bool): turn on schema text in nodes
+        port_labels (bool): turn on port labels
+        port_label_size (str): the font size of the port labels (example: '10pt')
+        engine (str): graphviz graphing engine. Try 'dot' or 'neato'
+        rankdir (str): sets direction of graph layout. 'TB'=top-to-bottom, 'LR'=left-to-right
+        node_groups (list): a list of lists of nodes.
+            Each sub-list is a grouping of nodes that will be aligned at the same rank.
+            For example: [[('path to', 'group1 node1',), ('path to', 'group1 node2',)], [another group]]
+        invisible_edges (list): a list of edge tuples. The edge tuples have the (source, target) node
+            according to the nodes' paths. For example: [(('top',), ('top', 'inner1')), (another edge)]
+        remove_process_place_edges (bool): turn off process place edges from plotting
+
+    Notes:
+        You can adjust node labels using HTML syntax for fonts, colors, sizes, subscript, superscript. For example:
+            H<sub><font point-size="8">2</font></sub>O will print H2O with 2 as a subscript with smaller font
     """
-    settings = copy.deepcopy(settings) or {}
-    view = settings.pop('view', None)
-    print_source = settings.pop('print_source', None)
-    file_format = settings.pop('file_format', 'png')
-    out_dir = settings.pop('out_dir', None)
-    filename = settings.pop('filename', None)
+
+    # get kwargs dict and remove plotting-specific kwargs
+    kwargs = locals()
+    bigraph_schema = kwargs.pop('bigraph_schema')
+    view = kwargs.pop('view')
+    print_source = kwargs.pop('print_source')
+    file_format = kwargs.pop('file_format')
+    out_dir = kwargs.pop('out_dir')
+    filename = kwargs.pop('filename')
 
     # get the nodes and edges from the composite
     bigraph_network = get_bigraph_network(bigraph_schema)
 
     # make graphviz network
-    graph = get_graphviz_graph(bigraph_network, **settings)
+    graph = get_graphviz_graph(bigraph_network, **kwargs)
+
+    # display or save results
     if view:
         graph.view()
     if print_source:
@@ -319,6 +335,17 @@ def plot_bigraph(
 def test_bigraphviz():
     plot_settings = {'plot_schema': True, 'out_dir': 'out', 'filename': 'test_composite'}
 
+    # simple store
+    simple_store_spec = {
+        'store1': {
+            '_value': 1.0,
+            '_type': 'float',
+        },
+    }
+    plot_settings1 = {**plot_settings, 'filename': 'simple_store'}
+    plot_bigraph(simple_store_spec, plot_settings1)
+
+    # composite
     composite_spec = {
         'store1': {
             'store1.1': {
