@@ -30,7 +30,7 @@ jobs:
       run: |
         git config --local user.email "eagmon@github.com"
         git config --local user.name "GitHub Action"
-        echo "Here's the link to the HTML file: [basics.html](notebooks/basics.html)" >> README.md
-        git add notebooks/basics.html README.md
-        git commit -m "Update HTML file and README"
-        git push
+        git checkout gh-pages
+        git add notebooks/basics.html
+        git commit -m "Update HTML file"
+        git push origin gh-pages
