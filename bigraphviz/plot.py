@@ -7,7 +7,6 @@ plotting tool
 """
 
 import os
-import copy
 
 from bigraphviz.dict_utils import absolute_path
 import graphviz
