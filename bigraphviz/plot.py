@@ -63,6 +63,9 @@ def get_bigraph_network(bigraph_dict, path=None):
                     bigraph['hyper_edges'][path_here] = {}
                 if '_wires' in child:
                     for port, state_path in child['_wires'].items():
+                        if isinstance(state_path, str):
+                            state_path = [state_path]
+                        state_path.insert(0, '..')  # go up one to the same level as the process
                         bigraph['hyper_edges'][path_here][port] = state_path
 
                 # check for mismatch, there might be disconnected wires or mismatch with declared wires
@@ -273,7 +276,6 @@ def get_graphviz_graph(
 def plot_bigraph(
         bigraph_schema,
         settings=None,
-        filename=None
 ):
     """ plot a bigraph from bigraph schema
 
@@ -283,7 +285,7 @@ def plot_bigraph(
     print_source = settings.pop('print_source', None)
     file_format = settings.pop('file_format', 'png')
     out_dir = settings.pop('out_dir', None)
-    filename = filename or settings.pop('filename', None)
+    filename = settings.pop('filename', None)
 
     # get the nodes and edges from the composite
     bigraph_network = get_bigraph_network(bigraph_schema)
@@ -300,3 +302,56 @@ def plot_bigraph(
         print(f"Writing {fig_path}")
         graph.render(filename=fig_path, format=file_format)
     return graph
+
+
+def test_bigraphviz():
+    plot_settings = {'plot_schema': True, 'out_dir': 'out', 'filename': 'test_composite'}
+
+    composite_spec = {
+        'store1': {
+            'store1.1': {
+                '_value': 1.1,
+                '_type': 'float'
+            },
+            'store1.2': {
+                '_value': 2,
+                '_type': 'int'
+            },
+            'process1': {
+                '_ports': {
+                    'port1': {'_type': 'type'},
+                    'port2': {'_type': 'type'},
+                },
+                '_wires': {
+                    'port1': 'store1.1',
+                    'port2': 'store1.2',
+                }
+            },
+        },
+        'process3': {
+            '_wires': {
+                'port1': 'store1'
+            }
+        }  # TODO -- wires without ports should not work.
+    }
+    plot_settings1 = {**plot_settings, 'filename': 'test_composite'}
+    plot_bigraph(composite_spec, plot_settings)
+
+    # disconnected processes
+    process_schema = {
+        '_ports': {
+            'port1': {'_type': 'type'},
+            'port2': {'_type': 'type'}
+        }
+    }
+    process_spec = {
+        'process1': process_schema,
+        'process2': process_schema,
+        'process3': process_schema,
+    }
+    plot_settings2 = {**plot_settings, 'rankdir': 'BT', 'filename': 'disconnected_processes'}
+    plot_bigraph(process_spec, plot_settings2)
+
+
+if __name__ == '__main__':
+    test_bigraphviz()
