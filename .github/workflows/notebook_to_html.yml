@@ -34,7 +34,10 @@ jobs:
         git config --local user.email "eagmon@github.com"
         git config --local user.name "GitHub Action"
         git fetch origin
+        git stash
         git checkout gh-pages || git checkout -b gh-pages
+        git pull origin gh-pages
+        git stash apply
         git add notebooks/basics.html
         git commit -m "Update HTML file"
         git push origin gh-pages
