@@ -6,7 +6,7 @@ VERSION = '0.0.9'
 
 
 with open("README.md", "r") as readme:
-    long_description = readme.read()
+    description = readme.read()
     # Patch the relative links to absolute URLs that will work on PyPI.
     description2 = re.sub(
         r']\(([\w/.-]+\.png)\)',
