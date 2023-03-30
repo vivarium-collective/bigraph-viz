@@ -1,0 +1,36 @@
+name: Convert Jupyter Notebook to HTML
+
+on:
+  push:
+    paths:
+      - 'notebooks/basics.ipynb'
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install nbconvert
+
+    - name: Convert Jupyter Notebook to HTML
+      run: |
+        jupyter nbconvert --to html notebooks/basics.ipynb
+
+    - name: Commit and push HTML and updated README
+      run: |
+        git config --local user.email "eagmon@github.com"
+        git config --local user.name "GitHub Action"
+        echo "Here's the link to the HTML file: [basics.html](notebooks/basics.html)" >> README.md
+        git add notebooks/basics.html README.md
+        git commit -m "Update HTML file and README"
+        git push
