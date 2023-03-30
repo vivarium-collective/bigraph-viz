@@ -16,3 +16,4 @@ This requires [graphviz](https://pypi.org/project/graphviz/)
 <p align="center">
     <img src="https://github.com/vivarium-collective/bigraph-viz/blob/main/doc/_static/nested_composite.png?raw=true" width="340">
 </p>
+Here's the link to the HTML file: [basics.html](notebooks/basics.html)
