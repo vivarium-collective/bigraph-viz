@@ -29,10 +29,11 @@ jobs:
       run: |
         jupyter nbconvert --to html notebooks/basics.ipynb
 
-    - name: Commit and push HTML and updated README
+    - name: Commit and push HTML to gh-pages branch
       run: |
         git config --local user.email "eagmon@github.com"
         git config --local user.name "GitHub Action"
+        git fetch origin gh-pages:gh-pages
         git checkout gh-pages
         git add notebooks/basics.html
         git commit -m "Update HTML file"
