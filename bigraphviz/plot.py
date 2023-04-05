@@ -11,8 +11,6 @@ import os
 from bigraphviz.dict_utils import absolute_path
 import graphviz
 
-
-
 # TODO -- this should be imported from bigraph-schema library
 special_keys = [
     '_value',
@@ -21,6 +19,7 @@ special_keys = [
     '_wires',
     '_type',
     '_ports',
+    '_tunnels',
 ]
 
 
@@ -81,7 +80,7 @@ def get_bigraph_network(bigraph_dict, path=None):
                     if disconnected_ports and path_here not in bigraph['disconnected_hyper_edges']:
                         bigraph['disconnected_hyper_edges'][path_here] = {}
                     for port in disconnected_ports:
-                        bigraph['disconnected_hyper_edges'][path_here][port] = [port,]
+                        bigraph['disconnected_hyper_edges'][path_here][port] = [port, ]
 
                 bigraph['process_nodes'] += [node]
             else:
@@ -271,11 +270,11 @@ def plot_bigraph(
         port_label_size='10pt',
         engine='dot',
         rankdir='TB',
-        node_groups=None,
-        invisible_edges=None,
+        node_groups=False,
+        invisible_edges=False,
         remove_process_place_edges=False,
-        view=None,
-        print_source=None,
+        view=False,
+        print_source=False,
         file_format='png',
         out_dir=None,
         filename=None,
@@ -304,8 +303,8 @@ def plot_bigraph(
         view (bool, optional): Open the rendered graph in a viewer. Default is False.
         print_source (bool, optional): Print the graphviz DOT source code as string. Default is False.
         file_format (str, optional): File format of the output image. Default is 'png'.
-        out_dir (bool, optional): The output directory for the bigraph image. Default is False.
-        filename (bool, optional): The file name for the bigraph image. Default is False.
+        out_dir (bool, optional): The output directory for the bigraph image. Default is None.
+        filename (bool, optional): The file name for the bigraph image. Default is None.
 
     Notes:
         You can adjust node labels using HTML syntax for fonts, colors, sizes, subscript, superscript. For example:
@@ -340,19 +339,21 @@ def plot_bigraph(
     return graph
 
 
-def test_bigraphviz():
-    plot_settings = {'plot_schema': True, 'out_dir': 'out'}
+# testing functions
+plot_settings_test = {'plot_schema': True, 'out_dir': 'out'}
 
-    # simple store
+
+def test_simple_spec():
     simple_store_spec = {
         'store1': {
             '_value': 1.0,
             '_type': 'float',
         },
     }
-    plot_bigraph(simple_store_spec, **plot_settings, filename='simple_store')
+    plot_bigraph(simple_store_spec, **plot_settings_test, filename='simple_store')
 
-    # composite
+
+def test_composite_spec():
     composite_spec = {
         'store1': {
             'store1.1': {
@@ -380,8 +381,10 @@ def test_bigraphviz():
             }
         }  # TODO -- wires without ports should not work.
     }
-    plot_bigraph(composite_spec, **plot_settings, filename='nested_composite', remove_process_place_edges=True)
+    plot_bigraph(composite_spec, **plot_settings_test, filename='nested_composite', remove_process_place_edges=True)
 
+
+def test_disconnected_process_spec():
     # disconnected processes
     process_schema = {
         '_ports': {
@@ -394,8 +397,10 @@ def test_bigraphviz():
         'process2': process_schema,
         'process3': process_schema,
     }
-    plot_bigraph(process_spec, **plot_settings, rankdir='BT', filename='disconnected_processes')
+    plot_bigraph(process_spec, **plot_settings_test, rankdir='BT', filename='disconnected_processes')
 
+
+def test_nested_spec():
     nested_processes = {
         'cell': {
             'membrane': {
@@ -444,7 +449,48 @@ def test_bigraphviz():
             }
         }
     }
-    plot_bigraph(nested_processes, **plot_settings, filename='nested_processes')
+    plot_bigraph(nested_processes, **plot_settings_test, filename='nested_processes')
+
+
+def test_composite_process_spec():
+    composite_process_spec = {
+        'composite_process': {
+            'store1.1': {
+                '_value': 1.1, '_type': 'float'
+            },
+            'store1.2': {
+                '_value': 2, '_type': 'int'
+            },
+            'process1': {
+                '_ports': {'port1': 'type', 'port2': 'type', },
+                '_wires': {
+                    'port1': 'store1.1',
+                    'port2': 'store1.2',
+                }
+            },
+            'process2': {
+                '_ports': {
+                    'port1': {'_type': 'type'},
+                    'port2': {'_type': 'type'},
+                },
+                '_wires': {
+                    'port1': 'store1.1',
+                    'port2': 'store1.2',
+                }
+            },
+            '_ports': {
+                'port1': {'_type': 'type'},
+                'port2': {'_type': 'type'},
+            },
+            '_tunnels': {}
+        }
+    }
+    plot_bigraph(composite_process_spec, **plot_settings_test, filename='composite_process')
+
 
 if __name__ == '__main__':
-    test_bigraphviz()
+    # test_simple_spec()
+    # test_composite_spec()
+    # test_disconnected_process_spec()
+    # test_nested_spec()
+    test_composite_process_spec()
