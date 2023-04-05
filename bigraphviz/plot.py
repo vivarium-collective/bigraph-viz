@@ -32,6 +32,7 @@ def extend_bigraph(bigraph, bigraph2):
 
 
 def state_path_tuple(state_path):
+    state_path = copy.deepcopy(state_path)
     if isinstance(state_path, str):
         state_path = [state_path]
     return state_path
@@ -340,8 +341,7 @@ def plot_bigraph(
 
     # get kwargs dict and remove plotting-specific kwargs
     kwargs = locals()
-    bigraph_schema_0 = kwargs.pop('bigraph_schema')
-    bigraph_schema = copy.deepcopy(bigraph_schema_0)
+    bigraph_schema = kwargs.pop('bigraph_schema')
     view = kwargs.pop('view')
     print_source = kwargs.pop('print_source')
     file_format = kwargs.pop('file_format')
@@ -526,9 +526,67 @@ def test_composite_process_spec():
                  )
 
 
+def test_merging():
+    from bigraphviz.dict_utils import compose, pf
+    cell_structure1 = {
+        'cell': {
+            'membrane': {
+                'transporters': {'_type': 'concentrations'},
+                'lipids': {'_type': 'concentrations'},
+            },
+            'cytoplasm': {
+                'metabolites': {
+                    '_value': 1.1, '_type': 'concentrations'
+                },
+                'ribosomal complexes': {
+                    '_value': 2.2, '_type': 'concentrations'
+                },
+                'transcript regulation complex': {
+                    '_value': 0.01, '_type': 'concentrations',
+                    'transcripts': {
+                        '_value': 0.1, '_type': 'concentrations'
+                    },
+                },
+            },
+            'nucleoid': {
+                'chromosome': {
+                    'genes': 'sequences'
+                }
+            }
+        }
+    }
+
+    # add processes
+    transport_process = {
+        'transmembrane transport': {
+            '_wires': {
+                'transporters': 'transporters',
+                'internal': ['..', 'cytoplasm', 'metabolites'],
+            }
+        }
+    }
+    translation_process = {
+        'translation': {
+            '_wires': {
+                'p1': 'ribosomal complexes',
+                'p2': ['transcript regulation complex', 'transcripts'],
+            }
+        }
+    }
+    cell_with_transport1 = compose(cell_structure1, node=transport_process, path=('cell', 'membrane'))
+    cell_with_transport2 = compose(cell_with_transport1, node=translation_process, path=('cell', 'cytoplasm'))
+
+    print('BEFORE')
+    print(pf(cell_with_transport2['cell']['membrane']['transmembrane transport']['_wires']))
+    plot_bigraph(cell_with_transport2)
+    print('AFTER')
+    print(pf(cell_with_transport2['cell']['membrane']['transmembrane transport']['_wires']))
+
+
 if __name__ == '__main__':
     # test_simple_spec()
     # test_composite_spec()
     # test_disconnected_process_spec()
     # test_nested_spec()
-    test_composite_process_spec()
+    # test_composite_process_spec()
+    test_merging()
