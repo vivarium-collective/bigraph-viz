@@ -23,6 +23,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        pip install pytest pytest-cov
         pip install -e .
 
     - name: Install Graphviz
@@ -31,4 +32,4 @@ jobs:
     - name: Run pytest
       run: |
         pip install pytest
-        pytest
+        pytest --cov=bigraphviz --cov-report=term
