@@ -5,10 +5,10 @@ Plot
 
 plotting tool
 """
-
+import copy
 import os
 
-from bigraphviz.dict_utils import absolute_path, pp
+from bigraphviz.dict_utils import absolute_path
 import graphviz
 
 special_keys = [
@@ -340,7 +340,8 @@ def plot_bigraph(
 
     # get kwargs dict and remove plotting-specific kwargs
     kwargs = locals()
-    bigraph_schema = kwargs.pop('bigraph_schema')
+    bigraph_schema_0 = kwargs.pop('bigraph_schema')
+    bigraph_schema = copy.deepcopy(bigraph_schema_0)
     view = kwargs.pop('view')
     print_source = kwargs.pop('print_source')
     file_format = kwargs.pop('file_format')
