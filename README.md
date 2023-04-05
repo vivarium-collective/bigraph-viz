@@ -3,7 +3,7 @@
 [![PyPI](https://img.shields.io/pypi/v/bigraph-viz.svg)](https://pypi.org/project/bigraph-viz/)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Tutorial-brightgreen)](https://vivarium-collective.github.io/bigraph-viz/notebooks/basics.html)
 
-**Bigraph-viz** is an easy-to-use plotting tool for compositional bigraph schema, built on top of Graphviz. Visualize and analyze your bigraph data with this Python library, designed for simplicity and flexibility.
+**Bigraph-viz** is an easy-to-use plotting tool for compositional bigraph schema, built on top of Graphviz. Visualize your bigraph schema with this Python library, designed for simplicity and flexibility.
 
 <p align="center">
     <img src="https://github.com/vivarium-collective/bigraph-viz/blob/main/doc/_static/nested_composite.png?raw=true" width="340" alt="Bigraph-viz example">
