@@ -1,6 +1,7 @@
 import collections.abc
 import pprint
 from typing import Any
+import copy
 
 
 pretty = pprint.PrettyPrinter(indent=2)
@@ -59,7 +60,7 @@ def nest_path(d, path):
 
 def compose(bigraph, node, path=None):
     path = path or ()
-    new_bigraph = bigraph.copy()
+    new_bigraph = copy.deepcopy(bigraph)
     nested_node = nest_path(node, path)
     new_bigraph = deep_merge(new_bigraph, nested_node)
     return new_bigraph
