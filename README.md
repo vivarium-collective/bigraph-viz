@@ -11,16 +11,32 @@
 
 ## 🚀 Getting Started
 
-### Prerequisites
 
-- [Graphviz](https://pypi.org/project/graphviz/) - Bigraph-viz requires Graphviz to be installed.
+### Dependencies
+
+Before installing `bigraph-viz`, make sure you have [Graphviz](https://pypi.org/project/graphviz/).
+
+#### Ubuntu/Debian
+
+```console
+sudo apt-get install -y graphviz
+```
+#### macOS
+
+```console
+brew install graphviz
+```
+
+#### Windows
+Download and install the Graphviz installer from the [official website](https://graphviz.org/download/). 
+Make sure to add the Graphviz bin directory to your system's PATH.
 
 ### Installation
 
-Bigraph-viz is available on [PyPI](https://pypi.org/project/bigraph-viz/) and can be installed with `pip`:
+Once Graphviz is installed, you can install `bigraph-viz` using pip:
 
 ```console
-$ pip install bigraph-viz
+pip install bigraph-viz
 ```
 
 ## 📚 Tutorial
