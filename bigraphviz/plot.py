@@ -102,7 +102,6 @@ def get_bigraph_network(bigraph_dict, path=None):
 
 def get_graphviz_graph(
         bigraph_network,
-        graph_name='bigraph',
         size='16,10',
         node_label_size='12pt',
         plot_schema=False,
@@ -120,6 +119,7 @@ def get_graphviz_graph(
     node_names = []
 
     # initialize graph
+    graph_name = 'bigraph'
     graph = graphviz.Digraph(graph_name, engine=engine)
     graph.attr(size=size, overlap='false')
 
@@ -264,7 +264,6 @@ def get_graphviz_graph(
 
 def plot_bigraph(
         bigraph_schema,
-        graph_name='bigraph',
         size='16,10',
         node_label_size='12pt',
         plot_schema=False,
@@ -281,26 +280,36 @@ def plot_bigraph(
         out_dir=None,
         filename=None,
 ):
-    """ Plot a bigraph from bigraph schema
+    """
+    Plot a bigraph from bigraph schema.
 
     Args:
-        graph_name:
-        size (str): the size of the output figure (example: '16,10')
-        plot_schema (bool): turn on schema text in nodes
-        port_labels (bool): turn on port labels
-        port_label_size (str): the font size of the port labels (example: '10pt')
-        engine (str): graphviz graphing engine. Try 'dot' or 'neato'
-        rankdir (str): sets direction of graph layout. 'TB'=top-to-bottom, 'LR'=left-to-right
-        node_groups (list): a list of lists of nodes.
+        bigraph_schema (dict): The bigraph schema dict that will be plotted.
+        size (str, optional): The size of the output figure (example: '16,10'). Default is '16,10'.
+        node_label_size (str, optional): The font size for the node labels. Default is None.
+        plot_schema (bool, optional): Turn on schema text in nodes. Default is False.
+        port_labels (bool, optional): Turn on port labels. Default is False.
+        port_label_size (str, optional): The font size of the port labels (example: '10pt'). Default is None.
+        engine (str, optional): Graphviz graphing engine. Try 'dot' or 'neato'. Default is 'dot'.
+        rankdir (str, optional): Sets direction of graph layout. 'TB'=top-to-bottom, 'LR'=left-to-right.
+            Default is 'TB'.
+        node_groups (list, optional): A list of lists of nodes.
             Each sub-list is a grouping of nodes that will be aligned at the same rank.
             For example: [[('path to', 'group1 node1',), ('path to', 'group1 node2',)], [another group]]
-        invisible_edges (list): a list of edge tuples. The edge tuples have the (source, target) node
+            Default is None.
+        invisible_edges (list, optional): A list of edge tuples. The edge tuples have the (source, target) node
             according to the nodes' paths. For example: [(('top',), ('top', 'inner1')), (another edge)]
-        remove_process_place_edges (bool): turn off process place edges from plotting
+            Default is None.
+        remove_process_place_edges (bool, optional): Turn off process place edges from plotting. Default is False.
+        view (bool, optional): Open the rendered graph in a viewer. Default is False.
+        print_source (bool, optional): Print the graphviz DOT source code as string. Default is False.
+        file_format (str, optional): File format of the output image. Default is 'png'.
+        out_dir (bool, optional): The output directory for the bigraph image. Default is False.
+        filename (bool, optional): The file name for the bigraph image. Default is False.
 
     Notes:
         You can adjust node labels using HTML syntax for fonts, colors, sizes, subscript, superscript. For example:
-            H<sub><font point-size="8">2</font></sub>O will print H2O with 2 as a subscript with smaller font
+            H<sub><font point-size="8">2</font></sub>O will print H2O with 2 as a subscript with smaller font.
     """
 
     # get kwargs dict and remove plotting-specific kwargs
@@ -387,6 +396,55 @@ def test_bigraphviz():
     }
     plot_bigraph(process_spec, **plot_settings, rankdir='BT', filename='disconnected_processes')
 
+    nested_processes = {
+        'cell': {
+            'membrane': {
+                'transporters': {'_type': 'concentrations'},
+                'lipids': {'_type': 'concentrations'},
+                'transmembrane transport': {
+                    '_value': {
+                        '_process': 'transport URI',
+                        '_config': {'parameter': 1}
+                    },
+                    '_wires': {
+                        'transporters': 'transporters',
+                        'internal': ['..', 'cytoplasm', 'metabolites']},
+                    '_ports': {
+                        'transporters': {'_type': 'concentrations'},
+                        'internal': {'_type': 'concentrations'},
+                        'external': {'_type': 'concentrations'}
+                    }
+                }
+            },
+            'cytoplasm': {
+                'metabolites': {
+                    '_value': 1.1,
+                    '_type': 'concentrations'
+                },
+                'ribosomal complexes': {
+                    '_value': 2.2,
+                    '_type': 'concentrations'
+                },
+                'transcript regulation complex': {
+                    '_value': 0.01,
+                    '_type': 'concentrations',
+                    'transcripts': {
+                        '_value': 0.1,
+                        '_type': 'concentrations'
+                    }
+                },
+                'translation': {
+                    '_wires': {
+                        'p1': 'ribosomal complexes',
+                        'p2': ['transcript regulation complex', 'transcripts']}}},
+            'nucleoid': {
+                'chromosome': {
+                    'genes': 'sequences'
+                }
+            }
+        }
+    }
+    plot_bigraph(nested_processes, **plot_settings, filename='nested_processes')
 
 if __name__ == '__main__':
     test_bigraphviz()
