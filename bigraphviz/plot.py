@@ -8,10 +8,9 @@ plotting tool
 
 import os
 
-from bigraphviz.dict_utils import absolute_path
+from bigraphviz.dict_utils import absolute_path, pp
 import graphviz
 
-# TODO -- this should be imported from bigraph-schema library
 special_keys = [
     '_value',
     '_process',
@@ -32,6 +31,17 @@ def extend_bigraph(bigraph, bigraph2):
     return bigraph
 
 
+def state_path_tuple(state_path):
+    if isinstance(state_path, str):
+        state_path = [state_path]
+    return state_path
+
+
+def make_label(label):
+    label = label.replace(' ', '<br/>')  # replace spaces with new lines
+    return f'<{label}>'
+
+
 def get_bigraph_network(bigraph_dict, path=None):
     path = path or ()
 
@@ -42,6 +52,7 @@ def get_bigraph_network(bigraph_dict, path=None):
         'place_edges': [],
         'hyper_edges': {},
         'disconnected_hyper_edges': {},
+        'tunnels': {},
     }
 
     for key, child in bigraph_dict.items():
@@ -61,8 +72,7 @@ def get_bigraph_network(bigraph_dict, path=None):
                     bigraph['hyper_edges'][path_here] = {}
                 if '_wires' in child:
                     for port, state_path in child['_wires'].items():
-                        if isinstance(state_path, str):
-                            state_path = [state_path]
+                        state_path = state_path_tuple(state_path)
                         state_path.insert(0, '..')  # go up one to the same level as the process
                         bigraph['hyper_edges'][path_here][port] = state_path
 
@@ -81,6 +91,15 @@ def get_bigraph_network(bigraph_dict, path=None):
                         bigraph['disconnected_hyper_edges'][path_here] = {}
                     for port in disconnected_ports:
                         bigraph['disconnected_hyper_edges'][path_here][port] = [port, ]
+                if '_tunnels' in child:
+                    tunnels = child['_tunnels']
+                    if path_here not in bigraph['tunnels']:
+                        bigraph['tunnels'][path_here] = {}
+                    for port, state_path in tunnels.items():
+                        assert port in bigraph['disconnected_hyper_edges'][path_here].keys() or \
+                               port in bigraph['hyper_edges'][path_here].keys(), f"tunnel '{port}' " \
+                                                                                 f"is not declared in ports"
+                        bigraph['tunnels'][path_here][port] = state_path_tuple(state_path)
 
                 bigraph['process_nodes'] += [node]
             else:
@@ -108,8 +127,8 @@ def get_graphviz_graph(
         port_label_size='10pt',
         engine='dot',
         rankdir='TB',
-        node_groups=None,
-        invisible_edges=None,
+        node_groups=False,
+        invisible_edges=False,
         remove_process_place_edges=False,
 ):
     """make a graphviz figure from a bigraph_network"""
@@ -173,9 +192,7 @@ def get_graphviz_graph(
         node_names.append(node_name)
 
         # make the label
-        label = node_path[-1]
-        label = label.replace(' ', '<br/>')  # replace spaces with new lines
-        label = f'<{label}>'
+        label = make_label(node_path[-1])
 
         # composite processes have sub-nodes
         composite_process = False
@@ -217,10 +234,7 @@ def get_graphviz_graph(
                 node_name1 = str(node_path)
                 node_name2 = str(absolute_state_path)
                 if port_labels:
-                    # make the label
-                    label = port.replace(' ', '<br/>')  # replace spaces with new lines
-                    label = f'<{label}>'
-
+                    label = make_label(port)
                     c.edge(node_name2, node_name1, label=label, labelloc="t", fontsize=port_label_size)
                 else:
                     c.edge(node_name2, node_name1)
@@ -238,13 +252,26 @@ def get_graphviz_graph(
                 # add invisible node for port
                 graph.node(node_name2, label='', style='invis', width='0')
                 if port_labels:
-                    # make the label
-                    label = port.replace(' ', '<br/>')  # replace spaces with new lines
-                    label = f'<{label}>'
-
+                    label = make_label(port)
                     c.edge(node_name2, node_name1, label=label, labelloc="t", fontsize=port_label_size)
                 else:
                     c.edge(node_name2, node_name1)
+
+    # tunnel edges
+    graph.attr('edge', style='dashed', penwidth='1', arrowtail='dot', arrowhead='none', dir='both')
+    for node_path, wires in bigraph_network['tunnels'].items():
+        node_name = str(node_path)
+        with graph.subgraph(name=node_name) as c:
+            for port, state_path in wires.items():
+                absolute_state_path = absolute_path(node_path, state_path)
+                node_name1 = str(node_path)
+                node_name2 = str(absolute_state_path)
+                if port_labels:
+                    # label = make_label(port)
+                    label = make_label(f'tunnel {port}')
+                    c.edge(node_name1, node_name2, label=label, labelloc="t", fontsize=port_label_size)
+                else:
+                    c.edge(node_name1, node_name2)
 
     # grouped nodes
     for group in node_groups:
@@ -462,7 +489,10 @@ def test_composite_process_spec():
                 '_value': 2, '_type': 'int'
             },
             'process1': {
-                '_ports': {'port1': 'type', 'port2': 'type', },
+                '_ports': {
+                    'port1': 'type',
+                    'port2': 'type',
+                },
                 '_wires': {
                     'port1': 'store1.1',
                     'port2': 'store1.2',
@@ -482,10 +512,17 @@ def test_composite_process_spec():
                 'port1': {'_type': 'type'},
                 'port2': {'_type': 'type'},
             },
-            '_tunnels': {}
+            '_tunnels': {
+                'port1': 'store1.1',
+                'port2': 'store1.2',
+            }
         }
     }
-    plot_bigraph(composite_process_spec, **plot_settings_test, filename='composite_process')
+    plot_bigraph(composite_process_spec,
+                 **plot_settings_test,
+                 remove_process_place_edges=True,
+                 filename='composite_process'
+                 )
 
 
 if __name__ == '__main__':
