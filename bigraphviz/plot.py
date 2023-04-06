@@ -478,7 +478,7 @@ def plot_multitimestep(
         graph.node(node_name, label=label, pos=f'{0},{idx}!')
 
         # set up timeline for this process
-        graph.attr('edge', penwidth='2', arrowhead='none')  # , arrowsize='0.5')
+        graph.attr('edge', penwidth='2', arrowhead='none')
         sync_step = node['sync_step']
         steps = int(total_time / sync_step)
         scale_factor = 1 / sync_step
@@ -487,14 +487,20 @@ def plot_multitimestep(
         process_times[node_name] = []
         for step in steps_list:
             time_node_name = f'{node_name} {step}'
-            graph.node(time_node_name, label=str(step), style='filled', fontsize='10', margin='0.01,0.01',
+            graph.node(time_node_name,
+                       label=str(step), style='filled', shape='circle', fontsize='9', margin='0',
                        fillcolor='white', color='none', width='0', pos=f'{step},{idx}!')
             graph.edge(previous_node, time_node_name, len=str(sync_step))
             process_times[node_name].append(time_node_name)
             previous_node = time_node_name
+        # final arrow
+        end_node = f'{node_name} end'
+        graph.node(end_node, label='', color='none', shape='point', width='0',
+                   arrowsize='0.5', pos=f'{step+total_time/10},{idx}!')
+        graph.edge(previous_node, end_node, len=str(sync_step), arrowhead='normal', arrowsize='0.5')
 
     # time edges
-    graph.attr('edge', penwidth='0.5', arrowhead='normal', arrowtail='normal', arrowsize='0.5', dir='both')
+    graph.attr('edge', penwidth='0.5', style='dashed', arrowhead='normal', arrowtail='normal', arrowsize='0.5', dir='both')
     for node_path, wires in bigraph_network['hyper_edges'].items():
         node_name = str(node_path)
         with graph.subgraph(name=node_name) as c:
