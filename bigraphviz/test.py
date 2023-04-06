@@ -1,4 +1,6 @@
-from bigraphviz import plot_bigraph
+from bigraphviz import plot_bigraph, pp
+from bigraphviz.dict_utils import schema_state_to_dict
+
 
 # testing functions
 plot_settings_test = {
@@ -219,10 +221,124 @@ def test_merging():
     print(pf(cell_with_transport2['cell']['membrane']['transmembrane transport']['_wires']))
 
 
+def test_schema_value_to_dict():
+    schema = {
+        'store1': {
+            'store1.1': 'float',
+            'store1.2': 'int'
+        }
+    }
+    value = {
+        'store1': {
+            'store1.1': 1.1,
+            'store1.2': 2
+        }
+    }
+    expected = {
+        'store1': {
+            'store1.1': {
+                '_value': 1.1,
+                '_type': 'float'
+            },
+            'store1.2': {
+                '_value': 2,
+                '_type': 'int'
+            }
+        }
+    }
+
+    schema_state_dict = schema_state_to_dict(schema, value)
+    assert schema_state_dict == expected
+
+    schema = {
+        'store1': {
+            'store1.1': 'float',
+            'store1.2': 'int',
+            'process1': {
+                '_ports': {
+                    'port1': 'type',
+                    'port2': 'type',
+                },
+            },
+            'process2': {
+                '_ports': {
+                    'port1': 'type',
+                    'port2': 'type',
+                },
+            },
+        },
+        'process3': {}
+    }
+    state = {
+        'store1': {
+            'store1.1': 1.1,
+            'store1.2': 2,
+            'process1': {
+                '_wires': {
+                    'port1': 'store1.1',
+                    'port2': 'store1.2',
+                }
+            },
+            'process2': {
+                '_wires': {
+                    'port1': 'store1.1',
+                    'port2': 'store1.2',
+                }
+            },
+        },
+        'process3': {
+            '_wires': {
+                'port1': 'store1',
+            }
+        }
+    }
+    expected = {
+        'store1': {
+            'store1.1': {
+                '_value': 1.1,
+                '_type': 'float',
+            },
+            'store1.2': {
+                '_value': 2,
+                '_type': 'int',
+            },
+            'process1': {
+                '_ports': {
+                    'port1': {'_type': 'type'},
+                    'port2': {'_type': 'type'},
+                },
+                '_wires': {
+                    'port1': 'store1.1',
+                    'port2': 'store1.2',
+                }
+            },
+            'process2': {
+                '_ports': {
+                    'port1': {'_type': 'type'},
+                    'port2': {'_type': 'type'},
+                },
+                '_wires': {
+                    'port1': 'store1.1',
+                    'port2': 'store1.2',
+                }
+            },
+        },
+        'process3': {
+            '_wires': {
+                'port1': 'store1',
+            }
+        }
+    }
+    schema_state_dict = schema_state_to_dict(schema, state)
+    pp(schema_state_dict)
+    # assert schema_state_dict == expected
+
+
 if __name__ == '__main__':
-    test_simple_spec()
-    test_composite_spec()
-    test_disconnected_process_spec()
-    test_nested_spec()
-    test_composite_process_spec()
-    test_merging()
+    # test_simple_spec()
+    # test_composite_spec()
+    # test_disconnected_process_spec()
+    # test_nested_spec()
+    # test_composite_process_spec()
+    # test_merging()
+    test_schema_value_to_dict()

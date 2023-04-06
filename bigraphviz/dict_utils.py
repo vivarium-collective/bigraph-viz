@@ -64,3 +64,20 @@ def compose(bigraph, node, path=None):
     nested_node = nest_path(node, path)
     new_bigraph = deep_merge(new_bigraph, nested_node)
     return new_bigraph
+
+
+def schema_state_to_dict(schema, state):
+    schema_value_dict = {}
+    for key, schema_value in schema.items():
+        state_value = state[key]
+
+        if isinstance(state_value, dict):
+            schema_value_dict[key] = schema_state_to_dict(schema_value, state_value)
+        else:
+            assert isinstance(schema_value, str)
+            schema_value_dict[key] = {
+                '_value': state_value,
+                '_type': schema_value
+            }
+
+    return schema_value_dict
