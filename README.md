@@ -9,7 +9,7 @@
     <img src="https://github.com/vivarium-collective/bigraph-viz/blob/main/doc/_static/nested_composite.png?raw=true" width="340" alt="Bigraph-viz example">
 </p>
 
-## 🚀 Getting Started
+## Getting Started
 
 
 ### Dependencies
@@ -39,15 +39,6 @@ Once Graphviz is installed, you can install `bigraph-viz` using pip:
 pip install bigraph-viz
 ```
 
-## 📚 Tutorial
+## Tutorial
 
 To get started with Bigraph-viz, explore the [Bigraph Schema Basics](https://vivarium-collective.github.io/bigraph-viz/notebooks/basics.html) tutorial.
-
-## 📖 Documentation
-
-Coming soon!
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
