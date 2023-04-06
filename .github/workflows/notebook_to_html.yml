@@ -24,14 +24,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install nbconvert
-        pip install jupyter_contrib_nbextensions
-        jupyter contrib nbextension install "--sys-prefix"
 
     - name: Convert Jupyter Notebook to HTML
       run: |
-#        jupyter nbconvert --to html notebooks/basics.ipynb
-        jupyter nbextension enable toc2/main --sys-prefix
-        jupyter nbconvert --to html --template toc2 notebooks/basics.ipynb
+        jupyter nbconvert --to html notebooks/basics.ipynb
 
     - name: Commit and push HTML to gh-pages branch
       run: |
