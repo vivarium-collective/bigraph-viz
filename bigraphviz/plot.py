@@ -19,6 +19,7 @@ special_keys = [
     '_type',
     '_ports',
     '_tunnels',
+    '_depends_on',
 ]
 
 
@@ -54,6 +55,7 @@ def get_bigraph_network(bigraph_dict, path=None):
         'hyper_edges': {},
         'disconnected_hyper_edges': {},
         'tunnels': {},
+        'flow': {},
     }
 
     for key, child in bigraph_dict.items():
@@ -76,6 +78,18 @@ def get_bigraph_network(bigraph_dict, path=None):
                         state_path = state_path_tuple(state_path)
                         state_path.insert(0, '..')  # go up one to the same level as the process
                         bigraph['hyper_edges'][path_here][port] = state_path
+                if '_depends_on' in child:
+                    depends_on = child.get('_depends_on', [])
+                    if path_here not in bigraph['flow']:
+                        bigraph['flow'][path_here] = []
+                    if isinstance(depends_on, str):
+                        depends_on = [depends_on]
+                    for state_path in depends_on:
+                        if isinstance(state_path, str):
+                            state_path = [state_path]
+                        state_path = state_path_tuple(state_path)
+                        state_path.insert(0, '..')  # go up one to the same level as the process
+                        bigraph['flow'][path_here].append(state_path)
 
                 # check for mismatch, there might be disconnected wires or mismatch with declared wires
                 wire_ports = []
@@ -119,7 +133,7 @@ def get_bigraph_network(bigraph_dict, path=None):
     return bigraph
 
 
-def get_graphviz_graph(
+def get_graphviz_bigraph(
         bigraph_network,
         size='16,10',
         node_label_size='12pt',
@@ -349,7 +363,70 @@ def plot_bigraph(
     bigraph_network = get_bigraph_network(bigraph_schema)
 
     # make graphviz network
-    graph = get_graphviz_graph(bigraph_network, **kwargs)
+    graph = get_graphviz_bigraph(bigraph_network, **kwargs)
+
+    # display or save results
+    if print_source:
+        print(graph.source)
+    if out_dir is not None:
+        os.makedirs(out_dir, exist_ok=True)
+        fig_path = os.path.join(out_dir, filename)
+        print(f"Writing {fig_path}")
+        graph.render(filename=fig_path, format=file_format)
+    return graph
+
+
+def plot_flow(
+        bigraph_schema,
+        size='16,10',
+        print_source=False,
+        file_format='png',
+        out_dir=None,
+        filename=None,
+):
+    """plot the flow of a bigraph schema"""
+
+    # get the bigraph network
+    bigraph_network = get_bigraph_network(bigraph_schema)
+
+    node_names = []
+    # initialize graph
+    graph_name = 'flow'
+    graph = graphviz.Digraph(graph_name, engine='dot')
+    graph.attr(size=size, overlap='false')
+
+    # process nodes
+    process_paths = []
+    graph.attr('node', shape='box', penwidth='2', constraint='false')
+    for node in bigraph_network['process_nodes']:
+        node_path = node['path']
+        process_paths.append(node_path)
+        node_name = str(node_path)
+        node_names.append(node_name)
+
+        # make the label
+        label = make_label(node_path[-1])
+
+        # composite processes have sub-nodes
+        composite_process = False
+        for edge in bigraph_network['place_edges']:
+            if edge[0] == node_path:
+                composite_process = True
+        if len(node_path) == 1 and composite_process:
+            # composite processes gets a double box
+            graph.node(node_name, label=label, peripheries='2')
+        else:
+            graph.node(node_name, label=label)
+
+    # dependency edges
+    graph.attr('edge', arrowhead='normal', penwidth='2', style='filled')
+    for node_path, dependencies in bigraph_network['flow'].items():
+        node_name1 = str(node_path)
+        with graph.subgraph(name=node_name) as c:
+            for state_path in dependencies:
+                absolute_state_path = absolute_path(node_path, state_path)
+                node_name2 = str(absolute_state_path)
+                c.edge(node_name2, node_name1)
 
     # display or save results
     if print_source:

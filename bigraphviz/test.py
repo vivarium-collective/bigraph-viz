@@ -1,4 +1,4 @@
-from bigraphviz import plot_bigraph, pp
+from bigraphviz import plot_bigraph, plot_flow, pp
 from bigraphviz.dict_utils import schema_state_to_dict
 
 
@@ -334,6 +334,24 @@ def test_schema_value_to_dict():
     # assert schema_state_dict == expected
 
 
+def test_flow():
+    process_schema = {
+        '_type': 'step_process',
+        '_ports': {
+            'port1': {'_type': 'type'},
+            'port2': {'_type': 'type'}
+        }
+    }
+
+    process_spec = {
+        'process1': {'_depends_on': [], **process_schema},
+        'process2': {'_depends_on': [], **process_schema},
+        'process3': {'_depends_on': ['process1', 'process2'], **process_schema},
+    }
+
+    plot_flow(process_spec, out_dir='out', filename='flow')
+
+
 if __name__ == '__main__':
     # test_simple_spec()
     # test_composite_spec()
@@ -341,4 +359,5 @@ if __name__ == '__main__':
     # test_nested_spec()
     # test_composite_process_spec()
     # test_merging()
-    test_schema_value_to_dict()
+    # test_schema_value_to_dict()
+    test_flow()
