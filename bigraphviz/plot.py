@@ -20,6 +20,7 @@ special_keys = [
     '_ports',
     '_tunnels',
     '_depends_on',
+    '_sync_step',
 ]
 
 
@@ -67,6 +68,8 @@ def get_bigraph_network(bigraph_dict, path=None):
                 node['value'] = child['_value']
             if '_type' in child:
                 node['type'] = child['_type']
+            if '_sync_step' in child:
+                node['sync_step'] = child['_sync_step']
 
             # what kind of node?
             if '_wires' in child or '_ports' in child:
@@ -427,6 +430,87 @@ def plot_flow(
                 absolute_state_path = absolute_path(node_path, state_path)
                 node_name2 = str(absolute_state_path)
                 c.edge(node_name2, node_name1)
+
+    # display or save results
+    if print_source:
+        print(graph.source)
+    if out_dir is not None:
+        os.makedirs(out_dir, exist_ok=True)
+        fig_path = os.path.join(out_dir, filename)
+        print(f"Writing {fig_path}")
+        graph.render(filename=fig_path, format=file_format)
+    return graph
+
+
+def plot_multitimestep(
+        bigraph_schema,
+        total_time=10.0,
+        size='16,10',
+        print_source=False,
+        file_format='png',
+        out_dir=None,
+        filename=None,
+):
+    """plot the timestepping of a bigraph schema"""
+    total_time = float(total_time)
+
+    # get the bigraph network
+    bigraph_network = get_bigraph_network(bigraph_schema)
+
+    node_names = []
+    # initialize graph
+    graph_name = 'flow'
+    graph = graphviz.Digraph(graph_name, engine='neato')
+    graph.attr(size=size, overlap='false', rankdir='LR')
+
+    # process nodes
+    process_paths = []
+    process_times = {}
+    graph.attr('node', shape='box', penwidth='2', constraint='false')
+    for idx, node in enumerate(bigraph_network['process_nodes']):
+        node_path = node['path']
+        process_paths.append(node_path)
+        node_name = str(node_path)
+        node_names.append(node_name)
+
+        # make the label
+        label = make_label(node_path[-1])
+        graph.node(node_name, label=label, pos=f'{0},{idx}!')
+
+        # set up timeline for this process
+        graph.attr('edge', penwidth='2', arrowhead='none')  # , arrowsize='0.5')
+        sync_step = node['sync_step']
+        steps = int(total_time / sync_step)
+        scale_factor = 1 / sync_step
+        steps_list = [i / scale_factor for i in range(1, steps + 1)]
+        previous_node = node_name
+        process_times[node_name] = []
+        for step in steps_list:
+            time_node_name = f'{node_name} {step}'
+            graph.node(time_node_name, label=str(step), style='filled', fontsize='10', margin='0.01,0.01',
+                       fillcolor='white', color='none', width='0', pos=f'{step},{idx}!')
+            graph.edge(previous_node, time_node_name, len=str(sync_step))
+            process_times[node_name].append(time_node_name)
+            previous_node = time_node_name
+
+    # time edges
+    graph.attr('edge', penwidth='0.5', arrowhead='normal', arrowtail='normal', arrowsize='0.5', dir='both')
+    for node_path, wires in bigraph_network['hyper_edges'].items():
+        node_name = str(node_path)
+        with graph.subgraph(name=node_name) as c:
+            for port, state_path in wires.items():
+                absolute_state_path = absolute_path(node_path, state_path)
+                process_node_name = str(node_path)
+                state_node_name = str(absolute_state_path)
+
+                # make the state node
+                label = make_label(absolute_state_path[-1])
+                graph.node(state_node_name, label=label, shape='circle', margin='0.05')
+
+                # make edges between time nodes and the state node
+                time_nodes = process_times[process_node_name]
+                for time_node in time_nodes:
+                    c.edge(time_node, state_node_name)
 
     # display or save results
     if print_source:

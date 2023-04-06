@@ -1,4 +1,4 @@
-from bigraphviz import plot_bigraph, plot_flow, pp
+from bigraphviz import plot_bigraph, plot_flow, plot_multitimestep, pp
 from bigraphviz.dict_utils import schema_state_to_dict
 
 
@@ -352,6 +352,27 @@ def test_flow():
     plot_flow(process_spec, out_dir='out', filename='flow')
 
 
+def test_multitimestep():
+    process_spec = {
+        'process1': {
+            '_ports': {'port1': {'_type': 'type'}},
+            '_wires': {'port1': 'state1'},
+            '_sync_step': 1.0,
+        },
+        'process2': {
+            '_ports': {'port1': {'_type': 'type'}},
+            '_wires': {'port1': 'state1'},
+            '_sync_step': 0.5,
+        },
+        # 'process3': {
+        #     '_ports': {'port1': {'_type': 'type'}},
+        #     '_wires': {'port1': 'state1'},
+        #     '_sync_step': 0.4,
+        # },
+    }
+    plot_multitimestep(process_spec, total_time=3, out_dir='out', filename='multitimestep')
+
+
 if __name__ == '__main__':
     # test_simple_spec()
     # test_composite_spec()
@@ -360,4 +381,5 @@ if __name__ == '__main__':
     # test_composite_process_spec()
     # test_merging()
     # test_schema_value_to_dict()
-    test_flow()
+    # test_flow()
+    test_multitimestep()
