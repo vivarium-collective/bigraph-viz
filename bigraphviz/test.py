@@ -4,7 +4,8 @@ from bigraphviz.dict_utils import schema_state_to_dict
 
 # testing functions
 plot_settings_test = {
-    'plot_schema': True,
+    'remove_process_place_edges': True,
+    # 'plot_schema': True,
     'out_dir': 'out'
 }
 
@@ -47,7 +48,7 @@ def test_composite_spec():
             }
         }  # TODO -- wires without ports should not work.
     }
-    plot_bigraph(composite_spec, **plot_settings_test, filename='nested_composite', remove_process_place_edges=True)
+    plot_bigraph(composite_spec, **plot_settings_test, filename='nested_composite')
 
 
 def test_disconnected_process_spec():
@@ -159,7 +160,6 @@ def test_composite_process_spec():
     }
     plot_bigraph(composite_process_spec,
                  **plot_settings_test,
-                 remove_process_place_edges=True,
                  filename='composite_process'
                  )
 
