@@ -12,8 +12,8 @@
 ## Compositional Schemas and Milner Bigraphs
 
 Compositional Bigraph Schemas (CIP) are based on a mathematical formalism introduced by 
-[Robin Milner in 2009](https://www.google.com/search?q=the+space+and+motion+of+communicating+agents+by+robin+milner), and
-used in Vivarium. 
+<a href="https://www.google.com/search?q=the+space+and+motion+of+communicating+agents+by+robin+milner" target="_blank">Robin Milner in 2009</a>
+, and used in Vivarium. 
 Bigraphs consist of networks with embeddable nodes that can be placed *within* other nodes and dynamically restructured.
 CIP reimagines the bigraph concept. Variables are contained within Stores (the circles in the figure), which can be embedded
 in a hierarchy, as shown by the dark edges. Instead of Milner's hyperedges, CIP employs Processes (the rectangles) which 

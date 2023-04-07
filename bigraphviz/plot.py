@@ -8,20 +8,10 @@ plotting tool
 import copy
 import os
 
-from bigraphviz.dict_utils import absolute_path
+from bigraphviz.dict_utils import absolute_path, special_keys
 import graphviz
 
-special_keys = [
-    '_value',
-    '_process',
-    '_config',
-    '_wires',
-    '_type',
-    '_ports',
-    '_tunnels',
-    '_depends_on',
-    '_sync_step',
-]
+
 
 
 def extend_bigraph(bigraph, bigraph2):

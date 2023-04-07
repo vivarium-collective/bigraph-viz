@@ -7,6 +7,19 @@ import copy
 pretty = pprint.PrettyPrinter(indent=2)
 
 
+special_keys = [
+    '_value',
+    '_process',
+    '_config',
+    '_wires',
+    '_type',
+    '_ports',
+    '_tunnels',
+    '_depends_on',
+    '_sync_step',
+]
+
+
 def pp(x: Any) -> None:
     """Print ``x`` in a pretty format."""
     pretty.pprint(x)
@@ -69,15 +82,19 @@ def compose(bigraph, node, path=None):
 def schema_state_to_dict(schema, state):
     schema_value_dict = {}
     for key, schema_value in schema.items():
-        state_value = state[key]
-
-        if isinstance(state_value, dict):
-            schema_value_dict[key] = schema_state_to_dict(schema_value, state_value)
+        if key in special_keys:
+            # if isinstance(schema_value, str):
+            # these are schema keys, just keep them as-is
+            schema_value_dict[key] = schema_value
         else:
-            assert isinstance(schema_value, str)
-            schema_value_dict[key] = {
-                '_value': state_value,
-                '_type': schema_value
-            }
+            state_value = state[key]
+            if isinstance(state_value, dict):
+                schema_value_dict[key] = schema_state_to_dict(schema_value, state_value)
+            else:
+                assert isinstance(schema_value, str)
+                schema_value_dict[key] = {
+                    '_value': state_value,
+                    '_type': schema_value
+                }
 
     return schema_value_dict
