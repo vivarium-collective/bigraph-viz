@@ -6,7 +6,7 @@
 **Bigraph-viz** is an easy-to-use plotting tool for compositional bigraph schema, built on top of Graphviz. 
 
 <p align="center">
-    <img src="https://github.com/vivarium-collective/bigraph-viz/blob/main/doc/_static/nested_composite.png?raw=true" width="340" alt="Bigraph-viz example">
+    <img src="https://github.com/vivarium-collective/bigraph-viz/blob/main/doc/_static/nested_composite.png?raw=true" width="600" alt="Bigraph-viz example">
 </p>
 
 ## Compositional Schemas and Milner Bigraphs
