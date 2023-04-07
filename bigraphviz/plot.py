@@ -135,6 +135,7 @@ def get_graphviz_bigraph(
         port_label_size='10pt',
         engine='dot',
         rankdir='TB',
+        dpi='70',
         node_groups=False,
         invisible_edges=False,
         remove_process_place_edges=False,
@@ -151,7 +152,7 @@ def get_graphviz_bigraph(
 
     # state nodes
     graph.attr('node', shape='circle', penwidth='2', margin='0.05', fontsize=node_label_size)
-    graph.attr(rankdir=rankdir)
+    graph.attr(rankdir=rankdir, dpi=dpi)
 
     # check if multiple layers
     multilayer = False
@@ -309,6 +310,7 @@ def plot_bigraph(
         invisible_edges=False,
         remove_process_place_edges=False,
         print_source=False,
+        dpi='70',
         file_format='png',
         out_dir=None,
         filename=None,
@@ -357,6 +359,7 @@ def plot_bigraph(
 
     # make graphviz network
     graph = get_graphviz_bigraph(bigraph_network, **kwargs)
+    # graph = graph.pipe(format='svg') # convert to svg
 
     # display or save results
     if print_source:
