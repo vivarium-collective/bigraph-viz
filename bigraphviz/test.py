@@ -372,6 +372,32 @@ def test_multitimestep():
     }
     plot_multitimestep(process_spec, total_time=3, out_dir='out', filename='multitimestep')
 
+    process_spec2 = {
+        'A': {
+            'process1': {
+                '_ports': {'port1': {'_type': 'type'}},
+                '_wires': {'port1': 'B'},
+                '_sync_step': 1.0,
+            },
+        },
+        'process2': {
+            '_ports': {
+                'port1': {'_type': 'type'},
+                'port2': {'_type': 'type'}},
+            '_wires': {
+                'port1': ['A', 'B'],
+                'port2': 'C',
+            },
+            '_sync_step': 0.5,
+        },
+        'process3': {
+            '_ports': {'port1': {'_type': 'type'}},
+            '_wires': {'port1': 'C'},
+            '_sync_step': 0.6,
+        },
+    }
+    plot_multitimestep(process_spec2, total_time=3, out_dir='out', filename='multitimestep_2')
+
 
 if __name__ == '__main__':
     # test_simple_spec()

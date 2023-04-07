@@ -482,7 +482,7 @@ def plot_multitimestep(
         sync_step = node['sync_step']
         steps = int(total_time / sync_step)
         scale_factor = 1 / sync_step
-        steps_list = [i / scale_factor for i in range(1, steps + 1)]
+        steps_list = [round(i/scale_factor, 3) for i in range(1, steps + 1)]
         previous_node = node_name
         process_times[node_name] = []
         for step in steps_list:
