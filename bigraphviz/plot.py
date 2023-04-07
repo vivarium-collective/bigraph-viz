@@ -375,6 +375,7 @@ def plot_bigraph(
 def plot_flow(
         bigraph_schema,
         size='16,10',
+        dpi='70',
         print_source=False,
         file_format='png',
         out_dir=None,
@@ -389,7 +390,7 @@ def plot_flow(
     # initialize graph
     graph_name = 'flow'
     graph = graphviz.Digraph(graph_name, engine='dot')
-    graph.attr(size=size, overlap='false')
+    graph.attr(size=size, overlap='false', dpi=dpi)
 
     # process nodes
     process_paths = []
@@ -439,6 +440,7 @@ def plot_multitimestep(
         bigraph_schema,
         total_time=10.0,
         size='16,10',
+        dpi='70',
         print_source=False,
         file_format='png',
         out_dir=None,
@@ -457,7 +459,7 @@ def plot_multitimestep(
     # initialize graph
     graph_name = 'flow'
     graph = graphviz.Digraph(graph_name, engine='fdp')
-    graph.attr(size=size, overlap='false', rankdir='LR')
+    graph.attr(size=size, overlap='false', rankdir='LR', dpi=dpi)
 
     # process nodes
     graph.attr('node', shape='box', penwidth='2', constraint='false')
