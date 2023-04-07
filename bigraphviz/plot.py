@@ -31,7 +31,7 @@ def state_path_tuple(state_path):
 
 
 def make_label(label):
-    label = label.replace(' ', '<br/>')  # replace spaces with new lines
+    # label = label.replace(' ', '<br/>')  # replace spaces with new lines
     return f'<{label}>'
 
 
@@ -169,7 +169,6 @@ def get_graphviz_bigraph(
 
         # make the label
         label = node_path[-1]
-        label = label.replace(' ', '<br/>')  # replace spaces with new lines
         if plot_schema:
             # add schema to label
             schema_label = None
@@ -183,7 +182,7 @@ def get_graphviz_bigraph(
                 schema_label += f"::{node['type']}"
             if schema_label:
                 label += schema_label
-        label = f'<{label}>'
+        label = make_label(label)
 
         if len(node_path) == 1 and multilayer:
             # the top node gets a double circle
@@ -344,6 +343,7 @@ def plot_bigraph(
     Notes:
         You can adjust node labels using HTML syntax for fonts, colors, sizes, subscript, superscript. For example:
             H<sub><font point-size="8">2</font></sub>O will print H2O with 2 as a subscript with smaller font.
+        You can also make newlines by adding with <br/>
     """
 
     # get kwargs dict and remove plotting-specific kwargs
