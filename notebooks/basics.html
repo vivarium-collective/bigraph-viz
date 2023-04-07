@@ -15258,7 +15258,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">composite_store_spec</span> <span class="o">=</span> <span class="p">{</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">hierarchy_spec</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;store1&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;store1.1&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;store1.1.1&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -15284,7 +15284,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
         <span class="p">},</span>
     <span class="p">},</span>
 <span class="p">}</span>
-<span class="n">plot_bigraph</span><span class="p">(</span><span class="n">composite_store_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hierarchy&#39;</span><span class="p">)</span>
+<span class="n">plot_bigraph</span><span class="p">(</span><span class="n">hierarchy_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hierarchy&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15526,12 +15526,12 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="n">process_spec</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">processes_spec</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;process1&#39;</span><span class="p">:</span> <span class="n">process_schema</span><span class="p">,</span>
     <span class="s1">&#39;process2&#39;</span><span class="p">:</span> <span class="n">process_schema</span><span class="p">,</span>
     <span class="s1">&#39;process3&#39;</span><span class="p">:</span> <span class="n">process_schema</span><span class="p">,</span>
 <span class="p">}</span>
-<span class="n">plot_bigraph</span><span class="p">(</span><span class="n">process_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">rankdir</span><span class="o">=</span><span class="s1">&#39;BT&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;multiple_processes&#39;</span><span class="p">)</span>
+<span class="n">plot_bigraph</span><span class="p">(</span><span class="n">processes_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">rankdir</span><span class="o">=</span><span class="s1">&#39;BT&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;multiple_processes&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15935,7 +15935,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">composite_spec</span> <span class="o">=</span> <span class="p">{</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nested_composite_spec</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;store1&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;store1.1&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mf">1.1</span><span class="p">,</span> 
@@ -15972,7 +15972,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
-<span class="n">plot_bigraph</span><span class="p">(</span><span class="n">composite_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;nested_composite&#39;</span><span class="p">)</span>
+<span class="n">plot_bigraph</span><span class="p">(</span><span class="n">nested_composite_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;nested_composite&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16353,7 +16353,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">process_spec</span> <span class="o">=</span> <span class="p">{</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">multitimestep_spec</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;temporal process2&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">}},</span>
         <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;state&#39;</span><span class="p">},</span>
@@ -16365,7 +16365,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
         <span class="s1">&#39;_sync_step&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
-<span class="n">plot_multitimestep</span><span class="p">(</span><span class="n">process_spec</span><span class="p">,</span> <span class="n">total_time</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings2</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;multitimestep&#39;</span><span class="p">)</span>
+<span class="n">plot_multitimestep</span><span class="p">(</span><span class="n">multitimestep_spec</span><span class="p">,</span> <span class="n">total_time</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings2</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;multitimestep&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16583,7 +16583,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="n">process_spec</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">flow_spec</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;step1&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;_depends_on&#39;</span><span class="p">:</span> <span class="p">[],</span> 
         <span class="o">**</span><span class="n">process_schema</span>
@@ -16601,7 +16601,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
         <span class="o">**</span><span class="n">process_schema</span>
     <span class="p">},</span>
 <span class="p">}</span>
-<span class="n">plot_flow</span><span class="p">(</span><span class="n">process_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings2</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;flow&#39;</span><span class="p">)</span>
+<span class="n">plot_flow</span><span class="p">(</span><span class="n">flow_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings2</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;flow&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16715,7 +16715,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nested_processes</span> <span class="o">=</span> <span class="p">{</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cell_struct_func</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;cell&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;membrane&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;transporters&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;concentrations&#39;</span><span class="p">},</span>
@@ -16763,7 +16763,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">}</span>
-<span class="n">plot_bigraph</span><span class="p">(</span><span class="n">nested_processes</span><span class="p">,</span> <span class="n">plot_schema</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">remove_process_place_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s1">&#39;out&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;cell&#39;</span><span class="p">)</span>
+<span class="n">plot_bigraph</span><span class="p">(</span><span class="n">cell_struct_func</span><span class="p">,</span> <span class="n">plot_schema</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">remove_process_place_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s1">&#39;out&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;cell&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
