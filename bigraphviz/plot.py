@@ -457,50 +457,57 @@ def plot_multitimestep(
     # get the bigraph network
     bigraph_network = get_bigraph_network(bigraph_schema)
 
-    node_names = []
+    state_node_names = set()
+    process_paths = []
+    process_times = {}
+
     # initialize graph
     graph_name = 'flow'
-    graph = graphviz.Digraph(graph_name, engine='neato')
+    graph = graphviz.Digraph(graph_name, engine='fdp')
     graph.attr(size=size, overlap='false', rankdir='LR')
 
     # process nodes
-    process_paths = []
-    process_times = {}
     graph.attr('node', shape='box', penwidth='2', constraint='false')
     for idx, node in enumerate(bigraph_network['process_nodes']):
+        y_pos = idx * 1.5
         node_path = node['path']
         process_paths.append(node_path)
         node_name = str(node_path)
-        node_names.append(node_name)
 
-        # make the label
-        label = make_label(node_path[-1])
-        graph.node(node_name, label=label, pos=f'{0},{idx}!')
 
         # set up timeline for this process
-        graph.attr('edge', penwidth='2', arrowhead='none')
         sync_step = node['sync_step']
         steps = int(total_time / sync_step)
         scale_factor = 1 / sync_step
         steps_list = [round(i/scale_factor, 3) for i in range(1, steps + 1)]
+        timebuffer = total_time/10
         previous_node = node_name
         process_times[node_name] = []
+
+        # make the process node
+        process_label = make_label(node_path[-1])
+        graph.node(node_name, label=process_label, pos=f'{-1*timebuffer},{y_pos}!')
+
+        # add the time nodes and connections
+        graph.attr('edge', penwidth='2', arrowhead='none')
         for step in steps_list:
             time_node_name = f'{node_name} {step}'
+            # place with precise positioning using the pos argument
             graph.node(time_node_name,
                        label=str(step), style='filled', shape='circle', fontsize='9', margin='0',
-                       fillcolor='white', color='none', width='0', pos=f'{step},{idx}!')
+                       fillcolor='white', color='none', width='0', pos=f'{step},{y_pos}!')
             graph.edge(previous_node, time_node_name, len=str(sync_step))
             process_times[node_name].append(time_node_name)
             previous_node = time_node_name
         # final arrow
         end_node = f'{node_name} end'
         graph.node(end_node, label='', color='none', shape='point', width='0',
-                   arrowsize='0.5', pos=f'{step+total_time/10},{idx}!')
+                   arrowsize='0.5', pos=f'{step+timebuffer},{y_pos}!')
         graph.edge(previous_node, end_node, len=str(sync_step), arrowhead='normal', arrowsize='0.5')
 
-    # time edges
-    graph.attr('edge', penwidth='0.5', style='dashed', arrowhead='normal', arrowtail='normal', arrowsize='0.5', dir='both')
+    # time edges to shared states
+    graph.attr('edge', penwidth='0.5', style='dashed',
+               arrowhead='normal', arrowtail='normal', arrowsize='0.5', dir='both')
     for node_path, wires in bigraph_network['hyper_edges'].items():
         node_name = str(node_path)
         with graph.subgraph(name=node_name) as c:
@@ -508,6 +515,7 @@ def plot_multitimestep(
                 absolute_state_path = absolute_path(node_path, state_path)
                 process_node_name = str(node_path)
                 state_node_name = str(absolute_state_path)
+                state_node_names.add(state_node_name)
 
                 # make the state node
                 label = make_label(absolute_state_path[-1])
@@ -516,7 +524,13 @@ def plot_multitimestep(
                 # make edges between time nodes and the state node
                 time_nodes = process_times[process_node_name]
                 for time_node in time_nodes:
-                    c.edge(time_node, state_node_name)
+                    c.edge(time_node, state_node_name, constraint='false')
+
+    # Create a subgraph to group state nodes at the top
+    with graph.subgraph(name='state nodes') as top_nodes:
+        top_nodes.attr(rank='source')
+        for node in state_node_names:
+            top_nodes.node(node)
 
     # display or save results
     if print_source:

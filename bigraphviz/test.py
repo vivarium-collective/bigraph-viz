@@ -372,6 +372,8 @@ def test_multitimestep():
     }
     plot_multitimestep(process_spec, total_time=3, out_dir='out', filename='multitimestep')
 
+
+def test_multitimestep2():
     process_spec2 = {
         'A': {
             'process1': {
@@ -395,8 +397,15 @@ def test_multitimestep():
             '_wires': {'port1': 'C'},
             '_sync_step': 0.6,
         },
+        'D': {
+            'process4': {
+                '_ports': {'port1': {'_type': 'type'}},
+                '_wires': {'port1': ['..', 'A', 'B']},
+                '_sync_step': 0.8,
+            },
+        }
     }
-    plot_multitimestep(process_spec2, total_time=3, out_dir='out', filename='multitimestep_2')
+    plot_multitimestep(process_spec2, total_time=4, out_dir='out', filename='multitimestep_2')
 
 
 if __name__ == '__main__':
@@ -406,6 +415,7 @@ if __name__ == '__main__':
     # test_nested_spec()
     # test_composite_process_spec()
     # test_merging()
-    # test_schema_value_to_dict()
+    # # test_schema_value_to_dict()
     # test_flow()
     test_multitimestep()
+    test_multitimestep2()
