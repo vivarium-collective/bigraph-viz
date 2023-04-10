@@ -79,6 +79,39 @@ def compose(bigraph, node, path=None):
     return new_bigraph
 
 
+def replace_whitespace_with_br(input_dict):
+    """
+    Replace whitespaces with '<br/>' in keys and values of a nested dictionary.
+
+    This function takes a nested dictionary as input and updates all keys and values
+    that are strings by replacing whitespaces ' ' with '<br/>'. It uses a recursive
+    function to process dictionaries within dictionaries.
+
+    Args:
+        input_dict (dict): The nested dictionary to be updated.
+
+    Returns:
+        dict: The updated nested dictionary with whitespaces replaced by '<br/>'.
+    """
+    def replace_string(item):
+        if isinstance(item, str):
+            return item.replace(' ', '<br/>')
+        return item
+
+    def recursive_replace(dictionary):
+        updated_dict = {}
+        for key, value in dictionary.items():
+            new_key = replace_string(key)
+            if isinstance(value, dict):
+                new_value = recursive_replace(value)
+            else:
+                new_value = replace_string(value)
+            updated_dict[new_key] = new_value
+        return updated_dict
+
+    return recursive_replace(input_dict)
+
+
 def schema_state_to_dict(schema, state):
     schema_value_dict = {}
     for key, schema_value in schema.items():
