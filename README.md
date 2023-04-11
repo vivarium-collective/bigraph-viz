@@ -55,4 +55,8 @@ pip install bigraph-viz
 
 ## Tutorial
 
-To get started with Bigraph-viz, explore the [Bigraph Schema Basics](https://vivarium-collective.github.io/bigraph-viz/notebooks/basics.html) tutorial.
+To get started with Bigraph-viz, explore the 
+[Bigraph Schema Basics Tutorial](https://vivarium-collective.github.io/bigraph-viz/notebooks/basics.html).
+
+Or the
+[Formatting Tutorial](https://vivarium-collective.github.io/bigraph-viz/notebooks/format.html).

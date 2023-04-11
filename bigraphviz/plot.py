@@ -136,6 +136,8 @@ def get_graphviz_bigraph(
         engine='dot',
         rankdir='TB',
         dpi='70',
+        node_border_colors=None,
+        node_fill_colors=None,
         node_groups=False,
         invisible_edges=False,
         remove_process_place_edges=False,
@@ -293,6 +295,14 @@ def get_graphviz_bigraph(
                 else:
                     print(f'node {node_name} not in graph')
 
+    # formatting
+    if node_border_colors:
+        for node_name, color in node_border_colors.items():
+            graph.node(str(node_name), color=color)
+    if node_fill_colors:
+        for node_name, color in node_fill_colors.items():
+            graph.node(str(node_name), color=color, style='filled')
+
     return graph
 
 
@@ -305,6 +315,8 @@ def plot_bigraph(
         port_label_size='10pt',
         engine='dot',
         rankdir='TB',
+        node_border_colors=None,
+        node_fill_colors=None,
         node_groups=False,
         invisible_edges=False,
         remove_process_place_edges=False,
@@ -327,6 +339,10 @@ def plot_bigraph(
         engine (str, optional): Graphviz graphing engine. Try 'dot' or 'neato'. Default is 'dot'.
         rankdir (str, optional): Sets direction of graph layout. 'TB'=top-to-bottom, 'LR'=left-to-right.
             Default is 'TB'.
+        node_border_colors (dict, optional): Colors of node borders, with node path tuples mapped to the node color as
+            the value: {('path', 'to', 'node',): 'color'}
+        node_fill_colors (dict, optional): Colors of node fills, with node path tuples mapped to the node color as
+            the value: {('path', 'to', 'node',): 'color'}
         node_groups (list, optional): A list of lists of nodes.
             Each sub-list is a grouping of nodes that will be aligned at the same rank.
             For example: [[('path to', 'group1 node1',), ('path to', 'group1 node2',)], [another group]]

@@ -408,6 +408,54 @@ def test_multitimestep2():
     plot_multitimestep(process_spec2, total_time=4, out_dir='out', filename='multitimestep_2')
 
 
+def test_color_format():
+    nested_composite_spec = {
+        'store1': {
+            'store1.1': {
+                '_value': 1.1,
+                '_type': 'float',
+            },
+            'store1.2': {
+                '_value': 2,
+                '_type': 'int',
+            },
+            'process1': {
+                '_ports': {
+                    'port1': {'_type': 'type'},
+                    'port2': {'_type': 'type'},
+                },
+                '_wires': {
+                    'port1': 'store1.1',
+                    'port2': 'store1.2',
+                }
+            },
+            'process2': {
+                '_ports': {
+                    'port1': {'_type': 'type'},
+                    'port2': {'_type': 'type'},
+                },
+                '_wires': {
+                    'port1': 'store1.1',
+                    'port2': 'store1.2',
+                }
+            },
+        },
+        'process3': {
+            '_wires': {
+                'port1': 'store1',
+            }
+        }
+    }
+    plot_settings = {'out_dir': 'out'}
+    plot_settings['node_border_colors'] = {
+        ('store1', 'store1.1'): 'blue'
+    }
+    plot_settings['node_fill_colors'] = {
+        ('store1', 'store1.2'): 'red'
+    }
+    plot_bigraph(nested_composite_spec, **plot_settings, filename='node_colors')
+
+
 if __name__ == '__main__':
     # test_simple_spec()
     # test_composite_spec()
@@ -417,5 +465,6 @@ if __name__ == '__main__':
     # test_merging()
     # # test_schema_value_to_dict()
     # test_flow()
-    test_multitimestep()
-    test_multitimestep2()
+    # test_multitimestep()
+    # test_multitimestep2()
+    test_color_format()
