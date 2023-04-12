@@ -8,7 +8,7 @@ plotting tool
 import copy
 import os
 
-from bigraphviz.dict_utils import absolute_path, special_keys
+from bigraph_viz.dict_utils import absolute_path, special_keys
 import graphviz
 
 
@@ -340,9 +340,9 @@ def plot_bigraph(
         rankdir (str, optional): Sets direction of graph layout. 'TB'=top-to-bottom, 'LR'=left-to-right.
             Default is 'TB'.
         node_border_colors (dict, optional): Colors of node borders, with node path tuples mapped to the node color as
-            the value: {('path', 'to', 'node',): 'color'}
+            the value: {('path', 'to', 'node',): 'color'}. Colors at https://graphviz.org/doc/info/colors.html
         node_fill_colors (dict, optional): Colors of node fills, with node path tuples mapped to the node color as
-            the value: {('path', 'to', 'node',): 'color'}
+            the value: {('path', 'to', 'node',): 'color'}. Colors at https://graphviz.org/doc/info/colors.html
         node_groups (list, optional): A list of lists of nodes.
             Each sub-list is a grouping of nodes that will be aligned at the same rank.
             For example: [[('path to', 'group1 node1',), ('path to', 'group1 node2',)], [another group]]
