@@ -8,6 +8,10 @@
     </style>
 </head>
 <body>
+    <nav id="outline">
+        <h2>Outline</h2>
+        <ul id="outline-list"></ul>
+    </nav>
     {% for cell in nb.cells %}
         {% if cell.cell_type == 'markdown' %}
             <div class="markdown">
@@ -30,5 +34,26 @@
             </div>
         {% endif %}
     {% endfor %}
+    <script>
+        function generateOutline() {
+            const headers = document.querySelectorAll('.markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5, .markdown h6');
+            const outlineList = document.getElementById('outline-list');
+
+            headers.forEach((header, index) => {
+                const linkId = `header-link-${index}`;
+                header.setAttribute('id', linkId);
+
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.setAttribute('href', `#${linkId}`);
+                link.textContent = header.textContent;
+
+                listItem.appendChild(link);
+                outlineList.appendChild(listItem);
+            });
+        }
+
+        window.onload = generateOutline;
+    </script>
 </body>
 </html>
