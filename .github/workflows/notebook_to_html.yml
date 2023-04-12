@@ -27,7 +27,7 @@ jobs:
 
     - name: Convert Jupyter Notebook to HTML
       run: |
-        jupyter nbconvert --to html --template notebooks/custom_template.tpl notebooks/basics.ipynb
+        jupyter nbconvert --to html notebooks/basics.ipynb
 
     - name: Commit and push HTML to gh-pages branch
       run: |
