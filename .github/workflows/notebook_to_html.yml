@@ -25,10 +25,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install nbconvert
 
-    - name: Copy custom_template.tpl to the workspace
-      run: |
-        cp templates/custom_template.tpl notebooks/custom_template.tpl
-
     - name: Convert Jupyter Notebook to HTML
       run: |
         jupyter nbconvert --to html --template notebooks/custom_template.tpl notebooks/basics.ipynb
