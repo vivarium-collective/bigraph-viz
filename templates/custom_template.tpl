@@ -1,4 +1,4 @@
-{% extends 'full.tpl' %}
+{% extends 'html/full.tpl' %}
 
 {% block any_cell %}
 {% if 'hide_output' in cell.metadata.tags %}
