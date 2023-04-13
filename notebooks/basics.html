@@ -15110,9 +15110,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Bigraph-Schema-Basics">Bigraph Schema Basics<a class="anchor-link" href="#Bigraph-Schema-Basics">&#182;</a></h1><p>This tutorial demonstrates use of bigraph-viz, a visualization tool for bigraph composition schema. 
-The tutorial stars with a single <code>store</code> and increases in detail as you scroll to the bottom.</p>
-<p>See the <a href="https://github.com/vivarium-collective/bigraph-viz">Bigraph-viz GitHub</a> for the source code.</p>
+<h1 id="Bigraph-Schema-Basics">Bigraph Schema Basics<a class="anchor-link" href="#Bigraph-Schema-Basics">&#182;</a></h1><p>This tutorial demonstrates use of <a href="https://github.com/vivarium-collective/bigraph-viz">bigraph-viz</a>, a visualization tool for bigraph composition schema. The tutorial starts with a single <code>store</code> and increases in detail as you scroll towards the bottom.</p>
+<p>Compositional Bigraph Schemas (CBS) are based on a mathematical formalism <a href="https://www.google.com/search?q=the+space+and+motion+of+communicating+agents+by+robin+milner">introduced by Robin Milner in 2009</a>, and used in Vivarium. Bigraphs consist of networks with embeddable nodes that can be placed within other nodes and dynamically restructured. CBS reimagines the bigraph concept. Variables are contained within Stores (the circles in the figure), which can be embedded in a hierarchy, as shown by the dark edges. Instead of Milner's hyperedges, CBS employs Processes (the rectangles) which connect via wires (dashed edges) to shared variables within the Stores. Processes and Stores form a type of bipartite graph, as illustrated by the dashed edges.</p>
 
 </div>
 </div>
@@ -15172,7 +15171,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Simple-stores">Simple stores<a class="anchor-link" href="#Simple-stores">&#182;</a></h3><p>An store can be declared in a JSON dictionary with the store's name matched to a dictionary.</p>
+<h3 id="Simple-stores">Simple stores<a class="anchor-link" href="#Simple-stores">&#182;</a></h3><p>An store can be declared in a JSON dictionary with the store's name mapped to its value.</p>
 
 </div>
 </div>
@@ -15243,7 +15242,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>To include values <em>and</em> types in a node label, you can use the <code>_value</code> key and <code>_type</code> key.</p>
+<p>To include values <em>and</em> types in a node label, you can instead have the store name map to a dict with <code>_value</code> and <code>_type</code> keys.</p>
 
 </div>
 </div>
@@ -15327,29 +15326,19 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">hierarchy_spec</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;store1&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;store1.1&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;store1.1.1&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mf">1.1</span><span class="p">,</span> 
-            <span class="p">},</span>
-            <span class="s1">&#39;store1.1.2&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> 
-            <span class="p">},</span>
+            <span class="s1">&#39;store1.1.1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">},</span>
+            <span class="s1">&#39;store1.1.2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
             <span class="s1">&#39;store1.1.3&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> 
-                <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;store1.1.3.1&#39;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> 
-                <span class="p">},</span>
+                <span class="s1">&#39;store1.1.3.1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">},</span>
             <span class="p">},</span>
         <span class="p">},</span>
-        <span class="s1">&#39;store1.2&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> 
-        <span class="p">},</span>
+        <span class="s1">&#39;store1.2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
     <span class="p">},</span>
 <span class="p">}</span>
 <span class="n">plot_bigraph</span><span class="p">(</span><span class="n">hierarchy_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hierarchy&#39;</span><span class="p">)</span>
@@ -15368,7 +15357,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
 
 
 
@@ -15494,7 +15483,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">process_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -15521,7 +15510,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
 
 
 
@@ -15584,7 +15573,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">process_schema</span> <span class="o">=</span> <span class="p">{</span>
@@ -15615,7 +15604,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
 
 
 
@@ -15723,26 +15712,25 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">connected_process_spec</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;process1&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
-            <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
+            <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">},</span>
+            <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
+            <span class="s1">&#39;port3&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
         <span class="p">},</span>
         <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;node1&#39;</span><span class="p">,</span>
             <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;node2&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;port3&#39;</span><span class="p">:</span> <span class="s1">&#39;node3&#39;</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">},</span>
-    <span class="s1">&#39;node1&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;node2&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span>
-    <span class="p">},</span>
+    <span class="s1">&#39;node1&#39;</span><span class="p">:</span> <span class="mf">1.1</span><span class="p">,</span>
+    <span class="s1">&#39;node2&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;node3&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
 <span class="p">}</span>
 <span class="n">plot_bigraph</span><span class="p">(</span><span class="n">connected_process_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;wires&#39;</span><span class="p">)</span>
 </pre></div>
@@ -15760,7 +15748,7 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
 
 
 
@@ -15770,10 +15758,10 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <!-- Generated by graphviz version 7.1.0 (20230121.1956)
  -->
 <!-- Title: bigraph Pages: 1 -->
-<svg width="116pt" height="134pt" viewBox="0.00 0.00 119.78 137.78">
+<svg width="180pt" height="134pt" viewBox="0.00 0.00 184.78 137.78">
 <g id="graph0" class="graph" transform="scale(0.972222 0.972222) rotate(0) translate(4 133.78)">
 <title>bigraph</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-133.78 115.78,-133.78 115.78,4 -4,4"></polygon>
+<polygon fill="white" stroke="none" points="-4,4 -4,-133.78 180.78,-133.78 180.78,4 -4,4"></polygon>
 <!-- (&amp;#39;node1&amp;#39;,) -->
 <g id="node1" class="node">
 <title>(&#39;node1&#39;,)</title>
@@ -15781,17 +15769,17 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <text text-anchor="start" x="8.39" y="-103.29" font-family="Times,serif" font-size="12.00">node1</text>
 </g>
 <!-- (&amp;#39;process1&amp;#39;,) -->
-<g id="node3" class="node">
+<g id="node4" class="node">
 <title>(&#39;process1&#39;,)</title>
-<polygon fill="none" stroke="black" stroke-width="2" points="82.39,-36 28.39,-36 28.39,0 82.39,0 82.39,-36"></polygon>
-<text text-anchor="start" x="34.39" y="-14.9" font-family="Times,serif" font-size="12.00">process1</text>
+<polygon fill="none" stroke="black" stroke-width="2" points="115.39,-36 61.39,-36 61.39,0 115.39,0 115.39,-36"></polygon>
+<text text-anchor="start" x="67.39" y="-14.9" font-family="Times,serif" font-size="12.00">process1</text>
 </g>
 <!-- (&amp;#39;node1&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;process1&amp;#39;,) -->
 <g id="edge1" class="edge">
 <title>(&#39;node1&#39;,)&#45;&gt;(&#39;process1&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M31.47,-83.59C36.25,-70.68 42.3,-54.36 47.11,-41.35"></path>
-<ellipse fill="black" stroke="black" cx="47.96" cy="-39.07" rx="2" ry="2"></ellipse>
-<text text-anchor="start" x="42.39" y="-57" font-family="Times,serif" font-size="10.00">port1</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M37.5,-86.65C47.67,-73.13 61.42,-54.85 72.07,-40.7"></path>
+<ellipse fill="black" stroke="black" cx="73.48" cy="-38.82" rx="2" ry="2"></ellipse>
+<text text-anchor="start" x="62.39" y="-57" font-family="Times,serif" font-size="10.00">port1</text>
 </g>
 <!-- (&amp;#39;node2&amp;#39;,) -->
 <g id="node2" class="node">
@@ -15802,9 +15790,120 @@ The tutorial stars with a single <code>store</code> and increases in detail as y
 <!-- (&amp;#39;node2&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;process1&amp;#39;,) -->
 <g id="edge2" class="edge">
 <title>(&#39;node2&#39;,)&#45;&gt;(&#39;process1&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M80.07,-83.59C75.13,-70.68 68.9,-54.36 63.93,-41.35"></path>
-<ellipse fill="black" stroke="black" cx="63.05" cy="-39.06" rx="2" ry="2"></ellipse>
-<text text-anchor="start" x="72.39" y="-57" font-family="Times,serif" font-size="10.00">port2</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M88.39,-82.24C88.39,-69.62 88.39,-54.07 88.39,-41.55"></path>
+<ellipse fill="black" stroke="black" cx="88.39" cy="-39.23" rx="2" ry="2"></ellipse>
+<text text-anchor="start" x="88.39" y="-57" font-family="Times,serif" font-size="10.00">port2</text>
+</g>
+<!-- (&amp;#39;node3&amp;#39;,) -->
+<g id="node3" class="node">
+<title>(&#39;node3&#39;,)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="153.39" cy="-106.39" rx="23.29" ry="23.29"></ellipse>
+<text text-anchor="start" x="138.39" y="-103.29" font-family="Times,serif" font-size="12.00">node3</text>
+</g>
+<!-- (&amp;#39;node3&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;process1&amp;#39;,) -->
+<g id="edge3" class="edge">
+<title>(&#39;node3&#39;,)&#45;&gt;(&#39;process1&#39;,)</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M139.29,-86.65C129.12,-73.13 115.36,-54.85 104.72,-40.7"></path>
+<ellipse fill="black" stroke="black" cx="103.31" cy="-38.82" rx="2" ry="2"></ellipse>
+<text text-anchor="start" x="122.39" y="-57" font-family="Times,serif" font-size="10.00">port3</text>
+</g>
+</g>
+</svg>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div id="cell-id=8a7f2769-7a83-44bd-9bf6-1e40fae89f1c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Processes-are-hyperedges">Processes are hyperedges<a class="anchor-link" href="#Processes-are-hyperedges">&#182;</a></h3><p>When we collapse processes from the graph, their connections become hyperedges, and the Process Bigraph can be depicted as a standard Milner Bigraph</p>
+
+</div>
+</div>
+</div>
+</div><div id="cell-id=f00bb63a-494c-476e-ac76-0c796baec828" class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_bigraph</span><span class="p">(</span><span class="n">connected_process_spec</span><span class="p">,</span> <span class="n">collapse_processes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hyperedge&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
+
+
+
+<div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml">
+<!--?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?-->
+
+<!-- Generated by graphviz version 7.1.0 (20230121.1956)
+ -->
+<!-- Title: bigraph Pages: 1 -->
+<svg width="180pt" height="100pt" viewBox="0.00 0.00 184.78 102.78">
+<g id="graph0" class="graph" transform="scale(0.972222 0.972222) rotate(0) translate(4 98.78)">
+<title>bigraph</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-98.78 180.78,-98.78 180.78,4 -4,4"></polygon>
+<!-- (&amp;#39;node1&amp;#39;,) -->
+<g id="node1" class="node">
+<title>(&#39;node1&#39;,)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="23.39" cy="-71.39" rx="23.29" ry="23.29"></ellipse>
+<text text-anchor="start" x="8.39" y="-68.29" font-family="Times,serif" font-size="12.00">node1</text>
+</g>
+<!-- (&amp;#39;process1&amp;#39;,) -->
+<!-- (&amp;#39;node1&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;process1&amp;#39;,) -->
+<g id="edge1" class="edge">
+<title>(&#39;node1&#39;,)&#45;&gt;(&#39;process1&#39;,)</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M35.8,-51.15C42.9,-40.96 52.36,-28.6 62.39,-19 71.28,-10.5 84.52,-3.09 87.69,-1.37"></path>
+<text text-anchor="start" x="62.39" y="-22" font-family="Times,serif" font-size="10.00">port1</text>
+</g>
+<!-- (&amp;#39;node2&amp;#39;,) -->
+<g id="node2" class="node">
+<title>(&#39;node2&#39;,)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="88.39" cy="-71.39" rx="23.29" ry="23.29"></ellipse>
+<text text-anchor="start" x="73.39" y="-68.29" font-family="Times,serif" font-size="12.00">node2</text>
+</g>
+<!-- (&amp;#39;node2&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;process1&amp;#39;,) -->
+<g id="edge2" class="edge">
+<title>(&#39;node2&#39;,)&#45;&gt;(&#39;process1&#39;,)</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M88.39,-47.29C88.39,-28.99 88.39,-5.84 88.39,-1.66"></path>
+<text text-anchor="start" x="88.39" y="-22" font-family="Times,serif" font-size="10.00">port2</text>
+</g>
+<!-- (&amp;#39;node3&amp;#39;,) -->
+<g id="node3" class="node">
+<title>(&#39;node3&#39;,)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="153.39" cy="-71.39" rx="23.29" ry="23.29"></ellipse>
+<text text-anchor="start" x="138.39" y="-68.29" font-family="Times,serif" font-size="12.00">node3</text>
+</g>
+<!-- (&amp;#39;node3&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;process1&amp;#39;,) -->
+<g id="edge3" class="edge">
+<title>(&#39;node3&#39;,)&#45;&gt;(&#39;process1&#39;,)</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M140.98,-51.15C133.89,-40.96 124.42,-28.6 114.39,-19 105.51,-10.5 92.27,-3.09 89.09,-1.37"></path>
+<text text-anchor="start" x="123.39" y="-22" font-family="Times,serif" font-size="10.00">port3</text>
 </g>
 </g>
 </svg>
