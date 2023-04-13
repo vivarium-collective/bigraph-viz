@@ -15153,6 +15153,81 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
+</div><div id="cell-id=99be1b87-5e5b-4c06-93f1-7bf772f7b6d5" class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">plot_bigraph</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Help on function plot_bigraph in module bigraph_viz.plot:
+
+plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39;, show_values=False, show_types=False, collapse_processes=False, port_labels=True, port_label_size=&#39;10pt&#39;, engine=&#39;dot&#39;, rankdir=&#39;TB&#39;, node_border_colors=None, node_fill_colors=None, node_groups=False, invisible_edges=False, remove_process_place_edges=False, print_source=False, dpi=&#39;70&#39;, file_format=&#39;png&#39;, out_dir=None, filename=None)
+    Plot a bigraph from bigraph schema.
+    
+    Args:
+        bigraph_schema (dict): The bigraph schema dict that will be plotted.
+        size (str, optional): The size of the output figure (example: &#39;16,10&#39;). Default is &#39;16,10&#39;.
+        node_label_size (str, optional): The font size for the node labels. Default is None.
+        show_values (bool, optional): Display on value info in node label. Default is False.
+        show_types (bool, optional): Display on type info in node label. Default is False.
+        collapse_processes (bool, optional): Collapse rectangular process nodes to a hyperedge vertex. Default is False.
+        port_labels (bool, optional): Turn on port labels. Default is True.
+        port_label_size (str, optional): The font size of the port labels (example: &#39;10pt&#39;). Default is None.
+        engine (str, optional): Graphviz graphing engine. Try &#39;dot&#39; or &#39;neato&#39;. Default is &#39;dot&#39;.
+        rankdir (str, optional): Sets direction of graph layout. &#39;TB&#39;=top-to-bottom, &#39;LR&#39;=left-to-right.
+            Default is &#39;TB&#39;.
+        node_border_colors (dict, optional): Colors of node borders, with node path tuples mapped to the node color as
+            the value: {(&#39;path&#39;, &#39;to&#39;, &#39;node&#39;,): &#39;color&#39;}. Colors at https://graphviz.org/doc/info/colors.html
+        node_fill_colors (dict, optional): Colors of node fills, with node path tuples mapped to the node color as
+            the value: {(&#39;path&#39;, &#39;to&#39;, &#39;node&#39;,): &#39;color&#39;}. Colors at https://graphviz.org/doc/info/colors.html
+        node_groups (list, optional): A list of lists of nodes.
+            Each sub-list is a grouping of nodes that will be aligned at the same rank.
+            For example: [[(&#39;path to&#39;, &#39;group1 node1&#39;,), (&#39;path to&#39;, &#39;group1 node2&#39;,)], [another group]]
+            Default is None.
+        invisible_edges (list, optional): A list of edge tuples. The edge tuples have the (source, target) node
+            according to the nodes&#39; paths. For example: [((&#39;top&#39;,), (&#39;top&#39;, &#39;inner1&#39;)), (another edge)]
+            Default is None.
+        remove_process_place_edges (bool, optional): Turn off process place edges from plotting. Default is False.
+        print_source (bool, optional): Print the graphviz DOT source code as string. Default is False.
+        file_format (str, optional): File format of the output image. Default is &#39;png&#39;.
+        out_dir (bool, optional): The output directory for the bigraph image. Default is None.
+        filename (bool, optional): The file name for the bigraph image. Default is None.
+    
+    Notes:
+        You can adjust node labels using HTML syntax for fonts, colors, sizes, subscript, superscript. For example:
+            H&lt;sub&gt;&lt;font point-size=&#34;8&#34;&gt;2&lt;/font&gt;&lt;/sub&gt;O will print H2O with 2 as a subscript with smaller font.
+        You can also make newlines by adding with &lt;br/&gt;
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div id="cell-id=0e716c23-5fbe-4c08-a868-09611ca40ec4" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
