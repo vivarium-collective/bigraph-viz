@@ -58,5 +58,8 @@ pip install bigraph-viz
 To get started with Bigraph-viz, explore the 
 [Bigraph Schema Basics Tutorial](https://vivarium-collective.github.io/bigraph-viz/notebooks/basics.html).
 
-Or the
-[Formatting Tutorial](https://vivarium-collective.github.io/bigraph-viz/notebooks/format.html).
+See the [Formatting Tutorial](https://vivarium-collective.github.io/bigraph-viz/notebooks/format.html) for examples
+about how to adjust the final look of your bigraph figure.
+
+See [Ecoli](https://raw.githubusercontent.com/vivarium-collective/bigraph-viz/main/doc/_static/ecoli.png) for the wiring
+diagraph of a whole-cell E. coli model.
