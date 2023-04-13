@@ -138,6 +138,7 @@ def get_graphviz_bigraph(
         node_label_size='12pt',
         show_values=False,
         show_types=False,
+        collapse_processes=False,
         port_labels=True,
         port_label_size='10pt',
         engine='dot',
@@ -161,6 +162,9 @@ def get_graphviz_bigraph(
         'shape': 'box', 'penwidth': '2', 'constraint': 'false', 'fontsize': node_label_size}
     hyper_edge_spec = {
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'dot', 'arrowsize': '0.5'}
+    if collapse_processes:
+        process_node_spec = {'style': 'invis', 'width': '0', 'constraint': 'false'}
+        hyper_edge_spec['arrowhead'] = 'none'
 
     # initialize graph
     graph_name = 'bigraph'
@@ -213,6 +217,8 @@ def get_graphviz_bigraph(
         node_name = str(node_path)
         node_names.append(node_name)
         label = make_label(node_path[-1])
+        if collapse_processes:
+            label = ''
 
         # composite processes have sub-nodes
         composite_process = False
@@ -266,7 +272,7 @@ def get_graphviz_bigraph(
                     c.edge(node_name2, node_name1)
 
     # disconnected hyper edges
-    graph.attr('edge', style='dashed', penwidth='1', arrowhead='dot')
+    graph.attr('edge', **hyper_edge_spec)
     for node_path, wires in bigraph_network['disconnected_hyper_edges'].items():
         node_name = str(node_path)
         with graph.subgraph(name=node_name) as c:
@@ -328,6 +334,7 @@ def plot_bigraph(
         node_label_size='12pt',
         show_values=False,
         show_types=False,
+        collapse_processes=False,
         port_labels=True,
         port_label_size='10pt',
         engine='dot',
@@ -352,7 +359,8 @@ def plot_bigraph(
         node_label_size (str, optional): The font size for the node labels. Default is None.
         show_values (bool, optional): Display on value info in node label. Default is False.
         show_types (bool, optional): Display on type info in node label. Default is False.
-        port_labels (bool, optional): Turn on port labels. Default is False.
+        collapse_processes (bool, optional): Collapse rectangular process nodes to a hyperedge vertex. Default is False.
+        port_labels (bool, optional): Turn on port labels. Default is True.
         port_label_size (str, optional): The font size of the port labels (example: '10pt'). Default is None.
         engine (str, optional): Graphviz graphing engine. Try 'dot' or 'neato'. Default is 'dot'.
         rankdir (str, optional): Sets direction of graph layout. 'TB'=top-to-bottom, 'LR'=left-to-right.

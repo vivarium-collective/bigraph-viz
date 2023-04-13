@@ -75,56 +75,56 @@ def test_disconnected_process_spec():
     }
     plot_bigraph(process_spec, **plot_settings_test, rankdir='BT', filename='disconnected_processes')
 
-
-def test_nested_spec():
-    nested_processes = {
-        'cell': {
-            'membrane': {
-                'transporters': {'_type': 'concentrations'},
-                'lipids': {'_type': 'concentrations'},
-                'transmembrane transport': {
-                    '_value': {
-                        '_process': 'transport URI',
-                        '_config': {'parameter': 1}
-                    },
-                    '_wires': {
-                        'transporters': 'transporters',
-                        'internal': ['..', 'cytoplasm', 'metabolites']},
-                    '_ports': {
-                        'transporters': {'_type': 'concentrations'},
-                        'internal': {'_type': 'concentrations'},
-                        'external': {'_type': 'concentrations'}
-                    }
+nested_processes = {
+    'cell': {
+        'membrane': {
+            'transporters': {'_type': 'concentrations'},
+            'lipids': {'_type': 'concentrations'},
+            'transmembrane transport': {
+                '_value': {
+                    '_process': 'transport URI',
+                    '_config': {'parameter': 1}
+                },
+                '_wires': {
+                    'transporters': 'transporters',
+                    'internal': ['..', 'cytoplasm', 'metabolites']},
+                '_ports': {
+                    'transporters': {'_type': 'concentrations'},
+                    'internal': {'_type': 'concentrations'},
+                    'external': {'_type': 'concentrations'}
+                }
+            }
+        },
+        'cytoplasm': {
+            'metabolites': {
+                '_value': 1.1,
+                '_type': 'concentrations'
+            },
+            'ribosomal complexes': {
+                '_value': 2.2,
+                '_type': 'concentrations'
+            },
+            'transcript regulation complex': {
+                '_value': 0.01,
+                '_type': 'concentrations',
+                'transcripts': {
+                    '_value': 0.1,
+                    '_type': 'concentrations'
                 }
             },
-            'cytoplasm': {
-                'metabolites': {
-                    '_value': 1.1,
-                    '_type': 'concentrations'
-                },
-                'ribosomal complexes': {
-                    '_value': 2.2,
-                    '_type': 'concentrations'
-                },
-                'transcript regulation complex': {
-                    '_value': 0.01,
-                    '_type': 'concentrations',
-                    'transcripts': {
-                        '_value': 0.1,
-                        '_type': 'concentrations'
-                    }
-                },
-                'translation': {
-                    '_wires': {
-                        'p1': 'ribosomal complexes',
-                        'p2': ['transcript regulation complex', 'transcripts']}}},
-            'nucleoid': {
-                'chromosome': {
-                    'genes': 'sequences'
-                }
+            'translation': {
+                '_wires': {
+                    'p1': 'ribosomal complexes',
+                    'p2': ['transcript regulation complex', 'transcripts']}}},
+        'nucleoid': {
+            'chromosome': {
+                'genes': 'sequences'
             }
         }
     }
+}
+
+def test_nested_spec():
     plot_bigraph(nested_processes, **plot_settings_test, filename='nested_processes')
 
 
@@ -448,6 +448,13 @@ def test_undeclared_nodes():
         instance, show_values=True, show_types=True, dpi='250', out_dir='out', filename='undeclared_nodes_types')
 
 
+def test_collapse_nodes():
+    plot_bigraph(nested_processes,
+                 **plot_settings_test,
+                 collapse_processes=True,
+                 filename='nested_processes_collapsed')
+
+
 if __name__ == '__main__':
     # test_noschemakeys()
     # test_simple_spec()
@@ -461,4 +468,5 @@ if __name__ == '__main__':
     # test_multitimestep()
     # test_multitimestep2()
     # test_color_format()
-    test_undeclared_nodes()
+    # test_undeclared_nodes()
+    test_collapse_nodes()
