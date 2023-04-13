@@ -73,6 +73,9 @@ def get_bigraph_network(bigraph_dict, path=None):
                     bigraph['hyper_edges'][path_here] = {}
                 if '_wires' in child:
                     for port, state_path in child['_wires'].items():
+                        if isinstance(state_path, tuple):
+                            # support tuple paths
+                            state_path = list(state_path)
                         state_path = state_path_tuple(state_path)
                         state_path.insert(0, '..')  # go up one to the same level as the process
                         bigraph['hyper_edges'][path_here][port] = state_path
