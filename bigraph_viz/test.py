@@ -5,9 +5,18 @@ from bigraph_viz.dict_utils import schema_state_to_dict, compose, pf
 # testing functions
 plot_settings_test = {
     'remove_process_place_edges': True,
-    # 'plot_schema': True,
+    'show_values': True,
+    'show_types': True,
+    'dpi': '250',
     'out_dir': 'out'
 }
+
+
+def test_noschemakeys():
+    simple_store_spec = {
+        'store1': 1.0,
+    }
+    plot_bigraph(simple_store_spec, **plot_settings_test,  filename='store_nokeys')
 
 
 def test_simple_spec():
@@ -292,46 +301,8 @@ def test_schema_value_to_dict():
             }
         }
     }
-    expected = {
-        'store1': {
-            'store1.1': {
-                '_value': 1.1,
-                '_type': 'float',
-            },
-            'store1.2': {
-                '_value': 2,
-                '_type': 'int',
-            },
-            'process1': {
-                '_ports': {
-                    'port1': {'_type': 'type'},
-                    'port2': {'_type': 'type'},
-                },
-                '_wires': {
-                    'port1': 'store1.1',
-                    'port2': 'store1.2',
-                }
-            },
-            'process2': {
-                '_ports': {
-                    'port1': {'_type': 'type'},
-                    'port2': {'_type': 'type'},
-                },
-                '_wires': {
-                    'port1': 'store1.1',
-                    'port2': 'store1.2',
-                }
-            },
-        },
-        'process3': {
-            '_wires': {
-                'port1': 'store1',
-            }
-        }
-    }
     schema_state_dict = schema_state_to_dict(schema, state)
     pp(schema_state_dict)
-    # assert schema_state_dict == expected
 
 
 def test_flow():
@@ -339,17 +310,22 @@ def test_flow():
         '_type': 'step_process',
         '_ports': {
             'port1': {'_type': 'type'},
-            'port2': {'_type': 'type'}
-        }
-    }
+            'port2': {'_type': 'type'}}}
 
-    process_spec = {
-        'process1': {'_depends_on': [], **process_schema},
-        'process2': {'_depends_on': [], **process_schema},
-        'process3': {'_depends_on': ['process1', 'process2'], **process_schema},
-    }
-
-    plot_flow(process_spec, out_dir='out', filename='flow')
+    flow_spec = {
+        'step1': {
+            '_depends_on': [],
+            **process_schema},
+        'step2': {
+            '_depends_on': 'step1',
+            **process_schema},
+        'step3': {
+            '_depends_on': [],
+            **process_schema},
+        'step4': {
+            '_depends_on': ['step2', 'step3'],
+            **process_schema}}
+    plot_flow(flow_spec, out_dir='out', filename='flow')
 
 
 def test_multitimestep():
@@ -456,23 +432,33 @@ def test_color_format():
     plot_bigraph(nested_composite_spec, **plot_settings, filename='node_colors')
 
 
-def test_noschemakeys():
-    simple_store_spec = {
-        'store1': 1.0,
+def test_undeclared_nodes():
+    instance = {
+        'process1': {
+            'process_location': '0-000-00000-0',
+            'update_method': 'KiSAO id',
+            '_wires': {
+                'port A': 'a',
+            }
+        }
     }
-    plot_bigraph(simple_store_spec, plot_schema=True, dpi='250', out_dir='out', filename='store_nokeys')
+    plot_bigraph(
+        instance, dpi='250', out_dir='out', filename='undeclared_nodes')
+    plot_bigraph(
+        instance, show_values=True, show_types=True, dpi='250', out_dir='out', filename='undeclared_nodes_types')
 
 
 if __name__ == '__main__':
-    test_simple_spec()
-    test_composite_spec()
-    test_disconnected_process_spec()
-    test_nested_spec()
-    test_composite_process_spec()
-    test_merging()
-    # test_schema_value_to_dict()
-    test_flow()
-    test_multitimestep()
-    test_multitimestep2()
-    test_color_format()
-    test_noschemakeys()
+    # test_noschemakeys()
+    # test_simple_spec()
+    # test_composite_spec()
+    # test_disconnected_process_spec()
+    # test_nested_spec()
+    # test_composite_process_spec()
+    # test_merging()
+    # # test_schema_value_to_dict()
+    # test_flow()
+    # test_multitimestep()
+    # test_multitimestep2()
+    # test_color_format()
+    test_undeclared_nodes()

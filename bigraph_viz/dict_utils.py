@@ -7,7 +7,7 @@ import copy
 pretty = pprint.PrettyPrinter(indent=2)
 
 
-special_keys = [
+schema_keys = [
     '_value',
     '_wires',
     '_type',
@@ -110,22 +110,41 @@ def replace_whitespace_with_br(input_dict):
     return recursive_replace(input_dict)
 
 
+wire_keys = [
+    '_wires',
+    'wires',
+]
+
+
 def schema_state_to_dict(schema, state):
     schema_value_dict = {}
+    print(f'schema: {schema}\n')
     for key, schema_value in schema.items():
-        if key in special_keys:
-            # if isinstance(schema_value, str):
+        if key in schema_keys:
             # these are schema keys, just keep them as-is
             schema_value_dict[key] = schema_value
         else:
             state_value = state[key]
-            if isinstance(state_value, dict):
+            if isinstance(schema_value, dict):
                 schema_value_dict[key] = schema_state_to_dict(schema_value, state_value)
             else:
                 assert isinstance(schema_value, str)
-                schema_value_dict[key] = {
-                    '_value': state_value,
-                    '_type': schema_value
-                }
+                if key not in schema_value_dict:
+                    schema_value_dict[key] = {}
+                schema_value_dict[key]['_type'] = schema_value
+
+    for key, state_value in state.items():
+        if key in wire_keys:
+            if key == 'wires':
+                key = '_wires'
+            schema_value_dict[key] = state_value
+        else:
+            schema_value = schema.get(key, {})
+            if isinstance(state_value, dict):
+                schema_value_dict[key] = schema_state_to_dict(schema_value, state_value)
+            else:
+                if key not in schema_value_dict:
+                    schema_value_dict[key] = {}
+                schema_value_dict[key]['_value'] = state_value
 
     return schema_value_dict

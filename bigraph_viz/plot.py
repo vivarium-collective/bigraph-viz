@@ -8,10 +8,8 @@ plotting tool
 import copy
 import os
 
-from bigraph_viz.dict_utils import absolute_path, special_keys
+from bigraph_viz.dict_utils import absolute_path, schema_keys
 import graphviz
-
-
 
 
 def extend_bigraph(bigraph, bigraph2):
@@ -50,7 +48,7 @@ def get_bigraph_network(bigraph_dict, path=None):
     }
 
     for key, child in bigraph_dict.items():
-        if key not in special_keys:
+        if key not in schema_keys:
             path_here = path + (key,)
             node = {'path': path_here}
 
@@ -58,7 +56,7 @@ def get_bigraph_network(bigraph_dict, path=None):
                 # this is a leaf node
                 node['_value'] = child
                 bigraph['state_nodes'] += [node]
-                break
+                continue
 
             # add schema
             if '_value' in child:
@@ -129,7 +127,7 @@ def get_bigraph_network(bigraph_dict, path=None):
                 # add place edges to this layer
                 bigraph['place_edges'] += [
                     (path_here, path_here + (node,)) for node in child.keys()
-                    if node not in special_keys]
+                    if node not in schema_keys]
 
     return bigraph
 
@@ -138,7 +136,8 @@ def get_graphviz_bigraph(
         bigraph_network,
         size='16,10',
         node_label_size='12pt',
-        plot_schema=False,
+        show_values=False,
+        show_types=False,
         port_labels=True,
         port_label_size='10pt',
         engine='dot',
@@ -155,14 +154,18 @@ def get_graphviz_bigraph(
     invisible_edges = invisible_edges or []
     node_names = []
 
+    # node specs
+    state_node_spec = {
+        'shape': 'circle', 'penwidth': '2', 'margin': '0.05', 'fontsize': node_label_size}
+    process_node_spec = {
+        'shape': 'box', 'penwidth': '2', 'constraint': 'false', 'fontsize': node_label_size}
+    hyper_edge_spec = {
+        'style': 'dashed', 'penwidth': '1', 'arrowhead': 'dot', 'arrowsize': '0.5'}
+
     # initialize graph
     graph_name = 'bigraph'
     graph = graphviz.Digraph(graph_name, engine=engine)
-    graph.attr(size=size, overlap='false')
-
-    # state nodes
-    graph.attr('node', shape='circle', penwidth='2', margin='0.05', fontsize=node_label_size)
-    graph.attr(rankdir=rankdir, dpi=dpi)
+    graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi)
 
     # check if multiple layers
     multilayer = False
@@ -171,7 +174,8 @@ def get_graphviz_bigraph(
         if len(node_path) > 1:
             multilayer = True
 
-    # get state nodes
+    # state nodes
+    graph.attr('node', **state_node_spec)
     for node in bigraph_network['state_nodes']:
         node_path = node['path']
         node_name = str(node_path)
@@ -179,19 +183,19 @@ def get_graphviz_bigraph(
 
         # make the label
         label = node_path[-1]
-        if plot_schema:
-            # add schema to label
-            schema_label = None
+        schema_label = None
+        if show_values:
             if '_value' in node:
                 if not schema_label:
                     schema_label = '<br/>'
                 schema_label += f"{node['_value']}"
+        if show_types:
             if '_type' in node:
                 if not schema_label:
                     schema_label = '<br/>'
                 schema_label += f"::{node['_type']}"
-            if schema_label:
-                label += schema_label
+        if schema_label:
+            label += schema_label
         label = make_label(label)
 
         if len(node_path) == 1 and multilayer:
@@ -202,14 +206,12 @@ def get_graphviz_bigraph(
 
     # process nodes
     process_paths = []
-    graph.attr('node', shape='box', penwidth='2', constraint='false')
+    graph.attr('node', **process_node_spec)
     for node in bigraph_network['process_nodes']:
         node_path = node['path']
         process_paths.append(node_path)
         node_name = str(node_path)
         node_names.append(node_name)
-
-        # make the label
         label = make_label(node_path[-1])
 
         # composite processes have sub-nodes
@@ -243,7 +245,7 @@ def get_graphviz_bigraph(
         graph.edge(node_name1, node_name2)
 
     # hyper edges
-    graph.attr('edge', style='dashed', penwidth='1', arrowhead='dot', arrowsize='0.5')
+    graph.attr('edge', **hyper_edge_spec)
     for node_path, wires in bigraph_network['hyper_edges'].items():
         node_name = str(node_path)
         with graph.subgraph(name=node_name) as c:
@@ -251,6 +253,12 @@ def get_graphviz_bigraph(
                 absolute_state_path = absolute_path(node_path, state_path)
                 node_name1 = str(node_path)
                 node_name2 = str(absolute_state_path)
+
+                # are the nodes already in the graph?
+                if node_name2 not in graph.body:
+                    label = make_label(absolute_state_path[-1])
+                    graph.node(node_name2, label=label, **state_node_spec)
+
                 if port_labels:
                     label = make_label(port)
                     c.edge(node_name2, node_name1, label=label, labelloc="t", fontsize=port_label_size)
@@ -318,7 +326,8 @@ def plot_bigraph(
         bigraph_schema,
         size='16,10',
         node_label_size='12pt',
-        plot_schema=False,
+        show_values=False,
+        show_types=False,
         port_labels=True,
         port_label_size='10pt',
         engine='dot',
@@ -341,7 +350,8 @@ def plot_bigraph(
         bigraph_schema (dict): The bigraph schema dict that will be plotted.
         size (str, optional): The size of the output figure (example: '16,10'). Default is '16,10'.
         node_label_size (str, optional): The font size for the node labels. Default is None.
-        plot_schema (bool, optional): Turn on schema text in nodes. Default is False.
+        show_values (bool, optional): Display on value info in node label. Default is False.
+        show_types (bool, optional): Display on type info in node label. Default is False.
         port_labels (bool, optional): Turn on port labels. Default is False.
         port_label_size (str, optional): The font size of the port labels (example: '10pt'). Default is None.
         engine (str, optional): Graphviz graphing engine. Try 'dot' or 'neato'. Default is 'dot'.
@@ -411,6 +421,11 @@ def plot_flow(
     bigraph_network = get_bigraph_network(bigraph_schema)
 
     node_names = []
+    process_node_spec = {
+        'shape': 'box', 'penwidth': '2', 'constraint': 'false'}
+    dependency_edge_spec = {
+        'arrowhead': 'normal', 'penwidth': '2', 'style': 'filled'}
+
     # initialize graph
     graph_name = 'flow'
     graph = graphviz.Digraph(graph_name, engine='dot')
@@ -418,7 +433,7 @@ def plot_flow(
 
     # process nodes
     process_paths = []
-    graph.attr('node', shape='box', penwidth='2', constraint='false')
+    graph.attr('node', **process_node_spec)
     for node in bigraph_network['process_nodes']:
         node_path = node['path']
         process_paths.append(node_path)
@@ -440,7 +455,7 @@ def plot_flow(
             graph.node(node_name, label=label)
 
     # dependency edges
-    graph.attr('edge', arrowhead='normal', penwidth='2', style='filled')
+    graph.attr('edge', **dependency_edge_spec)
     for node_path, dependencies in bigraph_network['flow'].items():
         node_name1 = str(node_path)
         with graph.subgraph(name=node_name) as c:
@@ -476,6 +491,17 @@ def plot_multitimestep(
     # get the bigraph network
     bigraph_network = get_bigraph_network(bigraph_schema)
 
+    process_node_spec = {
+        'shape': 'box', 'penwidth': '2', 'constraint': 'false'}
+    time_node_spec = {
+        'style': 'filled', 'shape': 'circle', 'fontsize': '9', 'margin': '0',
+        'fillcolor': 'white', 'color': 'none', 'width': '0'}
+    end_node_spec = {
+        'color': 'none', 'shape': 'point', 'width': '0', 'arrowsize': '0.5'}
+    time_edge_spec = {
+        'penwidth': '0.5', 'style': 'dashed', 'arrowhead': 'normal',
+        'arrowtail': 'normal', 'arrowsize': '0.5', 'dir': 'both'}
+
     state_node_names = set()
     process_paths = []
     process_times = {}
@@ -486,13 +512,12 @@ def plot_multitimestep(
     graph.attr(size=size, overlap='false', rankdir='LR', dpi=dpi)
 
     # process nodes
-    graph.attr('node', shape='box', penwidth='2', constraint='false')
+    graph.attr('node', **process_node_spec)
     for idx, node in enumerate(bigraph_network['process_nodes']):
         y_pos = idx * 1.5
         node_path = node['path']
         process_paths.append(node_path)
         node_name = str(node_path)
-
 
         # set up timeline for this process
         sync_step = node['sync_step']
@@ -513,20 +538,20 @@ def plot_multitimestep(
             time_node_name = f'{node_name} {step}'
             # place with precise positioning using the pos argument
             graph.node(time_node_name,
-                       label=str(step), style='filled', shape='circle', fontsize='9', margin='0',
-                       fillcolor='white', color='none', width='0', pos=f'{step},{y_pos}!')
+                       label=str(step),
+                       pos=f'{step},{y_pos}!',
+                       **time_node_spec
+                       )
             graph.edge(previous_node, time_node_name, len=str(sync_step))
             process_times[node_name].append(time_node_name)
             previous_node = time_node_name
         # final arrow
         end_node = f'{node_name} end'
-        graph.node(end_node, label='', color='none', shape='point', width='0',
-                   arrowsize='0.5', pos=f'{step+timebuffer},{y_pos}!')
+        graph.node(end_node, label='', pos=f'{step+timebuffer},{y_pos}!', **end_node_spec)
         graph.edge(previous_node, end_node, len=str(sync_step), arrowhead='normal', arrowsize='0.5')
 
     # time edges to shared states
-    graph.attr('edge', penwidth='0.5', style='dashed',
-               arrowhead='normal', arrowtail='normal', arrowsize='0.5', dir='both')
+    graph.attr('edge', **time_edge_spec)
     for node_path, wires in bigraph_network['hyper_edges'].items():
         node_name = str(node_path)
         with graph.subgraph(name=node_name) as c:
