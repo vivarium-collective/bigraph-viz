@@ -77,9 +77,10 @@ def compose(bigraph, node, path=None):
     return new_bigraph
 
 
-def replace_whitespace_with_br(input_dict):
+def replace_regex_recursive(input_dict, match=' ', replacement='<br/>'):
     """
-    Replace whitespaces with '<br/>' in keys and values of a nested dictionary.
+    Replace one string with another in keys and values of a nested dictionary. By default, this replaces whitespaces
+    ' ' with newlines '<br/>'
 
     This function takes a nested dictionary as input and updates all keys and values
     that are strings by replacing whitespaces ' ' with '<br/>'. It uses a recursive
@@ -87,13 +88,15 @@ def replace_whitespace_with_br(input_dict):
 
     Args:
         input_dict (dict): The nested dictionary to be updated.
+        match (str): The string with is replaced, whitespaces ' ' by default.
+        replacement (str): The string that is inserted, newline '<br/>' by default.
 
     Returns:
-        dict: The updated nested dictionary with whitespaces replaced by '<br/>'.
+        dict: The updated nested dictionary with match (whitespaces) replaced by replacement ('<br/>').
     """
     def replace_string(item):
         if isinstance(item, str):
-            return item.replace(' ', '<br/>')
+            return item.replace(match, replacement)
         return item
 
     def recursive_replace(dictionary):
