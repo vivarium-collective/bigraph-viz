@@ -53,11 +53,18 @@ def get_bigraph_network(bigraph_dict, path=None):
         if key not in special_keys:
             path_here = path + (key,)
             node = {'path': path_here}
+
+            if not isinstance(child, dict):
+                # this is a leaf node
+                node['_value'] = child
+                bigraph['state_nodes'] += [node]
+                break
+
             # add schema
             if '_value' in child:
-                node['value'] = child['_value']
+                node['_value'] = child['_value']
             if '_type' in child:
-                node['type'] = child['_type']
+                node['_type'] = child['_type']
             if '_sync_step' in child:
                 node['sync_step'] = child['_sync_step']
 
@@ -115,6 +122,7 @@ def get_bigraph_network(bigraph_dict, path=None):
 
             # check inner states
             if isinstance(child, dict):
+                # this is a branch node
                 child_bigraph_network = get_bigraph_network(child, path=path_here)
                 bigraph = extend_bigraph(bigraph, child_bigraph_network)
 
@@ -174,14 +182,14 @@ def get_graphviz_bigraph(
         if plot_schema:
             # add schema to label
             schema_label = None
-            if 'value' in node:
+            if '_value' in node:
                 if not schema_label:
                     schema_label = '<br/>'
-                schema_label += f"{node['value']}"
-            if 'type' in node:
+                schema_label += f"{node['_value']}"
+            if '_type' in node:
                 if not schema_label:
                     schema_label = '<br/>'
-                schema_label += f"::{node['type']}"
+                schema_label += f"::{node['_type']}"
             if schema_label:
                 label += schema_label
         label = make_label(label)

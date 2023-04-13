@@ -1,5 +1,5 @@
-from bigraphviz import plot_bigraph, plot_flow, plot_multitimestep, pp
-from bigraphviz.dict_utils import schema_state_to_dict
+from bigraph_viz import plot_bigraph, plot_flow, plot_multitimestep, pp
+from bigraph_viz.dict_utils import schema_state_to_dict, compose, pf
 
 
 # testing functions
@@ -165,7 +165,7 @@ def test_composite_process_spec():
 
 
 def test_merging():
-    from bigraphviz.dict_utils import compose, pf
+
     cell_structure1 = {
         'cell': {
             'membrane': {
@@ -456,15 +456,23 @@ def test_color_format():
     plot_bigraph(nested_composite_spec, **plot_settings, filename='node_colors')
 
 
+def test_noschemakeys():
+    simple_store_spec = {
+        'store1': 1.0,
+    }
+    plot_bigraph(simple_store_spec, plot_schema=True, dpi='250', out_dir='out', filename='store_nokeys')
+
+
 if __name__ == '__main__':
-    # test_simple_spec()
-    # test_composite_spec()
-    # test_disconnected_process_spec()
-    # test_nested_spec()
-    # test_composite_process_spec()
-    # test_merging()
-    # # test_schema_value_to_dict()
-    # test_flow()
-    # test_multitimestep()
-    # test_multitimestep2()
+    test_simple_spec()
+    test_composite_spec()
+    test_disconnected_process_spec()
+    test_nested_spec()
+    test_composite_process_spec()
+    test_merging()
+    # test_schema_value_to_dict()
+    test_flow()
+    test_multitimestep()
+    test_multitimestep2()
     test_color_format()
+    test_noschemakeys()

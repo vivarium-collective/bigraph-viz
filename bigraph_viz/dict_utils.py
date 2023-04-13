@@ -9,8 +9,6 @@ pretty = pprint.PrettyPrinter(indent=2)
 
 special_keys = [
     '_value',
-    '_process',
-    '_config',
     '_wires',
     '_type',
     '_ports',
