@@ -16031,7 +16031,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">flat_composite_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -16044,20 +16044,20 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
         <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s1">&#39;process1&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span> 
-            <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
-        <span class="p">},</span>
+        <span class="c1"># &#39;_ports&#39;: {</span>
+        <span class="c1">#     &#39;port1&#39;: &#39;type&#39;, </span>
+        <span class="c1">#     &#39;port2&#39;: &#39;type&#39;,</span>
+        <span class="c1"># },</span>
         <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
             <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.2&#39;</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;process2&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span> 
-            <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
-        <span class="p">},</span>
+        <span class="c1"># &#39;_ports&#39;: {</span>
+        <span class="c1">#     &#39;port1&#39;: &#39;type&#39;, </span>
+        <span class="c1">#     &#39;port2&#39;: &#39;type&#39;,</span>
+        <span class="c1"># },</span>
         <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
             <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.2&#39;</span><span class="p">,</span>
@@ -16080,7 +16080,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
 
 
 
@@ -16174,7 +16174,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">nested_composite_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -16188,20 +16188,20 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
             <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="s1">&#39;process1&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span> 
-                <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
-            <span class="p">},</span>
+            <span class="c1"># &#39;_ports&#39;: {</span>
+            <span class="c1">#     &#39;port1&#39;: &#39;type&#39;, </span>
+            <span class="c1">#     &#39;port2&#39;: &#39;type&#39;,</span>
+            <span class="c1"># },</span>
             <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.2&#39;</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">},</span>
         <span class="s1">&#39;process2&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span> 
-                <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
-            <span class="p">},</span>
+            <span class="c1"># &#39;_ports&#39;: {</span>
+            <span class="c1">#     &#39;port1&#39;: &#39;type&#39;, </span>
+            <span class="c1">#     &#39;port2&#39;: &#39;type&#39;,</span>
+            <span class="c1"># },</span>
             <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.2&#39;</span><span class="p">,</span>
@@ -16230,7 +16230,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
 
 
 
@@ -16356,7 +16356,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">composite_process_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -16370,28 +16370,28 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
             <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="s1">&#39;process1&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> 
-                <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span>
-            <span class="p">},</span>
+            <span class="c1"># &#39;_ports&#39;: {</span>
+            <span class="c1">#     &#39;port1&#39;: &#39;type&#39;, </span>
+            <span class="c1">#     &#39;port2&#39;: &#39;type&#39;,</span>
+            <span class="c1"># },</span>
             <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.2&#39;</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">},</span>
         <span class="s1">&#39;process2&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span> 
-                <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
-            <span class="p">},</span>
+            <span class="c1"># &#39;_ports&#39;: {</span>
+            <span class="c1">#     &#39;port1&#39;: &#39;type&#39;, </span>
+            <span class="c1">#     &#39;port2&#39;: &#39;type&#39;,</span>
+            <span class="c1"># },</span>
             <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.2&#39;</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">},</span>
         <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span> 
-            <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span> 
+            <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> 
         <span class="p">},</span>
         <span class="s1">&#39;_tunnels&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
@@ -16415,7 +16415,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[32]:</div>
 
 
 
@@ -16589,17 +16589,17 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">multitimestep_spec</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;temporal&lt;br/&gt;process2&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">}},</span>
+        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
         <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;state&#39;</span><span class="p">},</span>
         <span class="s1">&#39;_sync_step&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s1">&#39;temporal&lt;br/&gt;process1&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">}},</span>
+        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
         <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;state&#39;</span><span class="p">},</span>
         <span class="s1">&#39;_sync_step&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
     <span class="p">},</span>
@@ -16620,7 +16620,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[33]:</div>
 
 
 
@@ -16817,8 +16817,8 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">process_schema</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;step_process&#39;</span><span class="p">,</span>
     <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
-        <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">}</span>
+        <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -16951,14 +16951,14 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cell_struct_func</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;cell&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;membrane&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;transporters&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;concentrations&#39;</span><span class="p">},</span>
-                <span class="s1">&#39;lipids&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;concentrations&#39;</span><span class="p">},</span>
+                <span class="s1">&#39;transporters&#39;</span><span class="p">:</span> <span class="s1">&#39;concentrations&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;lipids&#39;</span><span class="p">:</span> <span class="s1">&#39;concentrations&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;transmembrane&lt;br/&gt;transport&#39;</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s1">&#39;_process&#39;</span><span class="p">:</span> <span class="s1">&#39;transport URI&#39;</span><span class="p">,</span>
@@ -16968,9 +16968,9 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
                         <span class="s1">&#39;transporters&#39;</span><span class="p">:</span> <span class="s1">&#39;transporters&#39;</span><span class="p">,</span>
                         <span class="s1">&#39;internal&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;cytoplasm&#39;</span><span class="p">,</span> <span class="s1">&#39;metabolites&#39;</span><span class="p">]},</span>
                     <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s1">&#39;transporters&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;concentrations&#39;</span><span class="p">},</span>
-                        <span class="s1">&#39;internal&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;concentrations&#39;</span><span class="p">},</span>
-                        <span class="s1">&#39;external&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;concentrations&#39;</span><span class="p">}</span>
+                        <span class="s1">&#39;transporters&#39;</span><span class="p">:</span> <span class="s1">&#39;concentrations&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;internal&#39;</span><span class="p">:</span> <span class="s1">&#39;concentrations&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;external&#39;</span><span class="p">:</span> <span class="s1">&#39;concentrations&#39;</span>
                     <span class="p">}</span>
                 <span class="p">}</span>
             <span class="p">},</span>
@@ -17028,7 +17028,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[34]:</div>
 
 
 
@@ -17236,67 +17236,73 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 </div>
 
 </div>
-<div id="cell-id=203ebd2c-3f8f-406a-81f5-230daabbe99d" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=ff81178f-36e4-4200-982a-ed8155b87934" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="simulation-experiment">simulation experiment<a class="anchor-link" href="#simulation-experiment">&#182;</a></h3><p>The composition schema was developed for integrative simulations, but can also be used for workflows such as simulation experiments./</p>
+<h2 id="Multiscale-map-of-a-cell">Multiscale map of a cell<a class="anchor-link" href="#Multiscale-map-of-a-cell">&#182;</a></h2><p>We here plot the multiscale map of a cell from <a href="https://pubmed.ncbi.nlm.nih.gov/34819669/">Qin et al. A multi-scale map of cell structure fusing protein images and interactions. Nature. 2021.</a></p>
 
 </div>
 </div>
 </div>
-</div><div id="cell-id=cfbc5c1b-1a1c-4405-be00-580356608f89" class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div id="cell-id=47bdf8e5-0bdd-4cac-b57e-2449c75fa178" class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">simulation_experiment_spec</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;parameter&lt;br/&gt;estimator&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;input data&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span> 
-            <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;SBML&#39;</span><span class="p">},</span> 
-            <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},},</span>
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;input data&#39;</span><span class="p">:</span> <span class="s1">&#39;observed data&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="s1">&#39;model&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="s1">&#39;parameters&#39;</span><span class="p">,</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;simulator&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;SBML&#39;</span><span class="p">},</span> 
-            <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
-            <span class="s1">&#39;total time&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;time&#39;</span><span class="p">},</span>
-            <span class="s1">&#39;results&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">}</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="s1">&#39;parameters&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="s1">&#39;model&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;total time&#39;</span><span class="p">:</span> <span class="s1">&#39;total time&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;results&#39;</span><span class="p">:</span> <span class="s1">&#39;results&#39;</span><span class="p">,</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;analysis&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;results&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">}</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;results&#39;</span><span class="p">:</span> <span class="s1">&#39;results&#39;</span><span class="p">,</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;parameters&#39;</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="s1">&#39;results&#39;</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="s1">&#39;observed data&#39;</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="s1">&#39;total time&#39;</span><span class="p">:</span> <span class="p">{},</span>
-<span class="p">}</span>
-
-<span class="n">plot_bigraph</span><span class="p">(</span><span class="n">simulation_experiment_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">rankdir</span><span class="o">=</span><span class="s1">&#39;RL&#39;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;simulation_experiment&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bigraph_viz.dict_utils</span> <span class="kn">import</span> <span class="n">replace_whitespace_with_br</span>
+<span class="n">music_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;cell&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;cytoplasm&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;secretory organelles&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;transmembrane transport systems&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;ion transmembrane transport systems&#39;</span><span class="p">:</span> <span class="p">{}}},</span>
+            <span class="s1">&#39;cytoplasmic organelles&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;subgroup of cytoplasmic organelles&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;metabolic organelles&#39;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;subgroup of metabolic organelles&#39;</span><span class="p">:</span> <span class="p">{},</span>
+                        <span class="s1">&#39;mitochondrion&#39;</span><span class="p">:</span> <span class="p">{}},</span>
+                    <span class="s1">&#39;ribonucleoprotein complex family&#39;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;RNA processng complex 1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;RNA splicing complex 1&#39;</span><span class="p">:</span> <span class="p">{}},</span>
+                        <span class="s1">&#39;ribosome biogenesis community&#39;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s1">&#39;ribosome&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s1">&#39;ribosomal subunit&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                    <span class="s1">&#39;mitochondiral large ribosomal subunit&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                        <span class="s1">&#39;large ribosomal subunit subcomplex 1&#39;</span><span class="p">:</span> <span class="p">{}},</span>
+                                    <span class="s1">&#39;mito-cyto ribosomal cluster&#39;</span><span class="p">:</span> <span class="p">{},</span>
+                                    <span class="s1">&#39;cotranslational protein targeting to membrane system&#39;</span><span class="p">:</span> <span class="p">{},</span>
+                                    <span class="s1">&#39;ribosomal complex 5&#39;</span><span class="p">:</span> <span class="p">{},</span>
+                                    <span class="s1">&#39;ribosomal complex 2&#39;</span><span class="p">:</span> <span class="p">{}}},</span>
+                            <span class="s1">&#39;nucleic acid binding complex&#39;</span><span class="p">:</span> <span class="p">{}}}}},</span>
+            <span class="s1">&#39;transcriptional regulation complex family&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;transcirptional regulation complexes&#39;</span><span class="p">:</span> <span class="p">{}}},</span>
+        <span class="s1">&#39;nucleus&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;DNA metabolic assembly&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">&#39;nuclear lumen&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;nucleolus&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;ribonucleprotein complex family&#39;</span><span class="p">:</span> <span class="p">{},</span>
+                    <span class="s1">&#39;RNA processing complex family&#39;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;RNA processing complex 1&#39;</span><span class="p">:</span> <span class="p">{},</span>
+                        <span class="s1">&#39;RNA splicing complex family&#39;</span><span class="p">:</span> <span class="p">{}},</span>
+                    <span class="s1">&#39;splicosomal complex family&#39;</span><span class="p">:</span> <span class="p">{}},</span>
+                <span class="s1">&#39;nuclear splicing speckle&#39;</span><span class="p">:</span> <span class="p">{}},</span>
+            <span class="s1">&#39;nuclear body&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">&#39;nucleo-plasm 1&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;chromosome organization complex family&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;chromatin organization complex family&#39;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;HAT complex family&#39;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s1">&#39;NuA4 HAT complex&#39;</span><span class="p">:</span> <span class="p">{}}}}},</span>
+            <span class="s1">&#39;nucleo-plasm 2&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;chromatin regulation complex&#39;</span><span class="p">:</span> <span class="p">{}},</span>
+            <span class="s1">&#39;nuclear transcriptional speckle&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;negative regulation of RNA biosynthesis process&#39;</span><span class="p">:</span> <span class="p">{}}}}}</span>
+<span class="n">music_map</span> <span class="o">=</span> <span class="n">replace_whitespace_with_br</span><span class="p">(</span><span class="n">music_map</span><span class="p">)</span>
+<span class="n">plot_bigraph</span><span class="p">(</span><span class="n">music_map</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;cell_hierarchy&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17312,7 +17318,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[35]:</div>
 
 
 
@@ -17322,114 +17328,591 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <!-- Generated by graphviz version 7.1.0 (20230121.1956)
  -->
 <!-- Title: bigraph Pages: 1 -->
-<svg width="228pt" height="392pt" viewBox="0.00 0.00 234.11 403.56">
-<g id="graph0" class="graph" transform="scale(0.972222 0.972222) rotate(0) translate(4 399.56)">
+<svg width="579pt" height="700pt" viewBox="0.00 0.00 595.06 720.00">
+<g id="graph0" class="graph" transform="scale(0.54369 0.54369) rotate(0) translate(4 1283.5)">
 <title>bigraph</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-399.56 230.11,-399.56 230.11,4 -4,4"></polygon>
-<!-- (&amp;#39;parameters&amp;#39;,) -->
+<polygon fill="white" stroke="none" points="-4,4 -4,-1283.5 1060.09,-1283.5 1060.09,4 -4,4"></polygon>
+<!-- (&amp;#39;cell&amp;#39;,) -->
 <g id="node1" class="node">
-<title>(&#39;parameters&#39;,)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="180.55" cy="-185.01" rx="36.87" ry="36.87"></ellipse>
-<text text-anchor="start" x="154.55" y="-181.91" font-family="Times,serif" font-size="12.00">parameters</text>
+<title>(&#39;cell&#39;,)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="423.28" cy="-1257.5" rx="18" ry="18"></ellipse>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="423.28" cy="-1257.5" rx="22" ry="22"></ellipse>
+<text text-anchor="start" x="414.78" y="-1254.4" font-family="Times,serif" font-size="12.00">cell</text>
 </g>
-<!-- (&amp;#39;parameter&amp;lt;br/&amp;gt;estimator&amp;#39;,) -->
-<g id="node6" class="node">
-<title>(&#39;parameter&lt;br/&gt;estimator&#39;,)</title>
-<polygon fill="none" stroke="black" stroke-width="2" points="55,-281.01 0,-281.01 0,-245.01 55,-245.01 55,-281.01"></polygon>
-<text text-anchor="start" x="4" y="-266.41" font-family="Times,serif" font-size="12.00">parameter</text>
-<text text-anchor="start" x="6" y="-253.41" font-family="Times,serif" font-size="12.00">estimator</text>
-</g>
-<!-- (&amp;#39;parameters&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;parameter&amp;lt;br/&amp;gt;estimator&amp;#39;,) -->
-<g id="edge3" class="edge">
-<title>(&#39;parameters&#39;,)&#45;&gt;(&#39;parameter&lt;br/&gt;estimator&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M146.78,-201.93C121.02,-215.23 85.38,-233.64 59.96,-246.76"></path>
-<ellipse fill="black" stroke="black" cx="57.88" cy="-247.84" rx="2" ry="2"></ellipse>
-<text text-anchor="start" x="73" y="-242.01" font-family="Times,serif" font-size="10.00">parameters</text>
-</g>
-<!-- (&amp;#39;simulator&amp;#39;,) -->
-<g id="node7" class="node">
-<title>(&#39;simulator&#39;,)</title>
-<polygon fill="none" stroke="black" stroke-width="2" points="54.5,-135.01 0.5,-135.01 0.5,-99.01 54.5,-99.01 54.5,-135.01"></polygon>
-<text text-anchor="start" x="5.5" y="-113.91" font-family="Times,serif" font-size="12.00">simulator</text>
-</g>
-<!-- (&amp;#39;parameters&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;simulator&amp;#39;,) -->
-<g id="edge4" class="edge">
-<title>(&#39;parameters&#39;,)&#45;&gt;(&#39;simulator&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M147.5,-166.54C137.83,-161.25 127.1,-155.67 117,-151.01 98.26,-142.36 76.65,-134.03 59.48,-127.78"></path>
-<ellipse fill="black" stroke="black" cx="57.56" cy="-127.08" rx="2" ry="2"></ellipse>
-<text text-anchor="start" x="73" y="-154.01" font-family="Times,serif" font-size="10.00">parameters</text>
-</g>
-<!-- (&amp;#39;model&amp;#39;,) -->
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;) -->
 <g id="node2" class="node">
-<title>(&#39;model&#39;,)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="180.55" cy="-263.01" rx="23.29" ry="23.29"></ellipse>
-<text text-anchor="start" x="165.55" y="-259.91" font-family="Times,serif" font-size="12.00">model</text>
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="286.28" cy="-1164.41" rx="35.18" ry="35.18"></ellipse>
+<text text-anchor="start" x="261.78" y="-1161.31" font-family="Times,serif" font-size="12.00">cytoplasm</text>
 </g>
-<!-- (&amp;#39;model&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;parameter&amp;lt;br/&amp;gt;estimator&amp;#39;,) -->
-<g id="edge2" class="edge">
-<title>(&#39;model&#39;,)&#45;&gt;(&#39;parameter&lt;br/&gt;estimator&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M156.28,-263.01C130.7,-263.01 89.43,-263.01 60.74,-263.01"></path>
-<ellipse fill="black" stroke="black" cx="58.39" cy="-263.01" rx="2" ry="2"></ellipse>
-<text text-anchor="start" x="82" y="-266.01" font-family="Times,serif" font-size="10.00">model</text>
+<!-- (&amp;#39;cell&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;) -->
+<g id="edge43" class="edge">
+<title>(&#39;cell&#39;,)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M404.8,-1244.21C381.94,-1229.01 342.73,-1202.95 315.71,-1184.98"></path>
 </g>
-<!-- (&amp;#39;model&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;simulator&amp;#39;,) -->
-<g id="edge5" class="edge">
-<title>(&#39;model&#39;,)&#45;&gt;(&#39;simulator&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M159.71,-251.01C151.53,-245.51 142.28,-238.54 135,-231.01 124.98,-220.63 126.27,-215.05 117,-204.01 99.62,-183.3 92.28,-180.95 73,-162.01 65.59,-154.73 57.59,-146.69 50.44,-139.44"></path>
-<ellipse fill="black" stroke="black" cx="48.75" cy="-137.74" rx="2" ry="2"></ellipse>
-<text text-anchor="start" x="82" y="-207.01" font-family="Times,serif" font-size="10.00">model</text>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;) -->
+<g id="node26" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="654.28" cy="-1164.41" rx="27.9" ry="27.9"></ellipse>
+<text text-anchor="start" x="635.78" y="-1161.31" font-family="Times,serif" font-size="12.00">nucleus</text>
 </g>
-<!-- (&amp;#39;results&amp;#39;,) -->
+<!-- (&amp;#39;cell&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;) -->
+<g id="edge44" class="edge">
+<title>(&#39;cell&#39;,)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M444.18,-1248.25C486.39,-1231.61 581.67,-1194.04 628,-1175.77"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;secretory&amp;lt;br/&amp;gt;organelles&amp;#39;) -->
 <g id="node3" class="node">
-<title>(&#39;results&#39;,)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="180.55" cy="-24.01" rx="24.02" ry="24.02"></ellipse>
-<text text-anchor="start" x="165.05" y="-20.91" font-family="Times,serif" font-size="12.00">results</text>
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;secretory&lt;br/&gt;organelles&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="115.28" cy="-1040.29" rx="40.11" ry="40.11"></ellipse>
+<text text-anchor="start" x="93.78" y="-1043.69" font-family="Times,serif" font-size="12.00">secretory</text>
+<text text-anchor="start" x="90.78" y="-1030.69" font-family="Times,serif" font-size="12.00">organelles</text>
 </g>
-<!-- (&amp;#39;results&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;simulator&amp;#39;,) -->
-<g id="edge7" class="edge">
-<title>(&#39;results&#39;,)&#45;&gt;(&#39;simulator&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M158.27,-34.98C136.43,-46.47 101.68,-65.41 73,-84.01 67.49,-87.58 61.76,-91.59 56.31,-95.56"></path>
-<ellipse fill="black" stroke="black" cx="54.61" cy="-96.81" rx="2" ry="2"></ellipse>
-<text text-anchor="start" x="81.5" y="-87.01" font-family="Times,serif" font-size="10.00">results</text>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;secretory&amp;lt;br/&amp;gt;organelles&amp;#39;) -->
+<g id="edge21" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;secretory&lt;br/&gt;organelles&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M255.25,-1146.46C231.73,-1133.11 199,-1113.45 172.28,-1093.32 162.64,-1086.07 152.74,-1077.48 143.94,-1069.4"></path>
 </g>
-<!-- (&amp;#39;analysis&amp;#39;,) -->
-<g id="node8" class="node">
-<title>(&#39;analysis&#39;,)</title>
-<polygon fill="none" stroke="black" stroke-width="2" points="54.5,-42.01 0.5,-42.01 0.5,-6.01 54.5,-6.01 54.5,-42.01"></polygon>
-<text text-anchor="start" x="8.5" y="-20.91" font-family="Times,serif" font-size="12.00">analysis</text>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;) -->
+<g id="node6" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="227.28" cy="-1040.29" rx="45.92" ry="45.92"></ellipse>
+<text text-anchor="start" x="198.78" y="-1043.69" font-family="Times,serif" font-size="12.00">cytoplasmic</text>
+<text text-anchor="start" x="202.78" y="-1030.69" font-family="Times,serif" font-size="12.00">organelles</text>
 </g>
-<!-- (&amp;#39;results&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;analysis&amp;#39;,) -->
-<g id="edge8" class="edge">
-<title>(&#39;results&#39;,)&#45;&gt;(&#39;analysis&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M155.62,-24.01C129.82,-24.01 88.65,-24.01 60.19,-24.01"></path>
-<ellipse fill="black" stroke="black" cx="57.88" cy="-24.01" rx="2" ry="2"></ellipse>
-<text text-anchor="start" x="81.5" y="-27.01" font-family="Times,serif" font-size="10.00">results</text>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;) -->
+<g id="edge22" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M271.08,-1131.96C263.78,-1116.84 254.92,-1098.52 247.09,-1082.31"></path>
 </g>
-<!-- (&amp;#39;observed data&amp;#39;,) -->
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;transcriptional&amp;lt;br/&amp;gt;regulation&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="node24" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;transcriptional&lt;br/&gt;regulation&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="344.28" cy="-1040.29" rx="53.07" ry="53.07"></ellipse>
+<text text-anchor="start" x="310.78" y="-1056.69" font-family="Times,serif" font-size="12.00">transcriptional</text>
+<text text-anchor="start" x="320.28" y="-1043.69" font-family="Times,serif" font-size="12.00">regulation</text>
+<text text-anchor="start" x="323.78" y="-1030.69" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="328.78" y="-1017.69" font-family="Times,serif" font-size="12.00">family</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;transcriptional&amp;lt;br/&amp;gt;regulation&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="edge23" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;transcriptional&lt;br/&gt;regulation&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M301.36,-1131.64C307.54,-1118.64 314.82,-1103.31 321.61,-1089.01"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;secretory&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;transmembrane&amp;lt;br/&amp;gt;transport&amp;lt;br/&amp;gt;systems&amp;#39;) -->
 <g id="node4" class="node">
-<title>(&#39;observed data&#39;,)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="180.55" cy="-350.01" rx="45.61" ry="45.61"></ellipse>
-<text text-anchor="start" x="147.55" y="-346.91" font-family="Times,serif" font-size="12.00">observed data</text>
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;secretory&lt;br/&gt;organelles&#39;, &#39;transmembrane&lt;br/&gt;transport&lt;br/&gt;systems&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="89.28" cy="-890.44" rx="57.05" ry="57.05"></ellipse>
+<text text-anchor="start" x="52.78" y="-900.34" font-family="Times,serif" font-size="12.00">transmembrane</text>
+<text text-anchor="start" x="68.28" y="-887.34" font-family="Times,serif" font-size="12.00">transport</text>
+<text text-anchor="start" x="70.78" y="-874.34" font-family="Times,serif" font-size="12.00">systems</text>
 </g>
-<!-- (&amp;#39;observed data&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;parameter&amp;lt;br/&amp;gt;estimator&amp;#39;,) -->
-<g id="edge1" class="edge">
-<title>(&#39;observed data&#39;,)&#45;&gt;(&#39;parameter&lt;br/&gt;estimator&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M140.26,-327.38C115.24,-312.97 83.28,-294.56 59.94,-281.12"></path>
-<ellipse fill="black" stroke="black" cx="57.86" cy="-279.92" rx="2" ry="2"></ellipse>
-<text text-anchor="start" x="74" y="-314.01" font-family="Times,serif" font-size="10.00">input data</text>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;secretory&amp;lt;br/&amp;gt;organelles&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;secretory&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;transmembrane&amp;lt;br/&amp;gt;transport&amp;lt;br/&amp;gt;systems&amp;#39;) -->
+<g id="edge2" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;secretory&lt;br/&gt;organelles&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;secretory&lt;br/&gt;organelles&#39;, &#39;transmembrane&lt;br/&gt;transport&lt;br/&gt;systems&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M108.38,-1000.06C105.55,-983.98 102.22,-965.06 99.14,-947.56"></path>
 </g>
-<!-- (&amp;#39;total time&amp;#39;,) -->
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;secretory&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;transmembrane&amp;lt;br/&amp;gt;transport&amp;lt;br/&amp;gt;systems&amp;#39;, &amp;#39;ion&amp;lt;br/&amp;gt;transmembrane&amp;lt;br/&amp;gt;transport&amp;lt;br/&amp;gt;systems&amp;#39;) -->
 <g id="node5" class="node">
-<title>(&#39;total time&#39;,)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="180.55" cy="-98.01" rx="32.02" ry="32.02"></ellipse>
-<text text-anchor="start" x="158.55" y="-94.91" font-family="Times,serif" font-size="12.00">total time</text>
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;secretory&lt;br/&gt;organelles&#39;, &#39;transmembrane&lt;br/&gt;transport&lt;br/&gt;systems&#39;, &#39;ion&lt;br/&gt;transmembrane&lt;br/&gt;transport&lt;br/&gt;systems&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="57.28" cy="-728.58" rx="57.05" ry="57.05"></ellipse>
+<text text-anchor="start" x="49.28" y="-744.98" font-family="Times,serif" font-size="12.00">ion</text>
+<text text-anchor="start" x="20.78" y="-731.98" font-family="Times,serif" font-size="12.00">transmembrane</text>
+<text text-anchor="start" x="36.28" y="-718.98" font-family="Times,serif" font-size="12.00">transport</text>
+<text text-anchor="start" x="38.78" y="-705.98" font-family="Times,serif" font-size="12.00">systems</text>
 </g>
-<!-- (&amp;#39;total time&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;simulator&amp;#39;,) -->
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;secretory&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;transmembrane&amp;lt;br/&amp;gt;transport&amp;lt;br/&amp;gt;systems&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;secretory&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;transmembrane&amp;lt;br/&amp;gt;transport&amp;lt;br/&amp;gt;systems&amp;#39;, &amp;#39;ion&amp;lt;br/&amp;gt;transmembrane&amp;lt;br/&amp;gt;transport&amp;lt;br/&amp;gt;systems&amp;#39;) -->
+<g id="edge1" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;secretory&lt;br/&gt;organelles&#39;, &#39;transmembrane&lt;br/&gt;transport&lt;br/&gt;systems&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;secretory&lt;br/&gt;organelles&#39;, &#39;transmembrane&lt;br/&gt;transport&lt;br/&gt;systems&#39;, &#39;ion&lt;br/&gt;transmembrane&lt;br/&gt;transport&lt;br/&gt;systems&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M78.08,-833.53C74.97,-817.95 71.58,-801.04 68.46,-785.46"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;) -->
+<g id="node7" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="227.28" cy="-890.44" rx="45.92" ry="45.92"></ellipse>
+<text text-anchor="start" x="204.78" y="-906.84" font-family="Times,serif" font-size="12.00">subgroup</text>
+<text text-anchor="start" x="222.28" y="-893.84" font-family="Times,serif" font-size="12.00">of</text>
+<text text-anchor="start" x="198.78" y="-880.84" font-family="Times,serif" font-size="12.00">cytoplasmic</text>
+<text text-anchor="start" x="202.78" y="-867.84" font-family="Times,serif" font-size="12.00">organelles</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;) -->
+<g id="edge19" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M227.28,-993.72C227.28,-975.74 227.28,-955.11 227.28,-937.11"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;metabolic&amp;lt;br/&amp;gt;organelles&amp;#39;) -->
+<g id="node8" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;metabolic&lt;br/&gt;organelles&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="173.28" cy="-728.58" rx="40.11" ry="40.11"></ellipse>
+<text text-anchor="start" x="150.28" y="-731.98" font-family="Times,serif" font-size="12.00">metabolic</text>
+<text text-anchor="start" x="148.78" y="-718.98" font-family="Times,serif" font-size="12.00">organelles</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;metabolic&amp;lt;br/&amp;gt;organelles&amp;#39;) -->
+<g id="edge17" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;metabolic&lt;br/&gt;organelles&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M212.66,-846.18C204.35,-821.59 194.05,-791.07 186.06,-767.43"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="node11" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="296.28" cy="-728.58" rx="65.11" ry="65.11"></ellipse>
+<text text-anchor="start" x="254.28" y="-738.48" font-family="Times,serif" font-size="12.00">ribonucleoprotein</text>
+<text text-anchor="start" x="275.78" y="-725.48" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="280.78" y="-712.48" font-family="Times,serif" font-size="12.00">family</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="edge18" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M245.4,-847.44C253.07,-829.68 262.14,-808.67 270.48,-789.34"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;metabolic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;metabolic&amp;lt;br/&amp;gt;organelles&amp;#39;) -->
+<g id="node9" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;metabolic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;metabolic&lt;br/&gt;organelles&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="69.28" cy="-579.51" rx="42.35" ry="42.35"></ellipse>
+<text text-anchor="start" x="46.78" y="-595.91" font-family="Times,serif" font-size="12.00">subgroup</text>
+<text text-anchor="start" x="64.28" y="-582.91" font-family="Times,serif" font-size="12.00">of</text>
+<text text-anchor="start" x="46.28" y="-569.91" font-family="Times,serif" font-size="12.00">metabolic</text>
+<text text-anchor="start" x="44.78" y="-556.91" font-family="Times,serif" font-size="12.00">organelles</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;metabolic&amp;lt;br/&amp;gt;organelles&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;metabolic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;metabolic&amp;lt;br/&amp;gt;organelles&amp;#39;) -->
+<g id="edge3" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;metabolic&lt;br/&gt;organelles&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;metabolic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;metabolic&lt;br/&gt;organelles&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M150.19,-694.94C133.44,-671.25 110.81,-639.24 93.74,-615.11"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;metabolic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;mitochondrion&amp;#39;) -->
+<g id="node10" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;metabolic&lt;br/&gt;organelles&#39;, &#39;mitochondrion&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="177.28" cy="-579.51" rx="48.03" ry="48.03"></ellipse>
+<text text-anchor="start" x="142.28" y="-576.41" font-family="Times,serif" font-size="12.00">mitochondrion</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;metabolic&amp;lt;br/&amp;gt;organelles&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;metabolic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;mitochondrion&amp;#39;) -->
+<g id="edge4" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;metabolic&lt;br/&gt;organelles&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;metabolic&lt;br/&gt;organelles&#39;, &#39;mitochondrion&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M174.36,-687.78C174.86,-669.49 175.45,-647.65 175.97,-628.46"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processng&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;1&amp;#39;) -->
+<g id="node12" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;RNA&lt;br/&gt;processng&lt;br/&gt;complex&lt;br/&gt;1&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="292.28" cy="-579.51" rx="42.35" ry="42.35"></ellipse>
+<text text-anchor="start" x="278.78" y="-595.91" font-family="Times,serif" font-size="12.00">RNA</text>
+<text text-anchor="start" x="268.28" y="-582.91" font-family="Times,serif" font-size="12.00">processng</text>
+<text text-anchor="start" x="271.78" y="-569.91" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="288.78" y="-556.91" font-family="Times,serif" font-size="12.00">1</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processng&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;1&amp;#39;) -->
+<g id="edge15" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;RNA&lt;br/&gt;processng&lt;br/&gt;complex&lt;br/&gt;1&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M294.51,-662.64C294.14,-649.1 293.76,-635.16 293.42,-622.7"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;) -->
+<g id="node14" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="396.28" cy="-579.51" rx="43.68" ry="43.68"></ellipse>
+<text text-anchor="start" x="374.28" y="-589.41" font-family="Times,serif" font-size="12.00">ribosome</text>
+<text text-anchor="start" x="371.28" y="-576.41" font-family="Times,serif" font-size="12.00">biogenesis</text>
+<text text-anchor="start" x="369.28" y="-563.41" font-family="Times,serif" font-size="12.00">community</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;) -->
+<g id="edge16" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M332.94,-673.65C345.88,-654.63 360.09,-633.73 371.77,-616.55"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processng&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;1&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;splicing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;1&amp;#39;) -->
+<g id="node13" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;RNA&lt;br/&gt;processng&lt;br/&gt;complex&lt;br/&gt;1&#39;, &#39;RNA&lt;br/&gt;splicing&lt;br/&gt;complex&lt;br/&gt;1&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="292.28" cy="-453.07" rx="42.35" ry="42.35"></ellipse>
+<text text-anchor="start" x="278.78" y="-469.47" font-family="Times,serif" font-size="12.00">RNA</text>
+<text text-anchor="start" x="273.78" y="-456.47" font-family="Times,serif" font-size="12.00">splicing</text>
+<text text-anchor="start" x="271.78" y="-443.47" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="288.78" y="-430.47" font-family="Times,serif" font-size="12.00">1</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processng&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;1&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processng&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;1&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;splicing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;1&amp;#39;) -->
+<g id="edge5" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;RNA&lt;br/&gt;processng&lt;br/&gt;complex&lt;br/&gt;1&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;RNA&lt;br/&gt;processng&lt;br/&gt;complex&lt;br/&gt;1&#39;, &#39;RNA&lt;br/&gt;splicing&lt;br/&gt;complex&lt;br/&gt;1&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M292.28,-536.38C292.28,-523.41 292.28,-509.13 292.28,-496.16"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;) -->
+<g id="node15" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="390.28" cy="-453.07" rx="32.02" ry="32.02"></ellipse>
+<text text-anchor="start" x="368.28" y="-449.97" font-family="Times,serif" font-size="12.00">ribosome</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;) -->
+<g id="edge13" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M394.18,-534.99C393.4,-518.87 392.53,-500.9 391.82,-486"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;nucleic&amp;lt;br/&amp;gt;acid&amp;lt;br/&amp;gt;binding&amp;lt;br/&amp;gt;complex&amp;#39;) -->
+<g id="node23" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;nucleic&lt;br/&gt;acid&lt;br/&gt;binding&lt;br/&gt;complex&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="482.28" cy="-453.07" rx="42.35" ry="42.35"></ellipse>
+<text text-anchor="start" x="465.28" y="-469.47" font-family="Times,serif" font-size="12.00">nucleic</text>
+<text text-anchor="start" x="472.28" y="-456.47" font-family="Times,serif" font-size="12.00">acid</text>
+<text text-anchor="start" x="463.78" y="-443.47" font-family="Times,serif" font-size="12.00">binding</text>
+<text text-anchor="start" x="461.78" y="-430.47" font-family="Times,serif" font-size="12.00">complex</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;nucleic&amp;lt;br/&amp;gt;acid&amp;lt;br/&amp;gt;binding&amp;lt;br/&amp;gt;complex&amp;#39;) -->
+<g id="edge14" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;nucleic&lt;br/&gt;acid&lt;br/&gt;binding&lt;br/&gt;complex&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M421.15,-542.52C432.86,-525.58 446.76,-505.46 458.34,-488.7"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;) -->
+<g id="node16" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="390.28" cy="-335.75" rx="38.78" ry="38.78"></ellipse>
+<text text-anchor="start" x="366.78" y="-339.15" font-family="Times,serif" font-size="12.00">ribosomal</text>
+<text text-anchor="start" x="372.78" y="-326.15" font-family="Times,serif" font-size="12.00">subunit</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;) -->
+<g id="edge12" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M390.28,-420.25C390.28,-406.39 390.28,-390 390.28,-375.44"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;mitochondiral&amp;lt;br/&amp;gt;large&amp;lt;br/&amp;gt;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;) -->
+<g id="node17" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;, &#39;mitochondiral&lt;br/&gt;large&lt;br/&gt;ribosomal&lt;br/&gt;subunit&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="163.28" cy="-200.05" rx="52.15" ry="52.15"></ellipse>
+<text text-anchor="start" x="130.28" y="-216.45" font-family="Times,serif" font-size="12.00">mitochondiral</text>
+<text text-anchor="start" x="151.28" y="-203.45" font-family="Times,serif" font-size="12.00">large</text>
+<text text-anchor="start" x="139.78" y="-190.45" font-family="Times,serif" font-size="12.00">ribosomal</text>
+<text text-anchor="start" x="145.78" y="-177.45" font-family="Times,serif" font-size="12.00">subunit</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;mitochondiral&amp;lt;br/&amp;gt;large&amp;lt;br/&amp;gt;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;) -->
+<g id="edge7" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;, &#39;mitochondiral&lt;br/&gt;large&lt;br/&gt;ribosomal&lt;br/&gt;subunit&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M353.04,-322.52C318.05,-310.05 265.1,-288.62 224.28,-260.86 215.32,-254.77 206.52,-247.29 198.5,-239.71"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;mito&amp;#45;cyto&amp;lt;br/&amp;gt;ribosomal&amp;lt;br/&amp;gt;cluster&amp;#39;) -->
+<g id="node19" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;, &#39;mito&#45;cyto&lt;br/&gt;ribosomal&lt;br/&gt;cluster&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="272.28" cy="-200.05" rx="38.78" ry="38.78"></ellipse>
+<text text-anchor="start" x="249.28" y="-209.95" font-family="Times,serif" font-size="12.00">mito&#45;cyto</text>
+<text text-anchor="start" x="248.78" y="-196.95" font-family="Times,serif" font-size="12.00">ribosomal</text>
+<text text-anchor="start" x="256.78" y="-183.95" font-family="Times,serif" font-size="12.00">cluster</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;mito&amp;#45;cyto&amp;lt;br/&amp;gt;ribosomal&amp;lt;br/&amp;gt;cluster&amp;#39;) -->
+<g id="edge8" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;, &#39;mito&#45;cyto&lt;br/&gt;ribosomal&lt;br/&gt;cluster&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M363.13,-307.18C349.93,-293.5 333.98,-276.57 320.28,-260.86 312.14,-251.53 303.58,-241.08 295.97,-231.57"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;cotranslational&amp;lt;br/&amp;gt;protein&amp;lt;br/&amp;gt;targeting&amp;lt;br/&amp;gt;to&amp;lt;br/&amp;gt;membrane&amp;lt;br/&amp;gt;system&amp;#39;) -->
+<g id="node20" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;, &#39;cotranslational&lt;br/&gt;protein&lt;br/&gt;targeting&lt;br/&gt;to&lt;br/&gt;membrane&lt;br/&gt;system&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="390.28" cy="-200.05" rx="60.62" ry="60.62"></ellipse>
+<text text-anchor="start" x="355.78" y="-229.45" font-family="Times,serif" font-size="12.00">cotranslational</text>
+<text text-anchor="start" x="373.28" y="-216.45" font-family="Times,serif" font-size="12.00">protein</text>
+<text text-anchor="start" x="369.28" y="-203.45" font-family="Times,serif" font-size="12.00">targeting</text>
+<text text-anchor="start" x="385.28" y="-190.45" font-family="Times,serif" font-size="12.00">to</text>
+<text text-anchor="start" x="365.28" y="-177.45" font-family="Times,serif" font-size="12.00">membrane</text>
+<text text-anchor="start" x="373.78" y="-164.45" font-family="Times,serif" font-size="12.00">system</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;cotranslational&amp;lt;br/&amp;gt;protein&amp;lt;br/&amp;gt;targeting&amp;lt;br/&amp;gt;to&amp;lt;br/&amp;gt;membrane&amp;lt;br/&amp;gt;system&amp;#39;) -->
+<g id="edge9" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;, &#39;cotranslational&lt;br/&gt;protein&lt;br/&gt;targeting&lt;br/&gt;to&lt;br/&gt;membrane&lt;br/&gt;system&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M390.28,-296.08C390.28,-285.28 390.28,-273.28 390.28,-261.55"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;5&amp;#39;) -->
+<g id="node21" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;, &#39;ribosomal&lt;br/&gt;complex&lt;br/&gt;5&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="508.28" cy="-200.05" rx="38.78" ry="38.78"></ellipse>
+<text text-anchor="start" x="484.78" y="-209.95" font-family="Times,serif" font-size="12.00">ribosomal</text>
+<text text-anchor="start" x="487.78" y="-196.95" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="504.78" y="-183.95" font-family="Times,serif" font-size="12.00">5</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;5&amp;#39;) -->
+<g id="edge10" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;, &#39;ribosomal&lt;br/&gt;complex&lt;br/&gt;5&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M417.42,-307.18C430.63,-293.5 446.57,-276.57 460.28,-260.86 468.42,-251.53 476.98,-241.08 484.58,-231.57"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;2&amp;#39;) -->
+<g id="node22" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;, &#39;ribosomal&lt;br/&gt;complex&lt;br/&gt;2&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="604.28" cy="-200.05" rx="38.78" ry="38.78"></ellipse>
+<text text-anchor="start" x="580.78" y="-209.95" font-family="Times,serif" font-size="12.00">ribosomal</text>
+<text text-anchor="start" x="583.78" y="-196.95" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="600.78" y="-183.95" font-family="Times,serif" font-size="12.00">2</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;2&amp;#39;) -->
+<g id="edge11" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;, &#39;ribosomal&lt;br/&gt;complex&lt;br/&gt;2&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M427.95,-323.71C463.5,-312.04 517.05,-291.09 556.28,-260.86 566.19,-253.22 575.29,-243.13 582.85,-233.41"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;mitochondiral&amp;lt;br/&amp;gt;large&amp;lt;br/&amp;gt;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;large&amp;lt;br/&amp;gt;ribosomal&amp;lt;br/&amp;gt;subunit&amp;lt;br/&amp;gt;subcomplex&amp;lt;br/&amp;gt;1&amp;#39;) -->
+<g id="node18" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;, &#39;mitochondiral&lt;br/&gt;large&lt;br/&gt;ribosomal&lt;br/&gt;subunit&#39;, &#39;large&lt;br/&gt;ribosomal&lt;br/&gt;subunit&lt;br/&gt;subcomplex&lt;br/&gt;1&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="163.28" cy="-51.62" rx="51.74" ry="51.74"></ellipse>
+<text text-anchor="start" x="151.28" y="-74.52" font-family="Times,serif" font-size="12.00">large</text>
+<text text-anchor="start" x="139.78" y="-61.52" font-family="Times,serif" font-size="12.00">ribosomal</text>
+<text text-anchor="start" x="145.78" y="-48.52" font-family="Times,serif" font-size="12.00">subunit</text>
+<text text-anchor="start" x="134.28" y="-35.52" font-family="Times,serif" font-size="12.00">subcomplex</text>
+<text text-anchor="start" x="159.78" y="-22.52" font-family="Times,serif" font-size="12.00">1</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;mitochondiral&amp;lt;br/&amp;gt;large&amp;lt;br/&amp;gt;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;subgroup&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;cytoplasmic&amp;lt;br/&amp;gt;organelles&amp;#39;, &amp;#39;ribonucleoprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;ribosome&amp;lt;br/&amp;gt;biogenesis&amp;lt;br/&amp;gt;community&amp;#39;, &amp;#39;ribosome&amp;#39;, &amp;#39;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;mitochondiral&amp;lt;br/&amp;gt;large&amp;lt;br/&amp;gt;ribosomal&amp;lt;br/&amp;gt;subunit&amp;#39;, &amp;#39;large&amp;lt;br/&amp;gt;ribosomal&amp;lt;br/&amp;gt;subunit&amp;lt;br/&amp;gt;subcomplex&amp;lt;br/&amp;gt;1&amp;#39;) -->
 <g id="edge6" class="edge">
-<title>(&#39;total time&#39;,)&#45;&gt;(&#39;simulator&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M147.61,-97.37C126.32,-97.47 97.8,-98.6 73,-103.01 68.67,-103.78 64.17,-104.85 59.77,-106.07"></path>
-<ellipse fill="black" stroke="black" cx="57.45" cy="-106.74" rx="2" ry="2"></ellipse>
-<text text-anchor="start" x="75" y="-106.01" font-family="Times,serif" font-size="10.00">total time</text>
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;, &#39;mitochondiral&lt;br/&gt;large&lt;br/&gt;ribosomal&lt;br/&gt;subunit&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;subgroup&lt;br/&gt;of&lt;br/&gt;cytoplasmic&lt;br/&gt;organelles&#39;, &#39;ribonucleoprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;ribosome&lt;br/&gt;biogenesis&lt;br/&gt;community&#39;, &#39;ribosome&#39;, &#39;ribosomal&lt;br/&gt;subunit&#39;, &#39;mitochondiral&lt;br/&gt;large&lt;br/&gt;ribosomal&lt;br/&gt;subunit&#39;, &#39;large&lt;br/&gt;ribosomal&lt;br/&gt;subunit&lt;br/&gt;subcomplex&lt;br/&gt;1&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M163.28,-147.01C163.28,-133.04 163.28,-117.94 163.28,-104"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;transcriptional&amp;lt;br/&amp;gt;regulation&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;transcirptional&amp;lt;br/&amp;gt;regulation&amp;lt;br/&amp;gt;complexes&amp;#39;) -->
+<g id="node25" class="node">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;transcriptional&lt;br/&gt;regulation&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;transcirptional&lt;br/&gt;regulation&lt;br/&gt;complexes&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="344.28" cy="-890.44" rx="53.07" ry="53.07"></ellipse>
+<text text-anchor="start" x="310.78" y="-900.34" font-family="Times,serif" font-size="12.00">transcirptional</text>
+<text text-anchor="start" x="320.28" y="-887.34" font-family="Times,serif" font-size="12.00">regulation</text>
+<text text-anchor="start" x="318.78" y="-874.34" font-family="Times,serif" font-size="12.00">complexes</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;transcriptional&amp;lt;br/&amp;gt;regulation&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;cytoplasm&amp;#39;, &amp;#39;transcriptional&amp;lt;br/&amp;gt;regulation&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;transcirptional&amp;lt;br/&amp;gt;regulation&amp;lt;br/&amp;gt;complexes&amp;#39;) -->
+<g id="edge20" class="edge">
+<title>(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;transcriptional&lt;br/&gt;regulation&lt;br/&gt;complex&lt;br/&gt;family&#39;)&#45;&gt;(&#39;cell&#39;, &#39;cytoplasm&#39;, &#39;transcriptional&lt;br/&gt;regulation&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;transcirptional&lt;br/&gt;regulation&lt;br/&gt;complexes&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M344.28,-986.33C344.28,-972.58 344.28,-957.77 344.28,-944.03"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;DNA&amp;lt;br/&amp;gt;metabolic&amp;lt;br/&amp;gt;assembly&amp;#39;) -->
+<g id="node27" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;DNA&lt;br/&gt;metabolic&lt;br/&gt;assembly&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="488.28" cy="-1040.29" rx="38.37" ry="38.37"></ellipse>
+<text text-anchor="start" x="474.28" y="-1050.19" font-family="Times,serif" font-size="12.00">DNA</text>
+<text text-anchor="start" x="465.28" y="-1037.19" font-family="Times,serif" font-size="12.00">metabolic</text>
+<text text-anchor="start" x="466.28" y="-1024.19" font-family="Times,serif" font-size="12.00">assembly</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;DNA&amp;lt;br/&amp;gt;metabolic&amp;lt;br/&amp;gt;assembly&amp;#39;) -->
+<g id="edge37" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;DNA&lt;br/&gt;metabolic&lt;br/&gt;assembly&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M628.97,-1151.12C604.1,-1138.43 565.71,-1117.17 536.28,-1093.32 528.06,-1086.67 519.95,-1078.61 512.8,-1070.85"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;) -->
+<g id="node28" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="575.28" cy="-1040.29" rx="30.31" ry="30.31"></ellipse>
+<text text-anchor="start" x="557.78" y="-1043.69" font-family="Times,serif" font-size="12.00">nuclear</text>
+<text text-anchor="start" x="560.28" y="-1030.69" font-family="Times,serif" font-size="12.00">lumen</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;) -->
+<g id="edge38" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M639.04,-1139.86C625.41,-1118.79 605.49,-1087.99 591.55,-1066.44"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;body&amp;#39;) -->
+<g id="node36" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;body&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="654.28" cy="-1040.29" rx="30.31" ry="30.31"></ellipse>
+<text text-anchor="start" x="636.78" y="-1043.69" font-family="Times,serif" font-size="12.00">nuclear</text>
+<text text-anchor="start" x="641.78" y="-1030.69" font-family="Times,serif" font-size="12.00">body</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;body&amp;#39;) -->
+<g id="edge39" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;body&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M654.28,-1135.7C654.28,-1116.56 654.28,-1091.11 654.28,-1071.46"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;) -->
+<g id="node37" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="753.28" cy="-1040.29" rx="50.82" ry="50.82"></ellipse>
+<text text-anchor="start" x="721.28" y="-1043.69" font-family="Times,serif" font-size="12.00">nucleo&#45;plasm</text>
+<text text-anchor="start" x="749.78" y="-1030.69" font-family="Times,serif" font-size="12.00">1</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;) -->
+<g id="edge40" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M671.97,-1141.58C685.66,-1124.7 704.96,-1100.89 721.32,-1080.7"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;2&amp;#39;) -->
+<g id="node42" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;2&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="873.28" cy="-1040.29" rx="50.82" ry="50.82"></ellipse>
+<text text-anchor="start" x="841.28" y="-1043.69" font-family="Times,serif" font-size="12.00">nucleo&#45;plasm</text>
+<text text-anchor="start" x="869.78" y="-1030.69" font-family="Times,serif" font-size="12.00">2</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;2&amp;#39;) -->
+<g id="edge41" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;2&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M681.1,-1154.39C713.73,-1142.8 769.83,-1120.85 813.28,-1093.32 821.08,-1088.38 828.91,-1082.46 836.21,-1076.41"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;transcriptional&amp;lt;br/&amp;gt;speckle&amp;#39;) -->
+<g id="node44" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;transcriptional&lt;br/&gt;speckle&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="995.28" cy="-1040.29" rx="53.07" ry="53.07"></ellipse>
+<text text-anchor="start" x="977.78" y="-1050.19" font-family="Times,serif" font-size="12.00">nuclear</text>
+<text text-anchor="start" x="961.78" y="-1037.19" font-family="Times,serif" font-size="12.00">transcriptional</text>
+<text text-anchor="start" x="977.28" y="-1024.19" font-family="Times,serif" font-size="12.00">speckle</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;transcriptional&amp;lt;br/&amp;gt;speckle&amp;#39;) -->
+<g id="edge42" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;transcriptional&lt;br/&gt;speckle&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M682.67,-1160.54C734.83,-1154.37 848.32,-1136.71 933.28,-1093.32 941.41,-1089.17 949.41,-1083.77 956.82,-1078.02"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;) -->
+<g id="node29" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="561.28" cy="-890.44" rx="33.49" ry="33.49"></ellipse>
+<text text-anchor="start" x="538.28" y="-887.34" font-family="Times,serif" font-size="12.00">nucleolus</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;) -->
+<g id="edge29" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M572.44,-1009.37C570.12,-984.82 566.83,-950.08 564.42,-924.67"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;splicing&amp;lt;br/&amp;gt;speckle&amp;#39;) -->
+<g id="node35" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nuclear&lt;br/&gt;splicing&lt;br/&gt;speckle&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="645.28" cy="-890.44" rx="33.47" ry="33.47"></ellipse>
+<text text-anchor="start" x="627.78" y="-900.34" font-family="Times,serif" font-size="12.00">nuclear</text>
+<text text-anchor="start" x="626.78" y="-887.34" font-family="Times,serif" font-size="12.00">splicing</text>
+<text text-anchor="start" x="627.28" y="-874.34" font-family="Times,serif" font-size="12.00">speckle</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;splicing&amp;lt;br/&amp;gt;speckle&amp;#39;) -->
+<g id="edge30" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nuclear&lt;br/&gt;splicing&lt;br/&gt;speckle&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M588.28,-1011.83C600.42,-986.19 618.49,-948.02 631.02,-921.56"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;, &amp;#39;ribonucleprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="node30" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;, &#39;ribonucleprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="440.28" cy="-728.58" rx="60.62" ry="60.62"></ellipse>
+<text text-anchor="start" x="401.28" y="-738.48" font-family="Times,serif" font-size="12.00">ribonucleprotein</text>
+<text text-anchor="start" x="419.78" y="-725.48" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="424.78" y="-712.48" font-family="Times,serif" font-size="12.00">family</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;, &amp;#39;ribonucleprotein&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="edge26" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;, &#39;ribonucleprotein&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M541.02,-862.69C523.53,-839.58 497.82,-805.61 476.76,-777.78"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="node31" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;, &#39;RNA&lt;br/&gt;processing&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="561.28" cy="-728.58" rx="42.35" ry="42.35"></ellipse>
+<text text-anchor="start" x="547.78" y="-744.98" font-family="Times,serif" font-size="12.00">RNA</text>
+<text text-anchor="start" x="535.78" y="-731.98" font-family="Times,serif" font-size="12.00">processing</text>
+<text text-anchor="start" x="540.78" y="-718.98" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="545.78" y="-705.98" font-family="Times,serif" font-size="12.00">family</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="edge27" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;, &#39;RNA&lt;br/&gt;processing&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M561.28,-856.32C561.28,-831.81 561.28,-798.23 561.28,-771.8"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;, &amp;#39;splicosomal&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="node34" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;, &#39;splicosomal&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="667.28" cy="-728.58" rx="45.01" ry="45.01"></ellipse>
+<text text-anchor="start" x="639.28" y="-738.48" font-family="Times,serif" font-size="12.00">splicosomal</text>
+<text text-anchor="start" x="646.78" y="-725.48" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="651.78" y="-712.48" font-family="Times,serif" font-size="12.00">family</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;, &amp;#39;splicosomal&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="edge28" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;, &#39;splicosomal&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M579.74,-861.6C597.12,-835.39 623.27,-795.94 642.47,-766.99"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;1&amp;#39;) -->
+<g id="node32" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;, &#39;RNA&lt;br/&gt;processing&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;RNA&lt;br/&gt;processing&lt;br/&gt;complex&lt;br/&gt;1&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="531.28" cy="-579.51" rx="42.35" ry="42.35"></ellipse>
+<text text-anchor="start" x="517.78" y="-595.91" font-family="Times,serif" font-size="12.00">RNA</text>
+<text text-anchor="start" x="505.78" y="-582.91" font-family="Times,serif" font-size="12.00">processing</text>
+<text text-anchor="start" x="510.78" y="-569.91" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="527.78" y="-556.91" font-family="Times,serif" font-size="12.00">1</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;1&amp;#39;) -->
+<g id="edge24" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;, &#39;RNA&lt;br/&gt;processing&lt;br/&gt;complex&lt;br/&gt;family&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;, &#39;RNA&lt;br/&gt;processing&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;RNA&lt;br/&gt;processing&lt;br/&gt;complex&lt;br/&gt;1&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M552.84,-686.22C548.73,-666.09 543.81,-641.94 539.7,-621.81"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;splicing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="node33" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;, &#39;RNA&lt;br/&gt;processing&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;RNA&lt;br/&gt;splicing&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="634.28" cy="-579.51" rx="42.35" ry="42.35"></ellipse>
+<text text-anchor="start" x="620.78" y="-595.91" font-family="Times,serif" font-size="12.00">RNA</text>
+<text text-anchor="start" x="615.78" y="-582.91" font-family="Times,serif" font-size="12.00">splicing</text>
+<text text-anchor="start" x="613.78" y="-569.91" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="618.78" y="-556.91" font-family="Times,serif" font-size="12.00">family</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;lumen&amp;#39;, &amp;#39;nucleolus&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;processing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;RNA&amp;lt;br/&amp;gt;splicing&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="edge25" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;, &#39;RNA&lt;br/&gt;processing&lt;br/&gt;complex&lt;br/&gt;family&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;lumen&#39;, &#39;nucleolus&#39;, &#39;RNA&lt;br/&gt;processing&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;RNA&lt;br/&gt;splicing&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M580.07,-689.71C590.93,-667.83 604.55,-640.41 615.41,-618.51"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;, &amp;#39;chromosome&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="node38" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;, &#39;chromosome&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="763.28" cy="-890.44" rx="48.58" ry="48.58"></ellipse>
+<text text-anchor="start" x="732.78" y="-906.84" font-family="Times,serif" font-size="12.00">chromosome</text>
+<text text-anchor="start" x="733.78" y="-893.84" font-family="Times,serif" font-size="12.00">organization</text>
+<text text-anchor="start" x="742.78" y="-880.84" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="747.78" y="-867.84" font-family="Times,serif" font-size="12.00">family</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;, &amp;#39;chromosome&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="edge34" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;, &#39;chromosome&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M756.69,-988.82C757.76,-972.93 758.95,-955.42 760.01,-939.69"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;, &amp;#39;chromosome&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;chromatin&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="node39" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;, &#39;chromosome&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;chromatin&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="778.28" cy="-728.58" rx="47.25" ry="47.25"></ellipse>
+<text text-anchor="start" x="754.28" y="-744.98" font-family="Times,serif" font-size="12.00">chromatin</text>
+<text text-anchor="start" x="748.78" y="-731.98" font-family="Times,serif" font-size="12.00">organization</text>
+<text text-anchor="start" x="757.78" y="-718.98" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="762.78" y="-705.98" font-family="Times,serif" font-size="12.00">family</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;, &amp;#39;chromosome&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;, &amp;#39;chromosome&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;chromatin&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="edge33" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;, &#39;chromosome&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;, &#39;chromosome&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;chromatin&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M767.78,-841.48C769.71,-820.88 771.96,-796.89 773.88,-776.41"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;, &amp;#39;chromosome&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;chromatin&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;HAT&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="node40" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;, &#39;chromosome&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;chromatin&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;HAT&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="778.28" cy="-579.51" rx="34.8" ry="34.8"></ellipse>
+<text text-anchor="start" x="765.78" y="-589.41" font-family="Times,serif" font-size="12.00">HAT</text>
+<text text-anchor="start" x="757.78" y="-576.41" font-family="Times,serif" font-size="12.00">complex</text>
+<text text-anchor="start" x="762.78" y="-563.41" font-family="Times,serif" font-size="12.00">family</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;, &amp;#39;chromosome&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;chromatin&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;, &amp;#39;chromosome&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;chromatin&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;HAT&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;) -->
+<g id="edge32" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;, &#39;chromosome&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;chromatin&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;, &#39;chromosome&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;chromatin&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;HAT&lt;br/&gt;complex&lt;br/&gt;family&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M778.28,-680.64C778.28,-659.29 778.28,-634.48 778.28,-614.9"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;, &amp;#39;chromosome&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;chromatin&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;HAT&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;NuA4&amp;lt;br/&amp;gt;HAT&amp;lt;br/&amp;gt;complex&amp;#39;) -->
+<g id="node41" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;, &#39;chromosome&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;chromatin&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;HAT&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;NuA4&lt;br/&gt;HAT&lt;br/&gt;complex&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="778.28" cy="-453.07" rx="34.8" ry="34.8"></ellipse>
+<text text-anchor="start" x="762.78" y="-462.97" font-family="Times,serif" font-size="12.00">NuA4</text>
+<text text-anchor="start" x="765.78" y="-449.97" font-family="Times,serif" font-size="12.00">HAT</text>
+<text text-anchor="start" x="757.78" y="-436.97" font-family="Times,serif" font-size="12.00">complex</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;, &amp;#39;chromosome&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;chromatin&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;HAT&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;1&amp;#39;, &amp;#39;chromosome&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;chromatin&amp;lt;br/&amp;gt;organization&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;HAT&amp;lt;br/&amp;gt;complex&amp;lt;br/&amp;gt;family&amp;#39;, &amp;#39;NuA4&amp;lt;br/&amp;gt;HAT&amp;lt;br/&amp;gt;complex&amp;#39;) -->
+<g id="edge31" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;, &#39;chromosome&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;chromatin&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;HAT&lt;br/&gt;complex&lt;br/&gt;family&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;1&#39;, &#39;chromosome&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;chromatin&lt;br/&gt;organization&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;HAT&lt;br/&gt;complex&lt;br/&gt;family&#39;, &#39;NuA4&lt;br/&gt;HAT&lt;br/&gt;complex&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M778.28,-543.85C778.28,-526.59 778.28,-505.78 778.28,-488.55"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;2&amp;#39;, &amp;#39;chromatin&amp;lt;br/&amp;gt;regulation&amp;lt;br/&amp;gt;complex&amp;#39;) -->
+<g id="node43" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;2&#39;, &#39;chromatin&lt;br/&gt;regulation&lt;br/&gt;complex&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="873.28" cy="-890.44" rx="39.7" ry="39.7"></ellipse>
+<text text-anchor="start" x="849.28" y="-900.34" font-family="Times,serif" font-size="12.00">chromatin</text>
+<text text-anchor="start" x="849.28" y="-887.34" font-family="Times,serif" font-size="12.00">regulation</text>
+<text text-anchor="start" x="852.78" y="-874.34" font-family="Times,serif" font-size="12.00">complex</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;2&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nucleo&amp;#45;plasm&amp;lt;br/&amp;gt;2&amp;#39;, &amp;#39;chromatin&amp;lt;br/&amp;gt;regulation&amp;lt;br/&amp;gt;complex&amp;#39;) -->
+<g id="edge35" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;2&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nucleo&#45;plasm&lt;br/&gt;2&#39;, &#39;chromatin&lt;br/&gt;regulation&lt;br/&gt;complex&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M873.28,-988.82C873.28,-969.92 873.28,-948.73 873.28,-930.96"></path>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;transcriptional&amp;lt;br/&amp;gt;speckle&amp;#39;, &amp;#39;negative&amp;lt;br/&amp;gt;regulation&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;RNA&amp;lt;br/&amp;gt;biosynthesis&amp;lt;br/&amp;gt;process&amp;#39;) -->
+<g id="node45" class="node">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;transcriptional&lt;br/&gt;speckle&#39;, &#39;negative&lt;br/&gt;regulation&lt;br/&gt;of&lt;br/&gt;RNA&lt;br/&gt;biosynthesis&lt;br/&gt;process&#39;)</title>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="995.28" cy="-890.44" rx="60.62" ry="60.62"></ellipse>
+<text text-anchor="start" x="975.28" y="-919.84" font-family="Times,serif" font-size="12.00">negative</text>
+<text text-anchor="start" x="971.28" y="-906.84" font-family="Times,serif" font-size="12.00">regulation</text>
+<text text-anchor="start" x="990.28" y="-893.84" font-family="Times,serif" font-size="12.00">of</text>
+<text text-anchor="start" x="981.78" y="-880.84" font-family="Times,serif" font-size="12.00">RNA</text>
+<text text-anchor="start" x="966.28" y="-867.84" font-family="Times,serif" font-size="12.00">biosynthesis</text>
+<text text-anchor="start" x="977.28" y="-854.84" font-family="Times,serif" font-size="12.00">process</text>
+</g>
+<!-- (&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;transcriptional&amp;lt;br/&amp;gt;speckle&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;cell&amp;#39;, &amp;#39;nucleus&amp;#39;, &amp;#39;nuclear&amp;lt;br/&amp;gt;transcriptional&amp;lt;br/&amp;gt;speckle&amp;#39;, &amp;#39;negative&amp;lt;br/&amp;gt;regulation&amp;lt;br/&amp;gt;of&amp;lt;br/&amp;gt;RNA&amp;lt;br/&amp;gt;biosynthesis&amp;lt;br/&amp;gt;process&amp;#39;) -->
+<g id="edge36" class="edge">
+<title>(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;transcriptional&lt;br/&gt;speckle&#39;)&#45;&gt;(&#39;cell&#39;, &#39;nucleus&#39;, &#39;nuclear&lt;br/&gt;transcriptional&lt;br/&gt;speckle&#39;, &#39;negative&lt;br/&gt;regulation&lt;br/&gt;of&lt;br/&gt;RNA&lt;br/&gt;biosynthesis&lt;br/&gt;process&#39;)</title>
+<path fill="none" stroke="black" stroke-width="2" d="M995.28,-986.33C995.28,-975.15 995.28,-963.26 995.28,-951.83"></path>
 </g>
 </g>
 </svg>
@@ -17442,7 +17925,237 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 
 </div>
 
-</div><div id="cell-id=c1169d53-0bff-4c29-b023-f782e9c69aa5" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div>
+<div id="cell-id=188eb4a6-c526-4b38-a22d-97f7fb8b7244" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Whole-cell-E.-coli-model">Whole-cell E. coli model<a class="anchor-link" href="#Whole-cell-E.-coli-model">&#182;</a></h2><p>We here plot the multiscale map of a cell from <a href="https://pubmed.ncbi.nlm.nih.gov/32703847/">Macklin et al. Simultaneous cross-evaluation of heterogeneous E. coli datasets via mechanistic simulation. Science. 2020.</a></p>
+
+</div>
+</div>
+</div>
+</div><div id="cell-id=16960d1b-6e35-421e-bb7d-3efe5052e4fc" class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ecoli</span> <span class="o">=</span> <span class="p">{</span> 
+    <span class="s1">&#39;chromosome-structure&#39;</span><span class="p">:</span> <span class="p">{</span> 
+        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;fragmentBases&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;active_tfs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;subunits&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;amino_acids&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;active_replisomes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;active_replisome&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;oriCs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;oriC&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;chromosome_domains&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;chromosome_domain&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;active_RNAPs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;active_RNAP&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;RNAs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;RNA&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;active_ribosome&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;active_ribosome&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;full_chromosomes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;full_chromosome&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;promoters&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;promoter&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;DnaA_boxes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;DnaA_box&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;metabolism&#39;</span><span class="p">:</span> <span class="p">{</span> 
+        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;metabolites&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;catalysts&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;kinetics_enzymes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;kinetics_substrates&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;amino_acids&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;environment&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;amino_acids_total&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,)</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;tf-binding&#39;</span><span class="p">:</span> <span class="p">{</span> 
+        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;promoters&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;promoter&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;active_tfs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;active_tfs_total&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;inactive_tfs_total&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;transcript-initiation&#39;</span><span class="p">:</span> <span class="p">{</span> 
+        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;environment&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;full_chromosomes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;full_chromosome&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;RNAs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;RNA&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;active_RNAPs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;active_RNAP&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;promoters&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;promoter&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;transcript-elongation&#39;</span><span class="p">:</span> <span class="p">{</span> 
+        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;environment&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;RNAs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;RNA&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;active_RNAPs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;active_RNAP&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;bulk_RNAs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;ntps&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;rna-degradation&#39;</span><span class="p">:</span> <span class="p">{</span> 
+        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;charged_trna&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;bulk_RNAs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;nmps&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;fragmentMetabolites&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;fragmentBases&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;endoRnases&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;exoRnases&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;subunits&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;RNAs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;RNA&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;active_ribosome&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;active_ribosome&#39;</span><span class="p">),</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;polypeptide-initiation&#39;</span><span class="p">:</span> <span class="p">{</span> 
+        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;environment&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;active_ribosome&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;active_ribosome&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;RNA&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;RNA&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;subunits&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,)</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;polypeptide-elongation&#39;</span><span class="p">:</span> <span class="p">{</span> 
+        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;environment&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;active_ribosome&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;active_ribosome&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;monomers&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;amino_acids&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;ppgpp_reaction_metabolites&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;uncharged_trna&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;charged_trna&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;charging_molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;synthetases&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;subunits&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;molecules_total&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;amino_acids_total&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;charged_trna_total&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;uncharged_trna_total&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,)</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;complexation&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span> 
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;two-component-system&#39;</span><span class="p">:</span> <span class="p">{</span> 
+        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,)</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;equilibrium&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,)</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;protein-degradation&#39;</span><span class="p">:</span> <span class="p">{</span> 
+        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;metabolites&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;proteins&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,)</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;chromosome-replication&#39;</span><span class="p">:</span> <span class="p">{</span> 
+        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;replisome_trimers&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;replisome_monomers&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;dntps&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;ppi&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
+            <span class="s1">&#39;active_replisomes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;active_replisome&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;oriCs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;oriC&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;chromosome_domains&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;chromosome_domain&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;full_chromosomes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;full_chromosome&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;environment&#39;</span><span class="p">,)</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;unique&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;chromosome_domain&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;full_chromosome&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;oriC&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;active_replisome&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;RNA&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;active_ribosome&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;DnaA_box&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;promoter&#39;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;bulk&#39;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="p">{},</span>
+<span class="p">}</span>
+<span class="n">node_groups</span> <span class="o">=</span> <span class="p">[[</span>
+        <span class="c1"># (&#39;unique&#39;,), (&#39;bulk&#39;,), (&#39;environment&#39;,), </span>
+    <span class="p">],</span>
+<span class="p">]</span>
+<span class="n">plot_bigraph</span><span class="p">(</span><span class="n">ecoli</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">node_groups</span><span class="o">=</span><span class="n">node_groups</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;ecoli&#39;</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[37], line 166</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> ecoli <span style="color: rgb(98,98,98)">=</span> { 
+<span class="ansi-green-intense-fg ansi-bold">      2</span>     <span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">chromosome-structure</span><span style="color: rgb(175,0,0)">&#39;</span>: { 
+<span class="ansi-green-intense-fg ansi-bold">      3</span>         <span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">_wires</span><span style="color: rgb(175,0,0)">&#39;</span>: {
+<span class="ansi-green-fg">   (...)</span>
+<span class="ansi-green-intense-fg ansi-bold">    160</span>     <span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">environment</span><span style="color: rgb(175,0,0)">&#39;</span>: {},
+<span class="ansi-green-intense-fg ansi-bold">    161</span> }
+<span class="ansi-green-intense-fg ansi-bold">    162</span> node_groups <span style="color: rgb(98,98,98)">=</span> [[
+<span class="ansi-green-intense-fg ansi-bold">    163</span>         <span style="color: rgb(95,135,135)"># (&#39;unique&#39;,), (&#39;bulk&#39;,), (&#39;environment&#39;,), </span>
+<span class="ansi-green-intense-fg ansi-bold">    164</span>     ],
+<span class="ansi-green-intense-fg ansi-bold">    165</span> ]
+<span class="ansi-green-fg">--&gt; 166</span> <span class="ansi-yellow-bg">plot_bigraph</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">ecoli</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">plot_settings</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">node_groups</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">node_groups</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">filename</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">ecoli</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">)</span>
+
+File <span class="ansi-green-fg">~/code/bigraph-viz/bigraph_viz/plot.py:400</span>, in <span class="ansi-cyan-fg">plot_bigraph</span><span class="ansi-blue-fg">(bigraph_schema, size, node_label_size, show_values, show_types, collapse_processes, port_labels, port_label_size, engine, rankdir, node_border_colors, node_fill_colors, node_groups, invisible_edges, remove_process_place_edges, print_source, dpi, file_format, out_dir, filename)</span>
+<span class="ansi-green-intense-fg ansi-bold">    398</span> file_format <span style="color: rgb(98,98,98)">=</span> kwargs<span style="color: rgb(98,98,98)">.</span>pop(<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">file_format</span><span style="color: rgb(175,0,0)">&#39;</span>)
+<span class="ansi-green-intense-fg ansi-bold">    399</span> out_dir <span style="color: rgb(98,98,98)">=</span> kwargs<span style="color: rgb(98,98,98)">.</span>pop(<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">out_dir</span><span style="color: rgb(175,0,0)">&#39;</span>)
+<span class="ansi-green-fg">--&gt; 400</span> filename <span style="color: rgb(98,98,98)">=</span> kwargs<span style="color: rgb(98,98,98)">.</span>pop(<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">filename</span><span style="color: rgb(175,0,0)">&#39;</span>)
+<span class="ansi-green-intense-fg ansi-bold">    402</span> <span style="color: rgb(95,135,135)"># get the nodes and edges from the composite</span>
+<span class="ansi-green-intense-fg ansi-bold">    403</span> bigraph_network <span style="color: rgb(98,98,98)">=</span> get_bigraph_network(bigraph_schema)
+
+File <span class="ansi-green-fg">~/code/bigraph-viz/bigraph_viz/plot.py:77</span>, in <span class="ansi-cyan-fg">get_bigraph_network</span><span class="ansi-blue-fg">(bigraph_dict, path)</span>
+<span class="ansi-green-intense-fg ansi-bold">     74</span> if &#39;_wires&#39; in child:
+<span class="ansi-green-intense-fg ansi-bold">     75</span>     for port, state_path in child[&#39;_wires&#39;].items():
+<span class="ansi-green-intense-fg ansi-bold">     76</span>         if isinstance(state_path, tuple):
+<span class="ansi-green-fg">---&gt; 77</span>             # support tuple paths
+<span class="ansi-green-intense-fg ansi-bold">     78</span>             state_path = list(state_path)
+<span class="ansi-green-intense-fg ansi-bold">     79</span>         state_path = state_path_tuple(state_path)
+
+<span class="ansi-red-fg">AttributeError</span>: &#39;tuple&#39; object has no attribute &#39;insert&#39;</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div id="cell-id=63e24ffa-947a-40db-a15d-3e664ae0e73d" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
