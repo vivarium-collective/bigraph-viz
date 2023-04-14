@@ -15112,6 +15112,8 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h1 id="Bigraph-Schema-Basics">Bigraph Schema Basics<a class="anchor-link" href="#Bigraph-Schema-Basics">&#182;</a></h1><p>This tutorial demonstrates use of <a href="https://github.com/vivarium-collective/bigraph-viz">bigraph-viz</a>, a visualization tool for bigraph composition schema. The tutorial starts with a single <code>store</code> and increases in detail as you scroll towards the bottom.</p>
 <p>Compositional Bigraph Schemas (CBS) are based on a mathematical formalism <a href="https://www.google.com/search?q=the+space+and+motion+of+communicating+agents+by+robin+milner">introduced by Robin Milner in 2009</a>, and used in Vivarium. Bigraphs consist of networks with embeddable nodes that can be placed within other nodes and dynamically restructured. CBS reimagines the bigraph concept. Variables are contained within Stores (the circles in the figure), which can be embedded in a hierarchy, as shown by the dark edges. Instead of Milner's hyperedges, CBS employs Processes (the rectangles) which connect via wires (dashed edges) to shared variables within the Stores. Processes and Stores form a type of bipartite graph, as illustrated by the dashed edges.</p>
+<p>Bigraphs consist of a Place Graph, or Forest:</p>
+<p><img src="https://github.com/vivarium-collective/bigraph-viz/blob/main/doc/_static/cell_structure_function.png?raw=true" alt="forest" /></p>
 
 </div>
 </div>
@@ -15407,13 +15409,13 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">hierarchy_spec</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;store1&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;store1.1&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;store1.1.1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">},</span>
-            <span class="s1">&#39;store1.1.2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
+            <span class="s1">&#39;store1.1.1&#39;</span><span class="p">:</span> <span class="mf">1.1</span><span class="p">,</span>
+            <span class="s1">&#39;store1.1.2&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
             <span class="s1">&#39;store1.1.3&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;store1.1.3.1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">},</span>
+                <span class="s1">&#39;store1.1.3.1&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">},</span>
-        <span class="s1">&#39;store1.2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;store1.2&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
 <span class="n">plot_bigraph</span><span class="p">(</span><span class="n">hierarchy_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hierarchy&#39;</span><span class="p">)</span>
@@ -15797,7 +15799,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
             <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
             <span class="s1">&#39;port3&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
         <span class="p">},</span>
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;node1&#39;</span><span class="p">,</span>
             <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;node2&#39;</span><span class="p">,</span>
             <span class="s1">&#39;port3&#39;</span><span class="p">:</span> <span class="s1">&#39;node3&#39;</span><span class="p">,</span>
@@ -16031,7 +16033,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">flat_composite_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -16044,21 +16046,13 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
         <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s1">&#39;process1&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="c1"># &#39;_ports&#39;: {</span>
-        <span class="c1">#     &#39;port1&#39;: &#39;type&#39;, </span>
-        <span class="c1">#     &#39;port2&#39;: &#39;type&#39;,</span>
-        <span class="c1"># },</span>
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
             <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.2&#39;</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;process2&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="c1"># &#39;_ports&#39;: {</span>
-        <span class="c1">#     &#39;port1&#39;: &#39;type&#39;, </span>
-        <span class="c1">#     &#39;port2&#39;: &#39;type&#39;,</span>
-        <span class="c1"># },</span>
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
             <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.2&#39;</span><span class="p">,</span>
         <span class="p">}</span>
@@ -16080,7 +16074,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
 
 
 
@@ -16174,7 +16168,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">nested_composite_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -16188,28 +16182,20 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
             <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="s1">&#39;process1&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="c1"># &#39;_ports&#39;: {</span>
-            <span class="c1">#     &#39;port1&#39;: &#39;type&#39;, </span>
-            <span class="c1">#     &#39;port2&#39;: &#39;type&#39;,</span>
-            <span class="c1"># },</span>
-            <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.2&#39;</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">},</span>
         <span class="s1">&#39;process2&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="c1"># &#39;_ports&#39;: {</span>
-            <span class="c1">#     &#39;port1&#39;: &#39;type&#39;, </span>
-            <span class="c1">#     &#39;port2&#39;: &#39;type&#39;,</span>
-            <span class="c1"># },</span>
-            <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.2&#39;</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">},</span>
     <span class="p">},</span>
     <span class="s1">&#39;process3&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1&#39;</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">}</span>
@@ -16230,7 +16216,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
 
 
 
@@ -16356,7 +16342,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">composite_process_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -16370,21 +16356,15 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
             <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="s1">&#39;process1&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="c1"># &#39;_ports&#39;: {</span>
-            <span class="c1">#     &#39;port1&#39;: &#39;type&#39;, </span>
-            <span class="c1">#     &#39;port2&#39;: &#39;type&#39;,</span>
-            <span class="c1"># },</span>
-            <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1"># &#39;process_location&#39;: &#39;URI&#39;,</span>
+            <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.2&#39;</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">},</span>
         <span class="s1">&#39;process2&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="c1"># &#39;_ports&#39;: {</span>
-            <span class="c1">#     &#39;port1&#39;: &#39;type&#39;, </span>
-            <span class="c1">#     &#39;port2&#39;: &#39;type&#39;,</span>
-            <span class="c1"># },</span>
-            <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1"># &#39;process_location&#39;: &#39;URI&#39;,</span>
+            <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.2&#39;</span><span class="p">,</span>
             <span class="p">}</span>
@@ -16415,7 +16395,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
 
 
 
@@ -16557,7 +16537,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_settings2</span><span class="o">=</span><span class="p">{}</span>
@@ -16589,18 +16569,18 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">multitimestep_spec</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;temporal&lt;br/&gt;process2&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;state&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;state&#39;</span><span class="p">},</span>
         <span class="s1">&#39;_sync_step&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s1">&#39;temporal&lt;br/&gt;process1&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;state&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;state&#39;</span><span class="p">},</span>
         <span class="s1">&#39;_sync_step&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
@@ -16620,7 +16600,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[24]:</div>
 
 
 
@@ -16811,7 +16791,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">process_schema</span> <span class="o">=</span> <span class="p">{</span>
@@ -16856,7 +16836,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
 
 
 
@@ -16951,7 +16931,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cell_struct_func</span> <span class="o">=</span> <span class="p">{</span>
@@ -16964,7 +16944,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
                         <span class="s1">&#39;_process&#39;</span><span class="p">:</span> <span class="s1">&#39;transport URI&#39;</span><span class="p">,</span>
                         <span class="s1">&#39;_config&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;parameter&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
                     <span class="p">},</span>
-                    <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s1">&#39;transporters&#39;</span><span class="p">:</span> <span class="s1">&#39;transporters&#39;</span><span class="p">,</span>
                         <span class="s1">&#39;internal&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;..&#39;</span><span class="p">,</span> <span class="s1">&#39;cytoplasm&#39;</span><span class="p">,</span> <span class="s1">&#39;metabolites&#39;</span><span class="p">]},</span>
                     <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -16985,14 +16965,13 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
                 <span class="p">},</span>
                 <span class="s1">&#39;transcript&lt;br/&gt;regulation&lt;br/&gt;complex&#39;</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
-                    <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;concentrations&#39;</span><span class="p">,</span>
                     <span class="s1">&#39;transcripts&#39;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s1">&#39;_value&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
                         <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;concentrations&#39;</span>
                     <span class="p">}</span>
                 <span class="p">},</span>
                 <span class="s1">&#39;translation&#39;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s1">&#39;p1&#39;</span><span class="p">:</span> <span class="s1">&#39;ribosomal&lt;br/&gt;complexes&#39;</span><span class="p">,</span>
                         <span class="s1">&#39;p2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;transcript&lt;br/&gt;regulation&lt;br/&gt;complex&#39;</span><span class="p">,</span> <span class="s1">&#39;transcripts&#39;</span><span class="p">]}}},</span>
             <span class="s1">&#39;nucleoid&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -17028,7 +17007,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
 
 
 
@@ -17252,7 +17231,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bigraph_viz.dict_utils</span> <span class="kn">import</span> <span class="n">replace_regex_recursive</span>
@@ -17318,7 +17297,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
 
 
 
@@ -17932,7 +17911,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Whole-cell-E.-coli-model">Whole-cell E. coli model<a class="anchor-link" href="#Whole-cell-E.-coli-model">&#182;</a></h2><p>We here plot the multiscale map of a cell from <a href="https://pubmed.ncbi.nlm.nih.gov/32703847/">Macklin et al. Simultaneous cross-evaluation of heterogeneous E. coli datasets via mechanistic simulation. Science. 2020.</a></p>
+<h2 id="Whole-cell-E.-coli-model">Whole-cell <em>E. coli</em> model<a class="anchor-link" href="#Whole-cell-E.-coli-model">&#182;</a></h2><p>We here plot the processes and wiring of a whole-cell model of <em>E. coli</em> from <a href="https://pubmed.ncbi.nlm.nih.gov/32703847/">Macklin et al. Simultaneous cross-evaluation of heterogeneous E. coli datasets via mechanistic simulation. Science. 2020.</a></p>
 
 </div>
 </div>
@@ -17942,12 +17921,12 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ecoli</span> <span class="o">=</span> <span class="p">{</span> 
     <span class="s1">&#39;chromosome-structure&#39;</span><span class="p">:</span> <span class="p">{</span> 
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;fragmentBases&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;active_tfs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
@@ -17965,7 +17944,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;metabolism&#39;</span><span class="p">:</span> <span class="p">{</span> 
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;metabolites&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;catalysts&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;kinetics_enzymes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
@@ -17976,7 +17955,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;tf-binding&#39;</span><span class="p">:</span> <span class="p">{</span> 
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;promoters&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;promoter&#39;</span><span class="p">),</span>
             <span class="s1">&#39;active_tfs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;active_tfs_total&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
@@ -17984,7 +17963,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;transcript-initiation&#39;</span><span class="p">:</span> <span class="p">{</span> 
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;environment&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;full_chromosomes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;full_chromosome&#39;</span><span class="p">),</span>
             <span class="s1">&#39;RNAs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;RNA&#39;</span><span class="p">),</span>
@@ -17994,7 +17973,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;transcript-elongation&#39;</span><span class="p">:</span> <span class="p">{</span> 
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;environment&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;RNAs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;RNA&#39;</span><span class="p">),</span>
             <span class="s1">&#39;active_RNAPs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;active_RNAP&#39;</span><span class="p">),</span>
@@ -18004,7 +17983,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;rna-degradation&#39;</span><span class="p">:</span> <span class="p">{</span> 
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;charged_trna&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;bulk_RNAs&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;nmps&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
@@ -18019,7 +17998,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;polypeptide-initiation&#39;</span><span class="p">:</span> <span class="p">{</span> 
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;environment&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;active_ribosome&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;active_ribosome&#39;</span><span class="p">),</span>
             <span class="s1">&#39;RNA&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;RNA&#39;</span><span class="p">),</span>
@@ -18027,7 +18006,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;polypeptide-elongation&#39;</span><span class="p">:</span> <span class="p">{</span> 
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;environment&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;environment&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;active_ribosome&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;unique&#39;</span><span class="p">,</span> <span class="s1">&#39;active_ribosome&#39;</span><span class="p">),</span>
             <span class="s1">&#39;molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
@@ -18046,28 +18025,28 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;complexation&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span> 
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;two-component-system&#39;</span><span class="p">:</span> <span class="p">{</span> 
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,)</span>
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;equilibrium&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;molecules&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,)</span>
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;protein-degradation&#39;</span><span class="p">:</span> <span class="p">{</span> 
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;metabolites&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;proteins&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,)</span>
         <span class="p">}</span>
     <span class="p">},</span>
     <span class="s1">&#39;chromosome-replication&#39;</span><span class="p">:</span> <span class="p">{</span> 
-        <span class="s1">&#39;_wires&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;replisome_trimers&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;replisome_monomers&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
             <span class="s1">&#39;dntps&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;bulk&#39;</span><span class="p">,),</span>
