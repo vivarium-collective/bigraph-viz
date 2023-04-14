@@ -3,11 +3,13 @@ import pprint
 from typing import Any
 import copy
 
+from bigraph_schema.registry import type_schema_keys
 
 pretty = pprint.PrettyPrinter(indent=2)
 
 
 schema_keys = [
+    '_super',
     '_value',
     '_wires',
     '_type',
