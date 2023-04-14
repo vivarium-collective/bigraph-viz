@@ -11,7 +11,7 @@ pretty = pprint.PrettyPrinter(indent=2)
 schema_keys = [
     '_super',
     '_value',
-    '_wires',
+    'wires',
     '_type',
     '_ports',
     '_tunnels',
@@ -115,15 +115,8 @@ def replace_regex_recursive(input_dict, match=' ', replacement='<br/>'):
     return recursive_replace(input_dict)
 
 
-wire_keys = [
-    '_wires',
-    'wires',
-]
-
-
 def schema_state_to_dict(schema, state):
     schema_value_dict = {}
-    print(f'schema: {schema}\n')
     for key, schema_value in schema.items():
         if key in schema_keys:
             # these are schema keys, just keep them as-is
@@ -139,9 +132,7 @@ def schema_state_to_dict(schema, state):
                 schema_value_dict[key]['_type'] = schema_value
 
     for key, state_value in state.items():
-        if key in wire_keys:
-            if key == 'wires':
-                key = '_wires'
+        if key is 'wires':
             schema_value_dict[key] = state_value
         else:
             schema_value = schema.get(key, {})

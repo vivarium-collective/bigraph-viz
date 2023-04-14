@@ -67,12 +67,12 @@ def get_bigraph_network(bigraph_dict, path=None):
                 node['sync_step'] = child['_sync_step']
 
             # what kind of node?
-            if '_wires' in child or '_ports' in child:
+            if 'wires' in child or '_ports' in child:
                 # this is a hyperedge/process
                 if path_here not in bigraph['hyper_edges']:
                     bigraph['hyper_edges'][path_here] = {}
-                if '_wires' in child:
-                    for port, state_path in child['_wires'].items():
+                if 'wires' in child:
+                    for port, state_path in child['wires'].items():
                         if isinstance(state_path, tuple):
                             # support tuple paths
                             state_path = list(state_path)
@@ -94,8 +94,8 @@ def get_bigraph_network(bigraph_dict, path=None):
 
                 # check for mismatch, there might be disconnected wires or mismatch with declared wires
                 wire_ports = []
-                if '_wires' in child:
-                    wire_ports = child['_wires'].keys()
+                if 'wires' in child:
+                    wire_ports = child['wires'].keys()
                 if '_ports' in child:
                     # wires need to match schema
                     schema_ports = child['_ports'].keys()
@@ -221,6 +221,9 @@ def get_graphviz_bigraph(
         node_names.append(node_name)
         label = make_label(node_path[-1])
         if collapse_processes:
+            # # add a label node
+            # label_node_name = f'{node_name}_label'
+            # graph.node(label_node_name, label=label, shape='none', style='solid', width='0', fontsize=node_label_size)
             label = ''
 
         # composite processes have sub-nodes
@@ -233,6 +236,10 @@ def get_graphviz_bigraph(
             graph.node(node_name, label=label, peripheries='2')
         else:
             graph.node(node_name, label=label)
+        # if collapse_processes:
+        #     # connect label node
+        #     label_node_name = f'{node_name}_label'
+        #     graph.edge(node_name, label_node_name, style='invis', len='0')
 
     # place edges
     graph.attr('edge', arrowhead='none', penwidth='2')
