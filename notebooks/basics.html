@@ -15113,7 +15113,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <h1 id="Bigraph-Schema-Basics">Bigraph Schema Basics<a class="anchor-link" href="#Bigraph-Schema-Basics">&#182;</a></h1><p>This tutorial demonstrates use of <a href="https://github.com/vivarium-collective/bigraph-viz">bigraph-viz</a>, a visualization tool for bigraph composition schema. The tutorial starts with a single <code>store</code> and increases in detail as you scroll towards the bottom.</p>
 <p>Compositional Bigraph Schemas (CBS) are based on a mathematical formalism <a href="https://www.google.com/search?q=the+space+and+motion+of+communicating+agents+by+robin+milner">introduced by Robin Milner in 2009</a>, and used in Vivarium. Bigraphs consist of networks with embeddable nodes that can be placed within other nodes and dynamically restructured. CBS reimagines the bigraph concept. Variables are contained within Stores (the circles in the figure), which can be embedded in a hierarchy, as shown by the dark edges. Instead of Milner's hyperedges, CBS employs Processes (the rectangles) which connect via wires (dashed edges) to shared variables within the Stores. Processes and Stores form a type of bipartite graph, as illustrated by the dashed edges.</p>
 <p>Bigraphs consist of a Place Graph, or Forest:</p>
-<p><img src="https://github.com/vivarium-collective/bigraph-viz/blob/main/doc/_static/cell_structure_function.png?raw=true" alt="forest" /></p>
+<img src="https://github.com/vivarium-collective/bigraph-viz/blob/main/doc/_static/forest.png?raw=true" width="200" alt="forest">
+<p>And a Hypergraph:</p>
+<img src="https://github.com/vivarium-collective/bigraph-viz/blob/main/doc/_static/hypergraph.png?raw=true" width="350" alt="hypergraph">
+<p>Which combined make a Bigraph, with nodes embedded within nodes:</p>
+<img src="https://github.com/vivarium-collective/bigraph-viz/blob/main/doc/_static/bigraph.png?raw=true" width="350" alt="bigraph">
+<p>This is extended to make a Process Bigraph by placing a process at each hyperedge's vertex:</p>
+<img src="https://github.com/vivarium-collective/bigraph-viz/blob/main/doc/_static/process_bigraph.png?raw=true" width="350" alt="bigraph">
 
 </div>
 </div>
