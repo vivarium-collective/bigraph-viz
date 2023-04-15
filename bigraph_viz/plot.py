@@ -165,7 +165,9 @@ def get_graphviz_bigraph(
     hyper_edge_spec = {
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'dot', 'arrowsize': '0.5'}
     if collapse_processes:
-        process_node_spec = {'style': 'invis', 'width': '0', 'constraint': 'false'}
+        process_node_spec = {
+            'shape': 'circle', 'width': '0', 'height': '0', 'constraint': 'false', 'color': 'transparent',
+        }
         hyper_edge_spec['arrowhead'] = 'none'
 
     # initialize graph
@@ -219,11 +221,6 @@ def get_graphviz_bigraph(
         node_name = str(node_path)
         node_names.append(node_name)
         label = make_label(node_path[-1])
-        if collapse_processes:
-            # # add a label node
-            # label_node_name = f'{node_name}_label'
-            # graph.node(label_node_name, label=label, shape='none', style='solid', width='0', fontsize=node_label_size)
-            label = ''
 
         # composite processes have sub-nodes
         composite_process = False
@@ -234,11 +231,10 @@ def get_graphviz_bigraph(
             # composite processes gets a double box
             graph.node(node_name, label=label, peripheries='2')
         else:
-            graph.node(node_name, label=label)
-        # if collapse_processes:
-        #     # connect label node
-        #     label_node_name = f'{node_name}_label'
-        #     graph.edge(node_name, label_node_name, style='invis', len='0')
+            if collapse_processes:
+                graph.node(node_name, label='', xlabel=label)
+            else:
+                graph.node(node_name, label=label)
 
     # place edges
     graph.attr('edge', arrowhead='none', penwidth='2')
