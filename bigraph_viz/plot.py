@@ -144,7 +144,6 @@ def get_graphviz_bigraph(
         collapse_processes=False,
         port_labels=True,
         port_label_size='10pt',
-        engine='dot',
         rankdir='TB',
         dpi='70',
         node_border_colors=None,
@@ -171,7 +170,7 @@ def get_graphviz_bigraph(
 
     # initialize graph
     graph_name = 'bigraph'
-    graph = graphviz.Digraph(graph_name, engine=engine)
+    graph = graphviz.Digraph(graph_name, engine='dot')
     graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi)
 
     # check if multiple layers
@@ -320,10 +319,15 @@ def get_graphviz_bigraph(
         group_name = str(group)
         with graph.subgraph(name=group_name) as c:
             c.attr(rank='same')
+            previous_node = None
             for path in group:
                 node_name = str(path)
                 if node_name in node_names:
                     c.node(node_name)
+                    if previous_node:
+                        # out them in the order declared in the group
+                        c.edge(previous_node, node_name, style='invis', ordering='out')
+                    previous_node = node_name
                 else:
                     print(f'node {node_name} not in graph')
 
@@ -347,7 +351,6 @@ def plot_bigraph(
         collapse_processes=False,
         port_labels=True,
         port_label_size='10pt',
-        engine='dot',
         rankdir='TB',
         node_border_colors=None,
         node_fill_colors=None,
@@ -372,7 +375,6 @@ def plot_bigraph(
         collapse_processes (bool, optional): Collapse rectangular process nodes to a hyperedge vertex. Default is False.
         port_labels (bool, optional): Turn on port labels. Default is True.
         port_label_size (str, optional): The font size of the port labels (example: '10pt'). Default is None.
-        engine (str, optional): Graphviz graphing engine. Try 'dot' or 'neato'. Default is 'dot'.
         rankdir (str, optional): Sets direction of graph layout. 'TB'=top-to-bottom, 'LR'=left-to-right.
             Default is 'TB'.
         node_border_colors (dict, optional): Colors of node borders, with node path tuples mapped to the node color as
