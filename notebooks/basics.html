@@ -15116,14 +15116,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 </div>
-<div id="cell-id=78a01661-fc8c-4e62-8c49-ac06414e5c81" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div id="cell-id=6b921570-28ac-489f-aebb-337061a83d46" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Compositional Bigraph Schemas (CBS) are based on a mathematical formalism <a href="https://www.google.com/search?q=the+space+and+motion+of+communicating+agents+by+robin+milner">introduced by Robin Milner in 2009</a>, and used in Vivarium. bigraphs provide a powerful framework for compositional modeling due to their ability to represent complex systems through hierarchical structures and flexible reconfigurations, thus enabling the seamless composition and decomposition of system components. CBS reimagines the bigraph concept. Variables are contained within Stores (the circles in the figure), which can be embedded in a hierarchy, as shown by the dark edges. Instead of Milner's hyperedges, CBS employs Processes (the rectangles) which connect via wires (dashed edges) to shared variables within the Stores. Processes and Stores form a type of bipartite graph, as illustrated by the dashed edges.</p>
-<p>Bigraphs consist of a Place Graph (or Forest) shown on the left, and a Hypyergraph on the right:</p>
+<h3 id="Imports-and-settings">Imports and settings<a class="anchor-link" href="#Imports-and-settings">&#182;</a></h3><p>The main function from bigraph-viz is <code>plot_bigraph</code> for plotting the bigraph structure. <code>plot_flow</code> and <code>plot_multitimestep</code> make plots of process orchestration. We will first briefly introduce Bigraphs, and then look at the operation of these functions from bigraph-viz.</p>
 
 </div>
 </div>
@@ -15133,7 +15132,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bigraph_viz</span> <span class="kn">import</span> <span class="n">plot_bigraph</span><span class="p">,</span> <span class="n">plot_flow</span><span class="p">,</span> <span class="n">plot_multitimestep</span>
@@ -15154,79 +15153,53 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
-</div><div id="cell-id=8c6bdf9c-39d1-492a-b24f-9e963380b098" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+</div>
+<div id="cell-id=78a01661-fc8c-4e62-8c49-ac06414e5c81" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">forest</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;v0&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;v1&#39;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="s1">&#39;v2&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;v3&#39;</span><span class="p">:</span> <span class="p">{}</span>
-        <span class="p">},</span>
-    <span class="p">},</span>
-    <span class="s1">&#39;v4&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;v5&#39;</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="p">},</span>
-<span class="p">}</span>
-<span class="n">forest</span> <span class="o">=</span> <span class="n">plot_bigraph</span><span class="p">(</span><span class="n">forest</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;forest&#39;</span><span class="p">)</span>
-</pre></div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h3 id="Bigraphs-Introduction">Bigraphs Introduction<a class="anchor-link" href="#Bigraphs-Introduction">&#182;</a></h3><p>Compositional Bigraph Schemas (CBS) are based on a mathematical formalism <a href="https://www.google.com/search?q=the+space+and+motion+of+communicating+agents+by+robin+milner">introduced by Robin Milner in 2009</a>, and used in Vivarium. Bigraphs provide a powerful framework for compositional modeling due to their ability to represent complex systems through hierarchical structures and flexible reconfigurations, thus enabling the seamless composition and decomposition of system components.</p>
+<p>The bigraph combines two distinct graph structures: the place graph and the hypergraph.</p>
+<p><strong>Place graph</strong> (on the left): The place graph represents the spatial aspect of a system, capturing the hierarchical containment of entities within other entities. In the place graph, nodes represent entities, and edges represent the containment relationships between them -- these are shown as solid connections with outers above and inners below.</p>
+<p><strong>Hypergraph</strong> (on the right): The hypergraph represents the connectivity aspect of a system, capturing how entities link or interact with each other. In the hypergraph, nodes represent entities, while hyperedges capture the relationships between these entities. Unlike traditional graph edges, which connect two nodes, hyperedges can connect any number of nodes.</p>
 
-     </div>
 </div>
 </div>
 </div>
-
 </div><div id="cell-id=5ddbcf7e-75a9-4d79-9f3d-94fc455d67d9" class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">hypergraph</span> <span class="o">=</span> <span class="p">{</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">placegraph</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;v0&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;v1&#39;</span><span class="p">:</span> <span class="p">{},</span><span class="s1">&#39;v2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;v3&#39;</span><span class="p">:</span> <span class="p">{}}},</span> <span class="s1">&#39;v4&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;v5&#39;</span><span class="p">:</span> <span class="p">{}}}</span>
+<span class="n">placegraph</span> <span class="o">=</span> <span class="n">plot_bigraph</span><span class="p">(</span><span class="n">placegraph</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;placegraph&#39;</span><span class="p">)</span>
+
+<span class="n">hypergraph</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;e0&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;e0.0&#39;</span><span class="p">:</span> <span class="s1">&#39;v0&#39;</span><span class="p">,</span>
             <span class="s1">&#39;e0.1&#39;</span><span class="p">:</span> <span class="s1">&#39;v1&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;e0.2&#39;</span><span class="p">:</span> <span class="s1">&#39;v4&#39;</span><span class="p">,</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
+            <span class="s1">&#39;e0.2&#39;</span><span class="p">:</span> <span class="s1">&#39;v4&#39;</span><span class="p">}},</span>
     <span class="s1">&#39;e1&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;e0.0&#39;</span><span class="p">:</span> <span class="s1">&#39;v3&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;e0.1&#39;</span><span class="p">:</span> <span class="s1">&#39;v1&#39;</span><span class="p">,</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
+            <span class="s1">&#39;e0.1&#39;</span><span class="p">:</span> <span class="s1">&#39;v1&#39;</span><span class="p">}},</span>
     <span class="s1">&#39;e2&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;e0.0&#39;</span><span class="p">:</span> <span class="s1">&#39;v3&#39;</span><span class="p">,</span>
             <span class="s1">&#39;e0.1&#39;</span><span class="p">:</span> <span class="s1">&#39;v4&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;e0.2&#39;</span><span class="p">:</span> <span class="s1">&#39;v5&#39;</span><span class="p">,</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
-<span class="p">}</span>
-<span class="n">flat</span> <span class="o">=</span> <span class="p">{</span>    
-    <span class="s1">&#39;v0&#39;</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="s1">&#39;v1&#39;</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="s1">&#39;v2&#39;</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="s1">&#39;v3&#39;</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="s1">&#39;v4&#39;</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="s1">&#39;v5&#39;</span><span class="p">:</span> <span class="p">{},</span>
-<span class="p">}</span>
-<span class="n">flat</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">hypergraph</span><span class="p">)</span>
+            <span class="s1">&#39;e0.2&#39;</span><span class="p">:</span> <span class="s1">&#39;v5&#39;</span><span class="p">}},</span>   
+    <span class="s1">&#39;v0&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;v1&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;v2&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;v3&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;v4&#39;</span><span class="p">:</span> <span class="p">{},</span> <span class="s1">&#39;v5&#39;</span><span class="p">:</span> <span class="p">{}}</span>
 <span class="n">node_groups</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[(</span><span class="s1">&#39;v1&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;e0&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;v4&#39;</span><span class="p">,)],</span>
-    <span class="p">[(</span><span class="s1">&#39;e1&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;v5&#39;</span><span class="p">,)],</span>
-    <span class="p">[(</span><span class="s1">&#39;v3&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;e2&#39;</span><span class="p">,)],</span>
-<span class="p">]</span>
-<span class="c1"># process_hypergraph = plot_bigraph(flat, node_groups=node_groups, **plot_settings, filename=&#39;process_hypergraph&#39;)</span>
-<span class="n">process_hypergraph</span> <span class="o">=</span> <span class="n">plot_bigraph</span><span class="p">(</span><span class="n">flat</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">collapse_processes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">node_groups</span><span class="o">=</span><span class="n">node_groups</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hypergraph&#39;</span><span class="p">)</span>
+    <span class="p">[(</span><span class="s1">&#39;e1&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;v5&#39;</span><span class="p">,)],[(</span><span class="s1">&#39;v3&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;e2&#39;</span><span class="p">,)]]</span>
+<span class="n">process_hypergraph</span> <span class="o">=</span> <span class="n">plot_bigraph</span><span class="p">(</span>
+    <span class="n">hypergraph</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">collapse_processes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">node_groups</span><span class="o">=</span><span class="n">node_groups</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hypergraph&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15239,12 +15212,13 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display_svg</span><span class="p">,</span> <span class="n">SVG</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+
 <span class="c1"># Render both graphs to SVG</span>
-<span class="n">svg1</span> <span class="o">=</span> <span class="n">forest</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+<span class="n">svg1</span> <span class="o">=</span> <span class="n">placegraph</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 <span class="n">svg2</span> <span class="o">=</span> <span class="n">process_hypergraph</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;svg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 
 <span class="c1"># Combine SVGs side by side using an HTML table and display</span>
@@ -15490,7 +15464,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Which combined make a Bigraph, with nodes embedded within nodes:</p>
+<p><strong>Bigraph.</strong> The bigraph is formed by combining the place graph and the hypergraph in a way that maintains their respective structures while relating them through a shared set of nodes. In a bigraph, nodes are shared between the place graph and the hypergraph, thus capturing both spatial containment and connectivity relationships between entities.</p>
 
 </div>
 </div>
@@ -15500,45 +15474,35 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">bigraph</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;v0&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;v1&#39;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="s1">&#39;v2&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;v3&#39;</span><span class="p">:</span> <span class="p">{}</span>
-        <span class="p">},</span>
-    <span class="p">},</span>
+            <span class="s1">&#39;v3&#39;</span><span class="p">:</span> <span class="p">{}}},</span>
     <span class="s1">&#39;v4&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;v5&#39;</span><span class="p">:</span> <span class="p">{},</span>
-    <span class="p">},</span>
+        <span class="s1">&#39;v5&#39;</span><span class="p">:</span> <span class="p">{}},</span>
         <span class="s1">&#39;e0&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;e0.0&#39;</span><span class="p">:</span> <span class="s1">&#39;v0&#39;</span><span class="p">,</span>
             <span class="s1">&#39;e0.1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;v0&#39;</span><span class="p">,</span> <span class="s1">&#39;v1&#39;</span><span class="p">),</span>
-            <span class="s1">&#39;e0.2&#39;</span><span class="p">:</span> <span class="s1">&#39;v4&#39;</span><span class="p">,</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
+            <span class="s1">&#39;e0.2&#39;</span><span class="p">:</span> <span class="s1">&#39;v4&#39;</span><span class="p">}},</span>
     <span class="s1">&#39;e1&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;e0.0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;v0&#39;</span><span class="p">,</span> <span class="s1">&#39;v2&#39;</span><span class="p">,</span> <span class="s1">&#39;v3&#39;</span><span class="p">),</span>
-            <span class="s1">&#39;e0.1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;v0&#39;</span><span class="p">,</span> <span class="s1">&#39;v1&#39;</span><span class="p">),</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
+            <span class="s1">&#39;e0.1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;v0&#39;</span><span class="p">,</span> <span class="s1">&#39;v1&#39;</span><span class="p">)}},</span>
     <span class="s1">&#39;e2&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;e0.0&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;v0&#39;</span><span class="p">,</span> <span class="s1">&#39;v2&#39;</span><span class="p">,</span> <span class="s1">&#39;v3&#39;</span><span class="p">),</span>
             <span class="s1">&#39;e0.1&#39;</span><span class="p">:</span> <span class="s1">&#39;v4&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;e0.2&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;v4&#39;</span><span class="p">,</span> <span class="s1">&#39;v5&#39;</span><span class="p">),</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
-<span class="p">}</span>
+            <span class="s1">&#39;e0.2&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;v4&#39;</span><span class="p">,</span> <span class="s1">&#39;v5&#39;</span><span class="p">)}}}</span>
 <span class="n">node_groups2</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">[(</span><span class="s1">&#39;v0&#39;</span><span class="p">,</span> <span class="s1">&#39;v1&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;e0&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;v0&#39;</span><span class="p">,</span> <span class="s1">&#39;v2&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;e2&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;v4&#39;</span><span class="p">,</span> <span class="s1">&#39;v5&#39;</span><span class="p">,),</span> <span class="p">],</span>
-    <span class="p">[(</span><span class="s1">&#39;e1&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;v0&#39;</span><span class="p">,</span> <span class="s1">&#39;v2&#39;</span><span class="p">,</span> <span class="s1">&#39;v3&#39;</span><span class="p">),],</span>
-<span class="p">]</span>
-<span class="n">plot_bigraph</span><span class="p">(</span><span class="n">bigraph</span><span class="p">,</span> <span class="n">node_groups</span><span class="o">=</span><span class="n">node_groups2</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">collapse_processes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;bigraph&#39;</span><span class="p">)</span>
+    <span class="p">[(</span><span class="s1">&#39;v0&#39;</span><span class="p">,</span> <span class="s1">&#39;v1&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;e0&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;v0&#39;</span><span class="p">,</span> <span class="s1">&#39;v2&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;e2&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;v4&#39;</span><span class="p">,</span> <span class="s1">&#39;v5&#39;</span><span class="p">,)],</span> 
+    <span class="p">[(</span><span class="s1">&#39;e1&#39;</span><span class="p">,),</span> <span class="p">(</span><span class="s1">&#39;v0&#39;</span><span class="p">,</span> <span class="s1">&#39;v2&#39;</span><span class="p">,</span> <span class="s1">&#39;v3&#39;</span><span class="p">),]]</span>
+<span class="n">plot_bigraph</span><span class="p">(</span>
+    <span class="n">bigraph</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">node_groups</span><span class="o">=</span><span class="n">node_groups2</span><span class="p">,</span> <span class="n">port_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">collapse_processes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;bigraph&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15554,7 +15518,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
 
 
 
@@ -15564,135 +15528,127 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <!-- Generated by graphviz version 7.1.0 (20230121.1956)
  -->
 <!-- Title: bigraph Pages: 1 -->
-<svg width="253pt" height="212pt" viewBox="0.00 0.00 260.00 218.00">
-<g id="graph0" class="graph" transform="scale(0.972222 0.972222) rotate(0) translate(4 214)">
+<svg width="187pt" height="191pt" viewBox="0.00 0.00 192.00 196.00">
+<g id="graph0" class="graph" transform="scale(0.972222 0.972222) rotate(0) translate(4 192)">
 <title>bigraph</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-214 256,-214 256,4 -4,4"></polygon>
+<polygon fill="white" stroke="none" points="-4,4 -4,-192 188,-192 188,4 -4,4"></polygon>
 <!-- (&amp;#39;v0&amp;#39;,) -->
 <g id="node1" class="node">
 <title>(&#39;v0&#39;,)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="72" cy="-188" rx="18" ry="18"></ellipse>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="72" cy="-188" rx="22" ry="22"></ellipse>
-<text text-anchor="start" x="65.5" y="-184.9" font-family="Times,serif" font-size="12.00">v0</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="55" cy="-166" rx="18" ry="18"></ellipse>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="55" cy="-166" rx="22" ry="22"></ellipse>
+<text text-anchor="start" x="48.5" y="-162.9" font-family="Times,serif" font-size="12.00">v0</text>
 </g>
 <!-- (&amp;#39;v0&amp;#39;, &amp;#39;v1&amp;#39;) -->
 <g id="node2" class="node">
 <title>(&#39;v0&#39;, &#39;v1&#39;)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="18" cy="-101" rx="18" ry="18"></ellipse>
-<text text-anchor="start" x="11.5" y="-97.9" font-family="Times,serif" font-size="12.00">v1</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="18" cy="-90" rx="18" ry="18"></ellipse>
+<text text-anchor="start" x="11.5" y="-86.9" font-family="Times,serif" font-size="12.00">v1</text>
 </g>
 <!-- (&amp;#39;v0&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;v0&amp;#39;, &amp;#39;v1&amp;#39;) -->
 <g id="edge2" class="edge">
 <title>(&#39;v0&#39;,)&#45;&gt;(&#39;v0&#39;, &#39;v1&#39;)</title>
-<path fill="none" stroke="black" stroke-width="2" d="M60.28,-168.56C50.54,-153.22 36.85,-131.67 27.71,-117.28"></path>
+<path fill="none" stroke="black" stroke-width="2" d="M45.28,-145.56C39.28,-133.57 31.69,-118.37 26.03,-107.07"></path>
 </g>
 <!-- (&amp;#39;v0&amp;#39;, &amp;#39;v2&amp;#39;) -->
 <g id="node3" class="node">
 <title>(&#39;v0&#39;, &#39;v2&#39;)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="126" cy="-101" rx="18" ry="18"></ellipse>
-<text text-anchor="start" x="119.5" y="-97.9" font-family="Times,serif" font-size="12.00">v2</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="92" cy="-90" rx="18" ry="18"></ellipse>
+<text text-anchor="start" x="85.5" y="-86.9" font-family="Times,serif" font-size="12.00">v2</text>
 </g>
 <!-- (&amp;#39;v0&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;v0&amp;#39;, &amp;#39;v2&amp;#39;) -->
 <g id="edge3" class="edge">
 <title>(&#39;v0&#39;,)&#45;&gt;(&#39;v0&#39;, &#39;v2&#39;)</title>
-<path fill="none" stroke="black" stroke-width="2" d="M83.72,-168.56C93.46,-153.22 107.15,-131.67 116.29,-117.28"></path>
+<path fill="none" stroke="black" stroke-width="2" d="M64.72,-145.56C70.72,-133.57 78.31,-118.37 83.97,-107.07"></path>
 </g>
 <!-- (&amp;#39;e0&amp;#39;,) -->
 <g id="node7" class="node">
 <title>(&#39;e0&#39;,)</title>
-<ellipse fill="none" stroke="none" stroke-width="2" cx="72" cy="-101" rx="0.5" ry="0.5"></ellipse>
-<text text-anchor="start" x="59.5" y="-90.9" font-family="Times,serif" font-size="12.00">e0</text>
+<ellipse fill="none" stroke="none" stroke-width="2" cx="55" cy="-90" rx="0.5" ry="0.5"></ellipse>
+<text text-anchor="start" x="42.5" y="-93.9" font-family="Times,serif" font-size="12.00">e0</text>
 </g>
 <!-- (&amp;#39;v0&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;e0&amp;#39;,) -->
 <g id="edge5" class="edge">
 <title>(&#39;v0&#39;,)&#45;&gt;(&#39;e0&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M72,-165.11C72,-141.5 72,-106.69 72,-102.43"></path>
-<text text-anchor="start" x="72" y="-140" font-family="Times,serif" font-size="10.00">e0.0</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M55,-143.2C55,-122.73 55,-94.76 55,-91.35"></path>
 </g>
 <!-- (&amp;#39;v0&amp;#39;, &amp;#39;v1&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;e0&amp;#39;,) -->
 <g id="edge6" class="edge">
 <title>(&#39;v0&#39;, &#39;v1&#39;)&#45;&gt;(&#39;e0&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M36.89,-101C50.03,-101 65.99,-101 70.66,-101"></path>
-<text text-anchor="start" x="44.75" y="-107" font-family="Times,serif" font-size="10.00">e0.1</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M31.88,-77.34C39.34,-74.62 46.81,-78.49 54.28,-88.97"></path>
 </g>
 <!-- (&amp;#39;v0&amp;#39;, &amp;#39;v1&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;e0&amp;#39;,) -->
 <!-- (&amp;#39;e1&amp;#39;,) -->
 <g id="node8" class="node">
 <title>(&#39;e1&#39;,)</title>
-<ellipse fill="none" stroke="none" stroke-width="2" cx="72" cy="-18" rx="0.5" ry="0.5"></ellipse>
-<text text-anchor="start" x="59.5" y="-21.9" font-family="Times,serif" font-size="12.00">e1</text>
+<ellipse fill="none" stroke="none" stroke-width="2" cx="55" cy="-18" rx="0.5" ry="0.5"></ellipse>
+<text text-anchor="start" x="42.5" y="-21.9" font-family="Times,serif" font-size="12.00">e1</text>
 </g>
 <!-- (&amp;#39;v0&amp;#39;, &amp;#39;v1&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;e1&amp;#39;,) -->
 <g id="edge9" class="edge">
 <title>(&#39;v0&#39;, &#39;v1&#39;)&#45;&gt;(&#39;e1&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M27.9,-85.14C43.01,-62.49 70.23,-21.65 71.92,-19.12"></path>
-<text text-anchor="start" x="49" y="-57" font-family="Times,serif" font-size="10.00">e0.1</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M26.4,-73.12C36.63,-53.75 52.82,-23.13 54.8,-19.38"></path>
 </g>
 <!-- (&amp;#39;v0&amp;#39;, &amp;#39;v2&amp;#39;, &amp;#39;v3&amp;#39;) -->
 <g id="node4" class="node">
 <title>(&#39;v0&#39;, &#39;v2&#39;, &#39;v3&#39;)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="126" cy="-18" rx="18" ry="18"></ellipse>
-<text text-anchor="start" x="119.5" y="-14.9" font-family="Times,serif" font-size="12.00">v3</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="92" cy="-18" rx="18" ry="18"></ellipse>
+<text text-anchor="start" x="85.5" y="-14.9" font-family="Times,serif" font-size="12.00">v3</text>
 </g>
 <!-- (&amp;#39;v0&amp;#39;, &amp;#39;v2&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;v0&amp;#39;, &amp;#39;v2&amp;#39;, &amp;#39;v3&amp;#39;) -->
 <g id="edge1" class="edge">
 <title>(&#39;v0&#39;, &#39;v2&#39;)&#45;&gt;(&#39;v0&#39;, &#39;v2&#39;, &#39;v3&#39;)</title>
-<path fill="none" stroke="black" stroke-width="2" d="M126,-82.02C126,-68.6 126,-50.34 126,-36.93"></path>
+<path fill="none" stroke="black" stroke-width="2" d="M92,-71.34C92,-60.81 92,-47.47 92,-36.9"></path>
 </g>
 <!-- (&amp;#39;e2&amp;#39;,) -->
 <g id="node9" class="node">
 <title>(&#39;e2&#39;,)</title>
-<ellipse fill="none" stroke="none" stroke-width="2" cx="180" cy="-101" rx="0.5" ry="0.5"></ellipse>
-<text text-anchor="start" x="167.5" y="-104.9" font-family="Times,serif" font-size="12.00">e2</text>
+<ellipse fill="none" stroke="none" stroke-width="2" cx="129" cy="-90" rx="0.5" ry="0.5"></ellipse>
+<text text-anchor="start" x="116.5" y="-93.9" font-family="Times,serif" font-size="12.00">e2</text>
 </g>
 <!-- (&amp;#39;v0&amp;#39;, &amp;#39;v2&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;e2&amp;#39;,) -->
 <!-- (&amp;#39;v0&amp;#39;, &amp;#39;v2&amp;#39;, &amp;#39;v3&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;e1&amp;#39;,) -->
 <g id="edge8" class="edge">
 <title>(&#39;v0&#39;, &#39;v2&#39;, &#39;v3&#39;)&#45;&gt;(&#39;e1&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M107.26,-18C94.09,-18 78.01,-18 73.33,-18"></path>
-<text text-anchor="start" x="81.25" y="-24" font-family="Times,serif" font-size="10.00">e0.0</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M73.11,-17.63C67.56,-17.63 62,-17.74 56.45,-17.94"></path>
 </g>
 <!-- (&amp;#39;v0&amp;#39;, &amp;#39;v2&amp;#39;, &amp;#39;v3&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;e2&amp;#39;,) -->
 <g id="edge10" class="edge">
 <title>(&#39;v0&#39;, &#39;v2&#39;, &#39;v3&#39;)&#45;&gt;(&#39;e2&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M135.84,-33.76C150.75,-56.12 177.57,-96.35 179.85,-99.77"></path>
-<text text-anchor="start" x="156" y="-57" font-family="Times,serif" font-size="10.00">e0.0</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M100.42,-34.92C110.59,-54.18 126.63,-84.52 128.76,-88.55"></path>
 </g>
 <!-- (&amp;#39;v4&amp;#39;,) -->
 <g id="node5" class="node">
 <title>(&#39;v4&#39;,)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="180" cy="-188" rx="18" ry="18"></ellipse>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="180" cy="-188" rx="22" ry="22"></ellipse>
-<text text-anchor="start" x="173.5" y="-184.9" font-family="Times,serif" font-size="12.00">v4</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="129" cy="-166" rx="18" ry="18"></ellipse>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="129" cy="-166" rx="22" ry="22"></ellipse>
+<text text-anchor="start" x="122.5" y="-162.9" font-family="Times,serif" font-size="12.00">v4</text>
 </g>
 <!-- (&amp;#39;v4&amp;#39;, &amp;#39;v5&amp;#39;) -->
 <g id="node6" class="node">
 <title>(&#39;v4&#39;, &#39;v5&#39;)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="234" cy="-101" rx="18" ry="18"></ellipse>
-<text text-anchor="start" x="227.5" y="-97.9" font-family="Times,serif" font-size="12.00">v5</text>
+<ellipse fill="none" stroke="black" stroke-width="2" cx="166" cy="-90" rx="18" ry="18"></ellipse>
+<text text-anchor="start" x="159.5" y="-86.9" font-family="Times,serif" font-size="12.00">v5</text>
 </g>
 <!-- (&amp;#39;v4&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;v4&amp;#39;, &amp;#39;v5&amp;#39;) -->
 <g id="edge4" class="edge">
 <title>(&#39;v4&#39;,)&#45;&gt;(&#39;v4&#39;, &#39;v5&#39;)</title>
-<path fill="none" stroke="black" stroke-width="2" d="M191.72,-168.56C201.46,-153.22 215.15,-131.67 224.29,-117.28"></path>
+<path fill="none" stroke="black" stroke-width="2" d="M138.72,-145.56C144.72,-133.57 152.31,-118.37 157.97,-107.07"></path>
 </g>
 <!-- (&amp;#39;v4&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;e0&amp;#39;,) -->
 <g id="edge7" class="edge">
 <title>(&#39;v4&#39;,)&#45;&gt;(&#39;e0&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M162.65,-173.34C133.55,-150.44 77.57,-106.38 72.39,-102.3"></path>
-<text text-anchor="start" x="129" y="-140" font-family="Times,serif" font-size="10.00">e0.2</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M111.34,-151.77C97.66,-140.97 78.79,-124.79 65,-108 60.13,-102.07 56.13,-93.5 55.2,-91.45"></path>
 </g>
 <!-- (&amp;#39;v4&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;e2&amp;#39;,) -->
 <g id="edge11" class="edge">
 <title>(&#39;v4&#39;,)&#45;&gt;(&#39;e2&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M180,-165.11C180,-141.5 180,-106.69 180,-102.43"></path>
-<text text-anchor="start" x="180" y="-140" font-family="Times,serif" font-size="10.00">e0.1</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M129,-143.2C129,-122.73 129,-94.76 129,-91.35"></path>
 </g>
 <!-- (&amp;#39;v4&amp;#39;, &amp;#39;v5&amp;#39;)&amp;#45;&amp;gt;(&amp;#39;e2&amp;#39;,) -->
 <g id="edge12" class="edge">
 <title>(&#39;v4&#39;, &#39;v5&#39;)&#45;&gt;(&#39;e2&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M215.26,-101C202.09,-101 186.01,-101 181.33,-101"></path>
-<text text-anchor="start" x="189.25" y="-107" font-family="Times,serif" font-size="10.00">e0.2</text>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M147.11,-89.63C141.56,-89.63 136,-89.74 130.45,-89.94"></path>
 </g>
 <!-- (&amp;#39;e0&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;v0&amp;#39;, &amp;#39;v2&amp;#39;) -->
 <!-- (&amp;#39;e1&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;v0&amp;#39;, &amp;#39;v2&amp;#39;, &amp;#39;v3&amp;#39;) -->
@@ -15715,7 +15671,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>This is extended to make a Process Bigraph by placing a process at each hyperedge's vertex:</p>
+<p><strong>Process Bigraph.</strong> CBS reimagines the bigraph with what we will call a <em>Process Bigraph</em>. Variables are contained in Stores (circles), which can be embedded in the place graph hierarchy, represented by the dark edges. Instead of hyperedges, CBS employs Processes (the rectangles) which have ports (solid black dots) connect via wires (dashed edges) to  variables within the Stores. Processes are functions that read and write to variables through their ports. They can be used to rewrite the bigraph by adding new structure and new processes.</p>
 
 </div>
 </div>
@@ -15725,7 +15681,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_bigraph</span><span class="p">(</span><span class="n">bigraph</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;process_bigraph&#39;</span><span class="p">)</span>
@@ -15744,7 +15700,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
 
 
 
@@ -15908,8 +15864,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Bigraph-viz">Bigraph-viz<a class="anchor-link" href="#Bigraph-viz">&#182;</a></h2><h3 id="Imports-and-settings">Imports and settings<a class="anchor-link" href="#Imports-and-settings">&#182;</a></h3><p>The main function from bigraph-viz is <code>plot_bigraph</code> for plotting the bigraph structure. <code>plot_flow</code> and <code>plot_multitimestep</code> make plots of process orchestration.</p>
-
+<h2 id="Bigraph-viz">Bigraph-viz<a class="anchor-link" href="#Bigraph-viz">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -15918,7 +15873,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">plot_bigraph</span><span class="p">)</span>
@@ -16015,7 +15970,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">simple_store_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -16037,7 +15992,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
 
 
 
@@ -16086,7 +16041,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">typed_store_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -16111,7 +16066,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
 
 
 
@@ -16160,7 +16115,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">hierarchy_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -16191,7 +16146,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
 
 
 
@@ -16317,7 +16272,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">process_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -16344,7 +16299,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
 
 
 
@@ -16407,7 +16362,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">process_schema</span> <span class="o">=</span> <span class="p">{</span>
@@ -16438,7 +16393,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
 
 
 
@@ -16546,7 +16501,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">connected_process_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -16582,7 +16537,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
 
 
 
@@ -16653,109 +16608,6 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 </div>
 
 </div>
-<div id="cell-id=8a7f2769-7a83-44bd-9bf6-1e40fae89f1c" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Processes-are-hyperedges">Processes are hyperedges<a class="anchor-link" href="#Processes-are-hyperedges">&#182;</a></h3><p>When we collapse processes from the graph, their connections become hyperedges, and the Process Bigraph can be depicted as a standard Milner Bigraph</p>
-
-</div>
-</div>
-</div>
-</div><div id="cell-id=f00bb63a-494c-476e-ac76-0c796baec828" class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_bigraph</span><span class="p">(</span><span class="n">connected_process_spec</span><span class="p">,</span> <span class="n">collapse_processes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hyperedge&#39;</span><span class="p">)</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
-
-
-
-<div class="jp-RenderedSVG jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="image/svg+xml">
-<!--?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?-->
-
-<!-- Generated by graphviz version 7.1.0 (20230121.1956)
- -->
-<!-- Title: bigraph Pages: 1 -->
-<svg width="180pt" height="100pt" viewBox="0.00 0.00 184.78 102.78">
-<g id="graph0" class="graph" transform="scale(0.972222 0.972222) rotate(0) translate(4 98.78)">
-<title>bigraph</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-98.78 180.78,-98.78 180.78,4 -4,4"></polygon>
-<!-- (&amp;#39;node1&amp;#39;,) -->
-<g id="node1" class="node">
-<title>(&#39;node1&#39;,)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="23.39" cy="-71.39" rx="23.29" ry="23.29"></ellipse>
-<text text-anchor="start" x="8.39" y="-68.29" font-family="Times,serif" font-size="12.00">node1</text>
-</g>
-<!-- (&amp;#39;process1&amp;#39;,) -->
-<g id="node4" class="node">
-<title>(&#39;process1&#39;,)</title>
-<ellipse fill="none" stroke="none" stroke-width="2" cx="88.39" cy="-0.5" rx="0.5" ry="0.5"></ellipse>
-<text text-anchor="start" x="45.89" y="-4.4" font-family="Times,serif" font-size="12.00">process1</text>
-</g>
-<!-- (&amp;#39;node1&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;process1&amp;#39;,) -->
-<g id="edge1" class="edge">
-<title>(&#39;node1&#39;,)&#45;&gt;(&#39;process1&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M35.8,-51.15C42.9,-40.96 52.36,-28.6 62.39,-19 71.28,-10.5 84.52,-3.09 87.69,-1.37"></path>
-<text text-anchor="start" x="62.39" y="-22" font-family="Times,serif" font-size="10.00">port1</text>
-</g>
-<!-- (&amp;#39;node2&amp;#39;,) -->
-<g id="node2" class="node">
-<title>(&#39;node2&#39;,)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="88.39" cy="-71.39" rx="23.29" ry="23.29"></ellipse>
-<text text-anchor="start" x="73.39" y="-68.29" font-family="Times,serif" font-size="12.00">node2</text>
-</g>
-<!-- (&amp;#39;node2&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;process1&amp;#39;,) -->
-<g id="edge2" class="edge">
-<title>(&#39;node2&#39;,)&#45;&gt;(&#39;process1&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M88.39,-47.29C88.39,-28.99 88.39,-5.84 88.39,-1.66"></path>
-<text text-anchor="start" x="88.39" y="-22" font-family="Times,serif" font-size="10.00">port2</text>
-</g>
-<!-- (&amp;#39;node3&amp;#39;,) -->
-<g id="node3" class="node">
-<title>(&#39;node3&#39;,)</title>
-<ellipse fill="none" stroke="black" stroke-width="2" cx="153.39" cy="-71.39" rx="23.29" ry="23.29"></ellipse>
-<text text-anchor="start" x="138.39" y="-68.29" font-family="Times,serif" font-size="12.00">node3</text>
-</g>
-<!-- (&amp;#39;node3&amp;#39;,)&amp;#45;&amp;gt;(&amp;#39;process1&amp;#39;,) -->
-<g id="edge3" class="edge">
-<title>(&#39;node3&#39;,)&#45;&gt;(&#39;process1&#39;,)</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M140.98,-51.15C133.89,-40.96 124.42,-28.6 114.39,-19 105.51,-10.5 92.27,-3.09 89.09,-1.37"></path>
-<text text-anchor="start" x="123.39" y="-22" font-family="Times,serif" font-size="10.00">port3</text>
-</g>
-</g>
-</svg>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
 <div id="cell-id=e037285d-116a-404d-96ec-ba47318a2e8b" class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -16795,7 +16647,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">flat_composite_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -16830,7 +16682,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
 
 
 
@@ -16924,7 +16776,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">nested_composite_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -16966,7 +16818,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
 
 
 
@@ -17092,7 +16944,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">composite_process_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -17139,7 +16991,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
 
 
 
@@ -17281,7 +17133,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plot_settings2</span><span class="o">=</span><span class="p">{}</span>
@@ -17304,7 +17156,8 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Multi-timestepping">Multi-timestepping<a class="anchor-link" href="#Multi-timestepping">&#182;</a></h3>
+<h3 id="Multi-timestepping">Multi-timestepping<a class="anchor-link" href="#Multi-timestepping">&#182;</a></h3><p>Temporal processes can be run by multi-timestepping, with each process updating the state according to its <code>sync_state</code> state, which it can update adaptively.</p>
+
 </div>
 </div>
 </div>
@@ -17313,7 +17166,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">multitimestep_spec</span> <span class="o">=</span> <span class="p">{</span>
@@ -17344,7 +17197,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
 
 
 
@@ -17526,7 +17379,8 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Flows">Flows<a class="anchor-link" href="#Flows">&#182;</a></h3>
+<h3 id="Flows">Flows<a class="anchor-link" href="#Flows">&#182;</a></h3><p>A directed acyclic graph (DAG) – a type of workflow that declares the dependencies between processes. A flow run is not temporal, and the order is entirely based on dependencies. It can triggered between time steps, running the steps in the order as determined by their dependencies.</p>
+
 </div>
 </div>
 </div>
@@ -17535,7 +17389,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">process_schema</span> <span class="o">=</span> <span class="p">{</span>
@@ -17580,7 +17434,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[18]:</div>
 
 
 
@@ -17665,7 +17519,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Multiscale-map-of-a-cell">Multiscale map of a cell<a class="anchor-link" href="#Multiscale-map-of-a-cell">&#182;</a></h3><p>We here plot the multiscale map of a cell from <a href="https://pubmed.ncbi.nlm.nih.gov/34819669/">Qin et al. A multi-scale map of cell structure fusing protein images and interactions. Nature. 2021.</a></p>
+<h3 id="Multiscale-map-of-a-cell">Multiscale map of a cell<a class="anchor-link" href="#Multiscale-map-of-a-cell">&#182;</a></h3><p>Bigraphs can represent the hierarchical nesting of cellular structures. Below is a multiscale map of a cell from <a href="https://pubmed.ncbi.nlm.nih.gov/34819669/">Qin et al. A multi-scale map of cell structure fusing protein images and interactions. Nature. 2021.</a></p>
 
 </div>
 </div>
@@ -17675,7 +17529,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bigraph_viz.dict_utils</span> <span class="kn">import</span> <span class="n">replace_regex_recursive</span>
@@ -17741,7 +17595,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
 
 
 
@@ -18355,7 +18209,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h3 id="Cell-structure-and-function">Cell structure and function<a class="anchor-link" href="#Cell-structure-and-function">&#182;</a></h3><p>Bigraphs can represent the hierarchical nesting of cellular structures, and processes represent their functions.</p>
+<h3 id="Cell-structure-and-function">Cell structure and function<a class="anchor-link" href="#Cell-structure-and-function">&#182;</a></h3><p>Processes represent their functions, we show a more minimal cell structure with added processes.</p>
 
 </div>
 </div>
@@ -18365,7 +18219,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cell_struct_func</span> <span class="o">=</span> <span class="p">{</span>
@@ -18441,7 +18295,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
 
 
 
@@ -18665,7 +18519,7 @@ plot_bigraph(bigraph_schema, size=&#39;16,10&#39;, node_label_size=&#39;12pt&#39
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">ecoli</span> <span class="o">=</span> <span class="p">{</span> 
