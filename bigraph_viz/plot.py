@@ -151,6 +151,7 @@ def get_graphviz_bigraph(
         node_groups=False,
         invisible_edges=False,
         remove_process_place_edges=False,
+        nested=False,
 ):
     """make a graphviz figure from a bigraph_network"""
     node_groups = node_groups or []
@@ -183,34 +184,53 @@ def get_graphviz_bigraph(
             multilayer = True
 
     # state nodes
-    graph.attr('node', **state_node_spec)
-    for node in bigraph_network['state_nodes']:
-        node_path = node['path']
-        node_name = str(node_path)
-        node_names.append(node_name)
+    if nested:
+        # get paths
+        state_node_paths = []
+        for node in bigraph_network['state_nodes']:
+            node_path = node['path']
+            # node_name = str(node_path)
+            # node_names.append(node_name)
+            state_node_paths.append(node_path)
 
-        # make the label
-        label = node_path[-1]
-        schema_label = None
-        if show_values:
-            if '_value' in node:
-                if not schema_label:
-                    schema_label = '<br/>'
-                schema_label += f"{node['_value']}"
-        if show_types:
-            if '_type' in node:
-                if not schema_label:
-                    schema_label = '<br/>'
-                schema_label += f"::{node['_type']}"
-        if schema_label:
-            label += schema_label
-        label = make_label(label)
+        # outer nodes have to be subgraphs instead of nodes
+        graph.attr('node', **state_node_spec)
+        for node in bigraph_network['state_nodes']:
+            node_path = node['path']
+            node_name = str(node_path)
+            node_names.append(node_name)
 
-        if len(node_path) == 1 and multilayer:
-            # the top node gets a double circle
-            graph.node(node_name, label=label, peripheries='2')
-        else:
+            # make the label
+            label = make_state_label(node, node_path, show_types, show_values)
+
+            # is a branch?
+            # branch = False
+            for t in state_node_paths:
+                if len(t) > len(node_path) and node_path == t[:len(node_path)]:
+                    # print(f'{node_path} is an outer to {t}')
+                    subnode_name = str(t)
+
+                    nested_subgraph = graphviz.Digraph(node_name)
+                    nested_subgraph.body.append(f'label = "{label}"')
+                    nested_subgraph.node("C1", subnode_name)
+
             graph.node(node_name, label=label)
+
+    else:
+        graph.attr('node', **state_node_spec)
+        for node in bigraph_network['state_nodes']:
+            node_path = node['path']
+            node_name = str(node_path)
+            node_names.append(node_name)
+
+            # make the label
+            label = make_state_label(node, node_path, show_types, show_values)
+
+            if len(node_path) == 1 and multilayer:
+                # the top node gets a double circle
+                graph.node(node_name, label=label, peripheries='2')
+            else:
+                graph.node(node_name, label=label)
 
     # process nodes
     process_paths = []
@@ -237,23 +257,28 @@ def get_graphviz_bigraph(
                 graph.node(node_name, label=label)
 
     # place edges
-    graph.attr('edge', arrowhead='none', penwidth='2')
-    for edge in bigraph_network['place_edges']:
+    if nested:
+        # place edges mean inner nodes are placed WITHIN the outer node
+        pass
 
-        # show edge or not
-        show_edge = True
-        if remove_process_place_edges and edge[1] in process_paths:
-            show_edge = False
-        if edge in invisible_edges:
-            show_edge = False
-        if show_edge:
-            graph.attr('edge', style='filled')
-        else:
-            graph.attr('edge', style='invis')
+    else:
+        graph.attr('edge', arrowhead='none', penwidth='2')
+        for edge in bigraph_network['place_edges']:
 
-        node_name1 = str(edge[0])
-        node_name2 = str(edge[1])
-        graph.edge(node_name1, node_name2)
+            # show edge or not
+            show_edge = True
+            if remove_process_place_edges and edge[1] in process_paths:
+                show_edge = False
+            if edge in invisible_edges:
+                show_edge = False
+            if show_edge:
+                graph.attr('edge', style='filled')
+            else:
+                graph.attr('edge', style='invis')
+
+            node_name1 = str(edge[0])
+            node_name2 = str(edge[1])
+            graph.edge(node_name1, node_name2)
 
     # hyper edges
     graph.attr('edge', **hyper_edge_spec)
@@ -338,6 +363,25 @@ def get_graphviz_bigraph(
     return graph
 
 
+def make_state_label(node, node_path, show_types, show_values):
+    label = node_path[-1]
+    schema_label = None
+    if show_values:
+        if '_value' in node:
+            if not schema_label:
+                schema_label = '<br/>'
+            schema_label += f"{node['_value']}"
+    if show_types:
+        if '_type' in node:
+            if not schema_label:
+                schema_label = '<br/>'
+            schema_label += f"::{node['_type']}"
+    if schema_label:
+        label += schema_label
+    label = make_label(label)
+    return label
+
+
 def plot_bigraph(
         bigraph_schema,
         size='16,10',
@@ -354,6 +398,7 @@ def plot_bigraph(
         invisible_edges=False,
         remove_process_place_edges=False,
         print_source=False,
+        nested=False,
         dpi='70',
         file_format='png',
         out_dir=None,

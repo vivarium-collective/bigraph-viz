@@ -45,14 +45,14 @@ def test_composite_spec():
                     'port1': {'_type': 'type'},
                     'port2': {'_type': 'type'},
                 },
-                '_wires': {
+                'wires': {
                     'port1': 'store1.1',
                     'port2': 'store1.2',
                 }
             },
         },
         'process3': {
-            '_wires': {
+            'wires': {
                 'port1': 'store1'
             }
         }  # TODO -- wires without ports should not work.
@@ -85,7 +85,7 @@ nested_processes = {
                     '_process': 'transport URI',
                     '_config': {'parameter': 1}
                 },
-                '_wires': {
+                'wires': {
                     'transporters': 'transporters',
                     'internal': ['..', 'cytoplasm', 'metabolites']},
                 '_ports': {
@@ -113,7 +113,7 @@ nested_processes = {
                 }
             },
             'translation': {
-                '_wires': {
+                'wires': {
                     'p1': 'ribosomal complexes',
                     'p2': ['transcript regulation complex', 'transcripts']}}},
         'nucleoid': {
@@ -142,7 +142,7 @@ def test_composite_process_spec():
                     'port1': 'type',
                     'port2': 'type',
                 },
-                '_wires': {
+                'wires': {
                     'port1': 'store1.1',
                     'port2': 'store1.2',
                 }
@@ -152,7 +152,7 @@ def test_composite_process_spec():
                     'port1': {'_type': 'type'},
                     'port2': {'_type': 'type'},
                 },
-                '_wires': {
+                'wires': {
                     'port1': 'store1.1',
                     'port2': 'store1.2',
                 }
@@ -206,7 +206,7 @@ def test_merging():
     # add processes
     transport_process = {
         'transmembrane transport': {
-            '_wires': {
+            'wires': {
                 'transporters': 'transporters',
                 'internal': ['..', 'cytoplasm', 'metabolites'],
             }
@@ -214,7 +214,7 @@ def test_merging():
     }
     translation_process = {
         'translation': {
-            '_wires': {
+            'wires': {
                 'p1': 'ribosomal complexes',
                 'p2': ['transcript regulation complex', 'transcripts'],
             }
@@ -224,10 +224,10 @@ def test_merging():
     cell_with_transport2 = compose(cell_with_transport1, node=translation_process, path=('cell', 'cytoplasm'))
 
     print('BEFORE')
-    print(pf(cell_with_transport2['cell']['membrane']['transmembrane transport']['_wires']))
+    print(pf(cell_with_transport2['cell']['membrane']['transmembrane transport']['wires']))
     plot_bigraph(cell_with_transport2)
     print('AFTER')
-    print(pf(cell_with_transport2['cell']['membrane']['transmembrane transport']['_wires']))
+    print(pf(cell_with_transport2['cell']['membrane']['transmembrane transport']['wires']))
 
 
 def test_schema_value_to_dict():
@@ -283,20 +283,20 @@ def test_schema_value_to_dict():
             'store1.1': 1.1,
             'store1.2': 2,
             'process1': {
-                '_wires': {
+                'wires': {
                     'port1': 'store1.1',
                     'port2': 'store1.2',
                 }
             },
             'process2': {
-                '_wires': {
+                'wires': {
                     'port1': 'store1.1',
                     'port2': 'store1.2',
                 }
             },
         },
         'process3': {
-            '_wires': {
+            'wires': {
                 'port1': 'store1',
             }
         }
@@ -332,17 +332,17 @@ def test_multitimestep():
     process_spec = {
         'process1': {
             '_ports': {'port1': {'_type': 'type'}},
-            '_wires': {'port1': 'state1'},
+            'wires': {'port1': 'state1'},
             '_sync_step': 1.0,
         },
         'process2': {
             '_ports': {'port1': {'_type': 'type'}},
-            '_wires': {'port1': 'state1'},
+            'wires': {'port1': 'state1'},
             '_sync_step': 0.5,
         },
         # 'process3': {
         #     '_ports': {'port1': {'_type': 'type'}},
-        #     '_wires': {'port1': 'state1'},
+        #     'wires': {'port1': 'state1'},
         #     '_sync_step': 0.4,
         # },
     }
@@ -354,7 +354,7 @@ def test_multitimestep2():
         'A': {
             'process1': {
                 '_ports': {'port1': {'_type': 'type'}},
-                '_wires': {'port1': 'B'},
+                'wires': {'port1': 'B'},
                 '_sync_step': 1.0,
             },
         },
@@ -362,7 +362,7 @@ def test_multitimestep2():
             '_ports': {
                 'port1': {'_type': 'type'},
                 'port2': {'_type': 'type'}},
-            '_wires': {
+            'wires': {
                 'port1': ['A', 'B'],
                 'port2': 'C',
             },
@@ -370,13 +370,13 @@ def test_multitimestep2():
         },
         'process3': {
             '_ports': {'port1': {'_type': 'type'}},
-            '_wires': {'port1': 'C'},
+            'wires': {'port1': 'C'},
             '_sync_step': 0.6,
         },
         'D': {
             'process4': {
                 '_ports': {'port1': {'_type': 'type'}},
-                '_wires': {'port1': ['..', 'A', 'B']},
+                'wires': {'port1': ['..', 'A', 'B']},
                 '_sync_step': 0.8,
             },
         }
@@ -400,7 +400,7 @@ def test_color_format():
                     'port1': {'_type': 'type'},
                     'port2': {'_type': 'type'},
                 },
-                '_wires': {
+                'wires': {
                     'port1': 'store1.1',
                     'port2': 'store1.2',
                 }
@@ -410,14 +410,14 @@ def test_color_format():
                     'port1': {'_type': 'type'},
                     'port2': {'_type': 'type'},
                 },
-                '_wires': {
+                'wires': {
                     'port1': 'store1.1',
                     'port2': 'store1.2',
                 }
             },
         },
         'process3': {
-            '_wires': {
+            'wires': {
                 'port1': 'store1',
             }
         }
@@ -437,7 +437,7 @@ def test_undeclared_nodes():
         'process1': {
             'process_location': '0-000-00000-0',
             'update_method': 'KiSAO id',
-            '_wires': {
+            'wires': {
                 'port A': 'a',
             }
         }
@@ -453,7 +453,34 @@ def test_collapse_nodes():
                  **plot_settings_test,
                  collapse_processes=True,
                  filename='nested_processes_collapsed')
+def test_nested():
+    bigraph = {
+        'v0': {
+            'v1': {},
+            'v2': {
+                'v3': {}}},
+        'v4': {
+            'v5': {}},
+        'e0': {
+            '_type': 'edge',
+            'wires': {
+                'e0.0': 'v0',
+                'e0.1': ('v0', 'v1'),
+                'e0.2': 'v4'}},
+        'e1': {
+            '_type': 'edge',
+            'wires': {
+                'e0.0': ('v0', 'v2', 'v3'),
+                'e0.1': ('v0', 'v1')}},
+        'e2': {
+            '_type': 'edge',
+            'wires': {
+                'e0.0': ('v0', 'v2', 'v3'),
+                'e0.1': 'v4',
+                'e0.2': ('v4', 'v5')}}}
 
+    plot_bigraph(
+        bigraph, nested=True, port_labels=False, out_dir='out', filename='nested_graph')
 
 if __name__ == '__main__':
     # test_noschemakeys()
@@ -469,4 +496,5 @@ if __name__ == '__main__':
     # test_multitimestep2()
     # test_color_format()
     # test_undeclared_nodes()
-    test_collapse_nodes()
+    # test_collapse_nodes()
+    test_nested()
