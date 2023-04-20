@@ -107,6 +107,15 @@ def replace_regex_recursive(input_dict, match=' ', replacement='<br/>'):
             new_key = replace_string(key)
             if isinstance(value, dict):
                 new_value = recursive_replace(value)
+            elif isinstance(value, list):
+                new_value = []
+                for v in value:
+                    new_value.append(replace_string(v))
+            elif isinstance(value, tuple):
+                new_value = []
+                for v in value:
+                    new_value.append(replace_string(v))
+                new_value = tuple(new_value)
             else:
                 new_value = replace_string(value)
             updated_dict[new_key] = new_value
