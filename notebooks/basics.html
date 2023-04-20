@@ -15123,7 +15123,11 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#some set up</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#some imports and set up</span>
+<span class="kn">from</span> <span class="nn">bigraph_viz</span> <span class="kn">import</span> <span class="n">plot_bigraph</span><span class="p">,</span> <span class="n">pf</span>
+<span class="kn">from</span> <span class="nn">bigraph_schema</span> <span class="kn">import</span> <span class="n">fill</span>
+<span class="kn">from</span> <span class="nn">bigraph_viz.dict_utils</span> <span class="kn">import</span> <span class="n">replace_regex_recursive</span>
+
 <span class="n">plot_settings</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;remove_process_place_edges&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
 <span class="n">save_images</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="k">if</span> <span class="n">save_images</span><span class="p">:</span>
@@ -15158,10 +15162,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bigraph_viz</span> <span class="kn">import</span> <span class="n">plot_bigraph</span><span class="p">,</span> <span class="n">pf</span>
-<span class="kn">from</span> <span class="nn">bigraph_schema</span> <span class="kn">import</span> <span class="n">fill</span>
-
-<span class="n">placegraph</span> <span class="o">=</span> <span class="p">{</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">placegraph</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;v0&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;v1&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;v2&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -15896,7 +15897,7 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>bigraph-schema==0.0.5
-bigraph-viz==0.0.24
+bigraph-viz==0.0.25
 </pre>
 </div>
 </div>
@@ -16096,19 +16097,19 @@ bigraph-viz==0.0.24
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">hierarchy_spec</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;store1&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;store1.1&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;store1.1.1&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;store1.1.2&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;store1.1.1&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;store1.1.2&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">,</span>
             <span class="s1">&#39;store1.1.3&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;store1.1.3.1&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;store1.1.3.1&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">,</span>
             <span class="p">},</span>
         <span class="p">},</span>
-        <span class="s1">&#39;store1.2&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;store1.2&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
 <span class="n">plot_bigraph</span><span class="p">(</span><span class="n">hierarchy_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hierarchy&#39;</span><span class="p">)</span>
@@ -16127,7 +16128,7 @@ bigraph-viz==0.0.24
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[10]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
 
 
 
@@ -16253,15 +16254,15 @@ bigraph-viz==0.0.24
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">process_spec</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;process1&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;edge&#39;</span><span class="p">,</span>
         <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">},</span>
 <span class="p">}</span>
@@ -16282,7 +16283,7 @@ bigraph-viz==0.0.24
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
 
 
 
@@ -16350,8 +16351,8 @@ bigraph-viz==0.0.24
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">process_schema</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span>
+        <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
@@ -16501,9 +16502,9 @@ bigraph-viz==0.0.24
             <span class="s1">&#39;port3&#39;</span><span class="p">:</span> <span class="s1">&#39;node3&#39;</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">},</span>
-    <span class="s1">&#39;node1&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;node2&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;node3&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;node1&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;node2&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;node3&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span>
 <span class="p">}</span>
 <span class="n">report</span> <span class="o">=</span> <span class="n">validate_schema</span><span class="p">(</span><span class="n">connected_process_spec</span><span class="p">)</span>  <span class="c1"># validate it follows the schema types</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
@@ -16527,7 +16528,7 @@ bigraph-viz==0.0.24
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>{&#39;process1&#39;: {&#39;wires&#39;: {&#39;port1&#39;: &#39;schema is not a dict: node1&#39;, &#39;port2&#39;: &#39;schema is not a dict: node2&#39;, &#39;port3&#39;: &#39;schema is not a dict: node3&#39;}}, &#39;node1&#39;: &#39;schema is not a dict: &#39;, &#39;node2&#39;: &#39;schema is not a dict: &#39;, &#39;node3&#39;: &#39;schema is not a dict: &#39;}
+<pre>{&#39;process1&#39;: {&#39;wires&#39;: {&#39;port1&#39;: &#39;schema is not a dict: node1&#39;, &#39;port2&#39;: &#39;schema is not a dict: node2&#39;, &#39;port3&#39;: &#39;schema is not a dict: node3&#39;}}, &#39;node1&#39;: &#39;schema is not a dict: float&#39;, &#39;node2&#39;: &#39;schema is not a dict: int&#39;, &#39;node3&#39;: &#39;schema is not a dict: int&#39;}
 </pre>
 </div>
 </div>
@@ -16781,6 +16782,7 @@ bigraph-viz==0.0.24
         <span class="s1">&#39;store1.1&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span>
         <span class="s1">&#39;store1.2&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">,</span>
         <span class="s1">&#39;process1&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;python_process:temporal&#39;</span><span class="p">,</span>
             <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.2&#39;</span><span class="p">,</span>
@@ -16799,7 +16801,7 @@ bigraph-viz==0.0.24
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
-<span class="n">validate_schema</span><span class="p">(</span><span class="n">nested_composite_spec</span><span class="p">)</span>  <span class="c1"># validate it follows the schema types</span>
+<span class="c1"># validate_schema(nested_composite_spec)  # validate it follows the schema types</span>
 <span class="n">plot_bigraph</span><span class="p">(</span><span class="n">nested_composite_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;nested_composite&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -16947,8 +16949,8 @@ bigraph-viz==0.0.24
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">composite_process_spec</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;composite_process&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;store1.1&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;store1.2&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;store1.1&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;store1.2&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">,</span>
         <span class="s1">&#39;process1&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
@@ -16962,8 +16964,8 @@ bigraph-viz==0.0.24
             <span class="p">}</span>
         <span class="p">},</span>
         <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> 
-            <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">,</span> 
         <span class="p">},</span>
         <span class="s1">&#39;_tunnels&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;store1.1&#39;</span><span class="p">,</span>
@@ -17198,17 +17200,18 @@ bigraph-viz==0.0.24
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">multitimestep_spec</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;temporal&lt;br/&gt;process2&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;temporal process2&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">},</span>
         <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;state&#39;</span><span class="p">},</span>
         <span class="s1">&#39;_sync_step&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s1">&#39;temporal&lt;br/&gt;process1&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;temporal process1&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;Any&#39;</span><span class="p">},</span>
         <span class="s1">&#39;wires&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;state&#39;</span><span class="p">},</span>
         <span class="s1">&#39;_sync_step&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
+<span class="n">multitimestep_spec</span> <span class="o">=</span> <span class="n">replace_regex_recursive</span><span class="p">(</span><span class="n">multitimestep_spec</span><span class="p">)</span>
 <span class="n">plot_multitimestep</span><span class="p">(</span><span class="n">multitimestep_spec</span><span class="p">,</span> <span class="n">total_time</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings2</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;multitimestep&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -17417,36 +17420,38 @@ bigraph-viz==0.0.24
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">process_schema</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;step_process&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;port1&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;port2&#39;</span><span class="p">:</span> <span class="s1">&#39;type&#39;</span>
-    <span class="p">}</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">step_schema</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;_depends_on&#39;</span><span class="p">:</span> <span class="s1">&#39;list[string]&#39;</span><span class="p">,</span>
 <span class="p">}</span>
+<span class="n">type_registry</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s1">&#39;step_process&#39;</span><span class="p">,</span> <span class="n">step_schema</span><span class="p">)</span>
 
-<span class="n">flow_spec</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">flow</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;step1&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;step_process&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="s1">&#39;_depends_on&#39;</span><span class="p">:</span> <span class="p">[],</span> 
-        <span class="o">**</span><span class="n">process_schema</span>
     <span class="p">},</span>
     <span class="s1">&#39;step2&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;step_process&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="s1">&#39;_depends_on&#39;</span><span class="p">:</span> <span class="s1">&#39;step1&#39;</span><span class="p">,</span> 
-        <span class="o">**</span><span class="n">process_schema</span>
     <span class="p">},</span>
     <span class="s1">&#39;step3&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;step_process&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="s1">&#39;_depends_on&#39;</span><span class="p">:</span> <span class="p">[],</span> 
-        <span class="o">**</span><span class="n">process_schema</span>
     <span class="p">},</span>
     <span class="s1">&#39;step4&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;_type&#39;</span><span class="p">:</span> <span class="s1">&#39;step_process&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;_ports&#39;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="s1">&#39;_depends_on&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;step2&#39;</span><span class="p">,</span> <span class="s1">&#39;step3&#39;</span><span class="p">],</span> 
-        <span class="o">**</span><span class="n">process_schema</span>
     <span class="p">},</span>
 <span class="p">}</span>
-<span class="n">plot_flow</span><span class="p">(</span><span class="n">flow_spec</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings2</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;flow&#39;</span><span class="p">)</span>
+
+<span class="n">plot_flow</span><span class="p">(</span><span class="n">flow</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_settings2</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;flow&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -17462,7 +17467,7 @@ bigraph-viz==0.0.24
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[19]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[28]:</div>
 
 
 
@@ -17560,8 +17565,7 @@ bigraph-viz==0.0.24
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">bigraph_viz.dict_utils</span> <span class="kn">import</span> <span class="n">replace_regex_recursive</span>
-<span class="n">music_map</span> <span class="o">=</span> <span class="p">{</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">music_map</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;cell&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;cytoplasm&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;secretory organelles&#39;</span><span class="p">:</span> <span class="p">{</span>
