@@ -149,6 +149,7 @@ def get_graphviz_bigraph(
         node_border_colors=None,
         node_fill_colors=None,
         node_groups=False,
+        remove_nodes=None,
         invisible_edges=False,
         remove_process_place_edges=False,
 ):
@@ -187,6 +188,8 @@ def get_graphviz_bigraph(
     for node in bigraph_network['state_nodes']:
         node_path = node['path']
         node_name = str(node_path)
+        if remove_nodes and node_path in remove_nodes:
+            continue
         node_names.append(node_name)
 
         # make the label
@@ -219,6 +222,8 @@ def get_graphviz_bigraph(
         node_path = node['path']
         process_paths.append(node_path)
         node_name = str(node_path)
+        if remove_nodes and node_path in remove_nodes:
+            continue
         node_names.append(node_name)
         label = make_label(node_path[-1])
 
@@ -351,6 +356,7 @@ def plot_bigraph(
         node_border_colors=None,
         node_fill_colors=None,
         node_groups=False,
+        remove_nodes=None,
         invisible_edges=False,
         remove_process_place_edges=False,
         print_source=False,
@@ -381,6 +387,7 @@ def plot_bigraph(
             Each sub-list is a grouping of nodes that will be aligned at the same rank.
             For example: [[('path to', 'group1 node1',), ('path to', 'group1 node2',)], [another group]]
             Default is None.
+        remove_nodes (list, optional): A list of nodes to be removed.
         invisible_edges (list, optional): A list of edge tuples. The edge tuples have the (source, target) node
             according to the nodes' paths. For example: [(('top',), ('top', 'inner1')), (another edge)]
             Default is None.
