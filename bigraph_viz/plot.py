@@ -33,7 +33,13 @@ def make_label(label):
     return f'<{label}>'
 
 
-def get_bigraph_network(bigraph_dict, path=None):
+def check_if_path_in_removed_nodes(path, remove_nodes):
+    if remove_nodes:
+        return any(remove_path == path[:len(remove_path)] for remove_path in remove_nodes)
+    return False
+
+
+def get_bigraph_network(bigraph_dict, path=None, remove_nodes=None):
     path = path or ()
 
     # initialize bigraph
@@ -50,6 +56,9 @@ def get_bigraph_network(bigraph_dict, path=None):
     for key, child in bigraph_dict.items():
         if key not in schema_keys:
             path_here = path + (key,)
+            if check_if_path_in_removed_nodes(path_here, remove_nodes):
+                # skip node if path in removed_nodes
+                continue
             node = {'path': path_here}
 
             if not isinstance(child, dict):
@@ -124,13 +133,15 @@ def get_bigraph_network(bigraph_dict, path=None):
             # check inner states
             if isinstance(child, dict):
                 # this is a branch node
-                child_bigraph_network = get_bigraph_network(child, path=path_here)
+                child_bigraph_network = get_bigraph_network(child, path=path_here, remove_nodes=remove_nodes)
                 bigraph = extend_bigraph(bigraph, child_bigraph_network)
 
                 # add place edges to this layer
-                bigraph['place_edges'] += [
-                    (path_here, path_here + (node,)) for node in child.keys()
-                    if node not in schema_keys]
+                for node in child.keys():
+                    child_path = path_here + (node,)
+                    if node in schema_keys or check_if_path_in_removed_nodes(child_path, remove_nodes):
+                        continue
+                    bigraph['place_edges'] += [(path_here, child_path)]
 
     return bigraph
 
@@ -149,7 +160,6 @@ def get_graphviz_bigraph(
         node_border_colors=None,
         node_fill_colors=None,
         node_groups=False,
-        remove_nodes=None,
         invisible_edges=False,
         remove_process_place_edges=False,
 ):
@@ -188,8 +198,6 @@ def get_graphviz_bigraph(
     for node in bigraph_network['state_nodes']:
         node_path = node['path']
         node_name = str(node_path)
-        if remove_nodes and node_path in remove_nodes:
-            continue
         node_names.append(node_name)
 
         # make the label
@@ -222,8 +230,6 @@ def get_graphviz_bigraph(
         node_path = node['path']
         process_paths.append(node_path)
         node_name = str(node_path)
-        if remove_nodes and node_path in remove_nodes:
-            continue
         node_names.append(node_name)
         label = make_label(node_path[-1])
 
@@ -247,8 +253,6 @@ def get_graphviz_bigraph(
 
         # show edge or not
         show_edge = True
-        if remove_process_place_edges and edge[1] in process_paths:
-            show_edge = False
         if edge in invisible_edges:
             show_edge = False
         if show_edge:
@@ -410,9 +414,10 @@ def plot_bigraph(
     file_format = kwargs.pop('file_format')
     out_dir = kwargs.pop('out_dir')
     filename = kwargs.pop('filename')
+    remove_nodes = kwargs.pop('remove_nodes')
 
     # get the nodes and edges from the composite
-    bigraph_network = get_bigraph_network(bigraph_schema)
+    bigraph_network = get_bigraph_network(bigraph_schema, remove_nodes=remove_nodes)
 
     # make graphviz network
     graph = get_graphviz_bigraph(bigraph_network, **kwargs)
