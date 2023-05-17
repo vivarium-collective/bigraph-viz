@@ -154,6 +154,7 @@ def get_graphviz_bigraph(
         show_types=False,
         collapse_processes=False,
         port_labels=True,
+        mark_top=False,
         port_label_size='10pt',
         rankdir='TB',
         dpi='70',
@@ -217,7 +218,7 @@ def get_graphviz_bigraph(
             label += schema_label
         label = make_label(label)
 
-        if len(node_path) == 1 and multilayer:
+        if len(node_path) == 1 and multilayer and mark_top:
             # the top node gets a double circle
             graph.node(node_name, label=label, peripheries='2')
         else:
@@ -362,6 +363,7 @@ def plot_bigraph(
         node_groups=False,
         remove_nodes=None,
         invisible_edges=False,
+        mark_top=False,
         remove_process_place_edges=False,
         print_source=False,
         dpi='70',
@@ -395,6 +397,7 @@ def plot_bigraph(
         invisible_edges (list, optional): A list of edge tuples. The edge tuples have the (source, target) node
             according to the nodes' paths. For example: [(('top',), ('top', 'inner1')), (another edge)]
             Default is None.
+        mark_top (bool). Turn on to mark the top nodes with a double outline.
         remove_process_place_edges (bool, optional): Turn off process place edges from plotting. Default is False.
         print_source (bool, optional): Print the graphviz DOT source code as string. Default is False.
         file_format (str, optional): File format of the output image. Default is 'png'.
