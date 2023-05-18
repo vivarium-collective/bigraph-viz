@@ -254,8 +254,11 @@ def get_graphviz_bigraph(
 
         # show edge or not
         show_edge = True
-        if edge in invisible_edges:
+        if remove_process_place_edges and edge[1] in process_paths:
             show_edge = False
+        elif edge in invisible_edges:
+            show_edge = False
+
         if show_edge:
             graph.attr('edge', style='filled')
         else:
