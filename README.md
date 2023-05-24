@@ -61,3 +61,7 @@ To get started with Bigraph-viz, explore our resources:
 about how to adjust the final look of your bigraph figure.
 * [Ecoli](https://raw.githubusercontent.com/vivarium-collective/bigraph-viz/main/doc/_static/ecoli.png) for the wiring
 diagraph of a whole-cell E. coli model.
+
+## License
+
+Bigraph-viz is open-source software released under the [MIT License](https://github.com/vivarium-collective/bigraph-viz/LICENSE).
