@@ -1,3 +1,9 @@
+"""
+=====================
+Tests for bigraph-viz
+=====================
+"""
+
 from bigraph_viz import plot_bigraph, plot_flow, plot_multitimestep, pp
 from bigraph_viz.dict_utils import schema_state_to_dict, compose, pf
 

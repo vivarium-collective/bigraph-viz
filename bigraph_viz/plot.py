@@ -3,7 +3,7 @@
 Plot
 ====
 
-plotting tool
+* plot_bigraph
 """
 import copy
 import os

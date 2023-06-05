@@ -1,3 +1,9 @@
+"""
+==========
+Dict Utils
+==========
+"""
+
 import collections.abc
 import pprint
 from typing import Any
@@ -18,6 +24,7 @@ schema_keys = [
     '_depends_on',
     '_sync_step',
 ]
+schema_keys.extend(type_schema_keys)
 
 
 def pp(x: Any) -> None:
@@ -141,7 +148,7 @@ def schema_state_to_dict(schema, state):
                 schema_value_dict[key]['_type'] = schema_value
 
     for key, state_value in state.items():
-        if key is 'wires':
+        if key == 'wires':
             schema_value_dict[key] = state_value
         else:
             schema_value = schema.get(key, {})

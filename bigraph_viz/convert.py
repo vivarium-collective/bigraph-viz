@@ -1,3 +1,9 @@
+"""
+=======
+Convert
+=======
+"""
+
 import copy
 
 from bigraph_viz import plot_bigraph, pp
@@ -158,6 +164,7 @@ def test_convert_nested():
     bigraph_spec = convert_vivarium_composite(vivarium_composite)
     plot_bigraph(bigraph_spec, **plot_settings_test, filename='vivarium_convert_nested')
 
+
 def test_composite_process():
     vivarium_composite = {
         'processes': {
@@ -217,6 +224,6 @@ def test_composite_process():
 
 
 if __name__ == '__main__':
-    # test_convert_flat()
-    # test_convert_nested()
+    test_convert_flat()
+    test_convert_nested()
     test_composite_process()
