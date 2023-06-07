@@ -64,4 +64,4 @@ diagraph of a whole-cell E. coli model.
 
 ## License
 
-Bigraph-viz is open-source software released under the [MIT License](https://github.com/vivarium-collective/bigraph-viz/LICENSE).
+Bigraph-viz is open-source software released under the [Apache 2 License](https://github.com/vivarium-collective/bigraph-viz/blob/main/LICENSE).
