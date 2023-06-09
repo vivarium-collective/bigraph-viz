@@ -81,6 +81,7 @@ def test_disconnected_process_spec():
     }
     plot_bigraph(process_spec, **plot_settings_test, rankdir='BT', filename='disconnected_processes')
 
+
 nested_processes = {
     'cell': {
         'membrane': {
@@ -129,6 +130,7 @@ nested_processes = {
         }
     }
 }
+
 
 def test_nested_spec():
     plot_bigraph(nested_processes, **plot_settings_test, filename='nested_processes')
