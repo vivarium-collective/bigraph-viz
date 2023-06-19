@@ -158,6 +158,7 @@ def get_graphviz_bigraph(
         port_label_size='10pt',
         rankdir='TB',
         dpi='70',
+        label_margin='0.05',
         node_border_colors=None,
         node_fill_colors=None,
         node_groups=False,
@@ -171,9 +172,9 @@ def get_graphviz_bigraph(
 
     # node specs
     state_node_spec = {
-        'shape': 'circle', 'penwidth': '2', 'margin': '0.05', 'fontsize': node_label_size}
+        'shape': 'circle', 'penwidth': '2', 'margin': label_margin, 'fontsize': node_label_size}
     process_node_spec = {
-        'shape': 'box', 'penwidth': '2', 'constraint': 'false', 'fontsize': node_label_size}
+        'shape': 'box', 'penwidth': '2', 'constraint': 'false', 'margin': label_margin, 'fontsize': node_label_size}
     hyper_edge_spec = {
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'dot', 'arrowsize': '0.5'}
     if collapse_processes:
@@ -370,6 +371,7 @@ def plot_bigraph(
         remove_process_place_edges=False,
         print_source=False,
         dpi='70',
+        label_margin='0.05',
         file_format='png',
         out_dir=None,
         filename=None,
@@ -403,6 +405,7 @@ def plot_bigraph(
         mark_top (bool). Turn on to mark the top nodes with a double outline.
         remove_process_place_edges (bool, optional): Turn off process place edges from plotting. Default is False.
         print_source (bool, optional): Print the graphviz DOT source code as string. Default is False.
+        label_margin (str, optional): The margin size around a label. Default is '0.05'.
         file_format (str, optional): File format of the output image. Default is 'png'.
         out_dir (bool, optional): The output directory for the bigraph image. Default is None.
         filename (bool, optional): The file name for the bigraph image. Default is None.
