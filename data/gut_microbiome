@@ -1,0 +1,122 @@
+digraph bigraph {
+    // adding needed attributes here
+    graph [nodesep=0.06, ranksep=0.06 dpi=250 overlap=false rankdir=TB size="3,7" ratio="fill"]
+	node [fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	"('Small<br/>Intestine',)" [label=<Small<br/>Intestine>, pos="0,0!"]
+	"('Small<br/>Intestine', 'Duodenum')" [label=<Duodenum>, pos="0,-1!"]
+	"('Small<br/>Intestine', 'Duodenum', 'nutrients')" [label=<nutrients>]
+	"('Small<br/>Intestine', 'Duodenum', 'mucosa')" [label=<mucosa>]
+	"('Small<br/>Intestine', 'Duodenum', 'mucosa', 'mucus')" [label=<mucus>]
+	"('Small<br/>Intestine', 'Duodenum', 'mucosa', 'mucus', 'mucin')" [label=<mucin>]
+	"('Small<br/>Intestine', 'Duodenum', 'Epithelium')" [label=<Epithelium>]
+	"('Small<br/>Intestine', 'Duodenum', 'Epithelium', 'Goblet<br/>cells')" [label=<Goblet<br/>cells>]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota')" [label=<Microbiota>]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli')" [label=<E.coli>]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli', 'mucinase')" [label=<mucinase>]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli', 'flagella')" [label=<flagella>]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'Bacteroidetes,<br/>Firmicutes,<br/>more')" [label=<Bacteroidetes,<br/>Firmicutes,<br/>more>]
+	"('Small<br/>Intestine', 'Jejunum')" [label=<Jejunum>]
+	"('Small<br/>Intestine', 'Ileum')" [label=<Ileum>]
+	node [constraint=false fontsize="12pt" penwidth=2 shape=box]
+	"('Small<br/>Intestine', 'Duodenum', 'Epithelium', 'Goblet<br/>cells', 'secretion')" [label=<secretion>]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli', 'chemotaxis')" [label=<chemotaxis>]
+	"('Small<br/>Intestine', 'Duodenum', 'uptake')" [label=<uptake>]
+	"('Small<br/>Intestine', 'Duodenum', 'degradation')" [label=<degradation>]
+	"('Small<br/>Intestine', 'Peristalsis')" [label=<Peristalsis>]
+	edge [arrowhead=none penwidth=2]
+	edge [style=filled]
+	"('Small<br/>Intestine', 'Duodenum', 'mucosa', 'mucus')" -> "('Small<br/>Intestine', 'Duodenum', 'mucosa', 'mucus', 'mucin')"
+	edge [style=filled]
+	"('Small<br/>Intestine', 'Duodenum', 'mucosa')" -> "('Small<br/>Intestine', 'Duodenum', 'mucosa', 'mucus')"
+	edge [style=invis]
+	"('Small<br/>Intestine', 'Duodenum', 'Epithelium', 'Goblet<br/>cells')" -> "('Small<br/>Intestine', 'Duodenum', 'Epithelium', 'Goblet<br/>cells', 'secretion')"
+	edge [style=filled]
+	"('Small<br/>Intestine', 'Duodenum', 'Epithelium')" -> "('Small<br/>Intestine', 'Duodenum', 'Epithelium', 'Goblet<br/>cells')"
+	edge [style=filled]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli')" -> "('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli', 'mucinase')"
+	edge [style=filled]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli')" -> "('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli', 'flagella')"
+	edge [style=invis]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli')" -> "('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli', 'chemotaxis')"
+	edge [style=filled]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota')" -> "('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli')"
+	edge [style=filled]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota')" -> "('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'Bacteroidetes,<br/>Firmicutes,<br/>more')"
+	edge [style=filled]
+	"('Small<br/>Intestine', 'Duodenum')" -> "('Small<br/>Intestine', 'Duodenum', 'nutrients')"
+	edge [style=filled]
+	"('Small<br/>Intestine', 'Duodenum')" -> "('Small<br/>Intestine', 'Duodenum', 'mucosa')"
+	edge [style=filled]
+	"('Small<br/>Intestine', 'Duodenum')" -> "('Small<br/>Intestine', 'Duodenum', 'Epithelium')"
+	edge [style=filled]
+	"('Small<br/>Intestine', 'Duodenum')" -> "('Small<br/>Intestine', 'Duodenum', 'Microbiota')"
+	edge [style=invis]
+	"('Small<br/>Intestine', 'Duodenum')" -> "('Small<br/>Intestine', 'Duodenum', 'uptake')"
+	edge [style=invis]
+	"('Small<br/>Intestine', 'Duodenum')" -> "('Small<br/>Intestine', 'Duodenum', 'degradation')"
+	edge [style=filled]
+	"('Small<br/>Intestine',)" -> "('Small<br/>Intestine', 'Duodenum')"
+	edge [style=filled]
+	"('Small<br/>Intestine',)" -> "('Small<br/>Intestine', 'Jejunum')"
+	edge [style=filled]
+	"('Small<br/>Intestine',)" -> "('Small<br/>Intestine', 'Ileum')"
+	edge [style=invis]
+	"('Small<br/>Intestine',)" -> "('Small<br/>Intestine', 'Peristalsis')"
+	edge [arrowhead=dot arrowsize=0.5 penwidth=1 style=dashed]
+	"('Small<br/>Intestine', 'Duodenum', 'mucosa', 'mucus', 'mucin')" [label=<mucin> fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	"('Small<br/>Intestine', 'Duodenum', 'Epithelium', 'Goblet<br/>cells')" [label=<Goblet<br/>cells> fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	subgraph "('Small<br/>Intestine', 'Duodenum', 'Epithelium', 'Goblet<br/>cells', 'secretion')" {
+		"('Small<br/>Intestine', 'Duodenum', 'mucosa', 'mucus', 'mucin')" -> "('Small<br/>Intestine', 'Duodenum', 'Epithelium', 'Goblet<br/>cells', 'secretion')"
+		"('Small<br/>Intestine', 'Duodenum', 'Epithelium', 'Goblet<br/>cells')" -> "('Small<br/>Intestine', 'Duodenum', 'Epithelium', 'Goblet<br/>cells', 'secretion')"
+	}
+	"('Small<br/>Intestine', 'Duodenum', 'mucosa')" [label=<mucosa> fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli', 'flagella')" [label=<flagella> fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	subgraph "('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli', 'chemotaxis')" {
+		"('Small<br/>Intestine', 'Duodenum', 'mucosa')" -> "('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli', 'chemotaxis')"
+		"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli', 'flagella')" -> "('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli', 'chemotaxis')"
+	}
+	"('Small<br/>Intestine', 'Duodenum', 'nutrients')" [label=<nutrients> fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli')" [label=<E.coli> fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	"('Small<br/>Intestine', 'Duodenum', 'Epithelium')" [label=<Epithelium> fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	subgraph "('Small<br/>Intestine', 'Duodenum', 'uptake')" {
+		"('Small<br/>Intestine', 'Duodenum', 'nutrients')" -> "('Small<br/>Intestine', 'Duodenum', 'uptake')"
+		"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli')" -> "('Small<br/>Intestine', 'Duodenum', 'uptake')"
+		"('Small<br/>Intestine', 'Duodenum', 'Epithelium')" -> "('Small<br/>Intestine', 'Duodenum', 'uptake')"
+	}
+	"('Small<br/>Intestine', 'Duodenum', 'mucosa', 'mucus', 'mucin')" [label=<mucin> fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli', 'mucinase')" [label=<mucinase> fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'Bacteroidetes,<br/>Firmicutes,<br/>more')" [label=<Bacteroidetes,<br/>Firmicutes,<br/>more> fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	subgraph "('Small<br/>Intestine', 'Duodenum', 'degradation')" {
+		"('Small<br/>Intestine', 'Duodenum', 'mucosa', 'mucus', 'mucin')" -> "('Small<br/>Intestine', 'Duodenum', 'degradation')"
+		"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli', 'mucinase')" -> "('Small<br/>Intestine', 'Duodenum', 'degradation')"
+		"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'Bacteroidetes,<br/>Firmicutes,<br/>more')" -> "('Small<br/>Intestine', 'Duodenum', 'degradation')"
+	}
+	"('Small<br/>Intestine', 'Duodenum')" [label=<Duodenum> fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	"('Small<br/>Intestine', 'Jejunum')" [label=<Jejunum> fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	"('Small<br/>Intestine', 'Ileum')" [label=<Ileum> fontsize="12pt" margin=0.05 penwidth=2 shape=circle]
+	subgraph "('Small<br/>Intestine', 'Peristalsis')" {
+		"('Small<br/>Intestine', 'Duodenum')" -> "('Small<br/>Intestine', 'Peristalsis')"
+		"('Small<br/>Intestine', 'Jejunum')" -> "('Small<br/>Intestine', 'Peristalsis')"
+		"('Small<br/>Intestine', 'Ileum')" -> "('Small<br/>Intestine', 'Peristalsis')"
+	}
+	edge [arrowhead=dot arrowsize=0.5 penwidth=1 style=dashed]
+	edge [arrowhead=none arrowtail=dot dir=both penwidth=1 style=dashed]
+	subgraph "[('Small<br/>Intestine', 'Duodenum', 'Epithelium'), ('Small<br/>Intestine', 'Duodenum', 'Microbiota'), ('Small<br/>Intestine', 'Duodenum', 'mucosa'), ('Small<br/>Intestine', 'Duodenum', 'nutrients')]" {
+		rank=same
+		"('Small<br/>Intestine', 'Duodenum', 'Epithelium')"
+		"('Small<br/>Intestine', 'Duodenum', 'Microbiota')"
+		"('Small<br/>Intestine', 'Duodenum', 'Epithelium')" -> "('Small<br/>Intestine', 'Duodenum', 'Microbiota')" [ordering=out style=invis]
+		"('Small<br/>Intestine', 'Duodenum', 'mucosa')"
+		"('Small<br/>Intestine', 'Duodenum', 'Microbiota')" -> "('Small<br/>Intestine', 'Duodenum', 'mucosa')" [ordering=out style=invis]
+		"('Small<br/>Intestine', 'Duodenum', 'nutrients')"
+		"('Small<br/>Intestine', 'Duodenum', 'mucosa')" -> "('Small<br/>Intestine', 'Duodenum', 'nutrients')" [ordering=out style=invis]
+	}
+	subgraph "[('Small<br/>Intestine', 'Duodenum', 'Epithelium', 'Goblet<br/>cells'), ('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli'), ('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'Bacteroidetes,<br/>Firmicutes,<br/>more')]" {
+		rank=same
+		"('Small<br/>Intestine', 'Duodenum', 'Epithelium', 'Goblet<br/>cells')"
+		"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli')"
+		"('Small<br/>Intestine', 'Duodenum', 'Epithelium', 'Goblet<br/>cells')" -> "('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli')" [ordering=out style=invis]
+		"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'Bacteroidetes,<br/>Firmicutes,<br/>more')"
+		"('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'E.coli')" -> "('Small<br/>Intestine', 'Duodenum', 'Microbiota', 'Bacteroidetes,<br/>Firmicutes,<br/>more')" [ordering=out style=invis]
+	}
+}
