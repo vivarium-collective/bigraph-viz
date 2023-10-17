@@ -43,7 +43,7 @@ def merge_wires(processes, topology, path=None):
 
 def convert_vivarium_composite(vivarium_composite):
     composite_keys = set(vivarium_composite.keys())
-    allowed_keys = set(['processes', 'topology', 'flow', 'steps', 'state'])
+    allowed_keys = set(['processes', 'topology', 'flow', 'steps', 'state', '_schema'])
     assert composite_keys.issubset(allowed_keys), f'Composite keys may only include {allowed_keys}'
 
     bigraph_spec = deep_merge(
@@ -221,6 +221,7 @@ def test_composite_process():
     }
     bigraph_spec = convert_vivarium_composite(vivarium_composite)
     plot_bigraph(bigraph_spec, **plot_settings_test, filename='vivarium_composite_process')
+
 
 
 if __name__ == '__main__':
