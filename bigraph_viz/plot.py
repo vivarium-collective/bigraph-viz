@@ -88,7 +88,7 @@ def get_bigraph_network(bigraph_dict, path=None, remove_nodes=None):
                         state_path = state_path_tuple(state_path)
                         state_path.insert(0, '..')  # go up one to the same level as the process
                         bigraph['hyper_edges'][path_here][port] = state_path
-                if '_depends_on' in child:
+                if child.get('_depends_on'):
                     depends_on = child.get('_depends_on', [])
                     if path_here not in bigraph['flow']:
                         bigraph['flow'][path_here] = []
