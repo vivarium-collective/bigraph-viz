@@ -13,7 +13,7 @@ from bigraph_schema.registry import type_schema_keys
 
 pretty = pprint.PrettyPrinter(indent=2)
 
-
+# TODO -- sync this up with bigraph-schema
 schema_keys = [
     '_super',
     '_value',
@@ -25,6 +25,9 @@ schema_keys = [
     '_sync_step',
 ]
 schema_keys.extend(type_schema_keys)
+
+# TODO -- this should come from process-bigraph
+process_schema_keys = ['address', 'config', 'inputs', 'outputs', 'instance', 'interval']
 
 
 def pp(x: Any) -> None:

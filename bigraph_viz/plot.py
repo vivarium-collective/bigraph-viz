@@ -6,7 +6,7 @@ Plot Bigraph
 import copy
 import os
 
-from bigraph_viz.dict_utils import absolute_path, schema_keys
+from bigraph_viz.dict_utils import absolute_path, schema_keys, process_schema_keys
 import graphviz
 
 
@@ -46,7 +46,12 @@ def get_state_path_extended(state_path):
     return state_path
 
 
-def get_bigraph_network(bigraph_dict, path=None, remove_nodes=None):
+def get_bigraph_network(
+        bigraph_dict,
+        path=None,
+        remove_nodes=None,
+        show_process_schema=False
+):
     path = path or ()
 
     # initialize bigraph
@@ -61,100 +66,115 @@ def get_bigraph_network(bigraph_dict, path=None, remove_nodes=None):
     }
 
     for key, child in bigraph_dict.items():
-        if key not in schema_keys:
-            path_here = path + (key,)
-            if check_if_path_in_removed_nodes(path_here, remove_nodes):
-                # skip node if path in removed_nodes
-                continue
-            node = {'path': path_here}
+        # skip process schema
+        if  not show_process_schema and  key in process_schema_keys:
+            continue
+        if key in schema_keys:
+            continue
 
-            if not isinstance(child, dict):
-                # this is a leaf node
-                node['_value'] = child
-                bigraph['state_nodes'] += [node]
-                continue
+        path_here = path + (key,)
+        if check_if_path_in_removed_nodes(path_here, remove_nodes):
+            # skip node if path in removed_nodes
+            continue
+        node = {'path': path_here}
 
-            # add schema
-            if '_value' in child:
-                node['_value'] = child['_value']
-            if '_type' in child:
-                node['_type'] = child['_type']
-            if '_sync_step' in child:
-                node['sync_step'] = child['_sync_step']
+        if not isinstance(child, dict):
+            # this is a leaf node
+            node['_value'] = child
+            bigraph['state_nodes'] += [node]
+            continue
 
-            # what kind of node?
-            if ('wires' in child or
-                '_ports' in child or
-                    child.get('_type') == 'process' or
-                    child.get('_type') == 'step' or
-                    child.get('_type') == 'edge'
-            ):
-                # this is a hyperedge/process
-                if path_here not in bigraph['hyper_edges']:
-                    bigraph['hyper_edges'][path_here] = {}
-                if 'wires' in child:
-                    for port, state_path in child['wires'].items():
-                        bigraph['hyper_edges'][path_here][port] = get_state_path_extended(state_path)
-                if 'inputs' in child:
-                    for port, state_path in child['inputs'].items():
-                        bigraph['hyper_edges'][path_here][port] = get_state_path_extended(state_path)
-                if 'outputs' in child:
-                    for port, state_path in child['outputs'].items():
-                        bigraph['hyper_edges'][path_here][port] = get_state_path_extended(state_path)
-                if '_depends_on' in child:
-                    depends_on = child.get('_depends_on', [])
-                    if path_here not in bigraph['flow']:
-                        bigraph['flow'][path_here] = []
-                    if isinstance(depends_on, str):
-                        depends_on = [depends_on]
-                    for state_path in depends_on:
-                        if isinstance(state_path, str):
-                            state_path = [state_path]
-                        state_path = state_path_tuple(state_path)
-                        state_path.insert(0, '..')  # go up one to the same level as the process
-                        bigraph['flow'][path_here].append(state_path)
+        # add schema
+        if '_value' in child:
+            node['_value'] = child['_value']
+        if '_type' in child:
+            node['_type'] = child['_type']
+        if '_sync_step' in child:
+            node['sync_step'] = child['_sync_step']
 
-                # check for mismatch, there might be disconnected wires or mismatch with declared wires
-                wire_ports = []
-                if 'wires' in child:
-                    wire_ports = child['wires'].keys()
-                if '_ports' in child:
-                    # wires need to match schema
-                    schema_ports = child['_ports'].keys()
-                    assert all(item in schema_ports for item in wire_ports), \
-                        f"attempting to wire undeclared process ports: " \
-                        f"wire ports: {wire_ports}, schema ports: {schema_ports}"
-                    disconnected_ports = [port_id for port_id in schema_ports if port_id not in wire_ports]
-                    if disconnected_ports and path_here not in bigraph['disconnected_hyper_edges']:
-                        bigraph['disconnected_hyper_edges'][path_here] = {}
-                    for port in disconnected_ports:
-                        bigraph['disconnected_hyper_edges'][path_here][port] = [port, ]
-                if '_tunnels' in child:
-                    tunnels = child['_tunnels']
-                    if path_here not in bigraph['tunnels']:
-                        bigraph['tunnels'][path_here] = {}
-                    for port, state_path in tunnels.items():
-                        assert port in bigraph['disconnected_hyper_edges'][path_here].keys() or \
-                               port in bigraph['hyper_edges'][path_here].keys(), f"tunnel '{port}' " \
-                                                                                 f"is not declared in ports"
-                        bigraph['tunnels'][path_here][port] = state_path_tuple(state_path)
+        # what kind of node?
+        if ('wires' in child or
+            '_ports' in child or
+                child.get('_type') == 'process' or
+                child.get('_type') == 'step' or
+                child.get('_type') == 'edge'
+        ):
+            # this is a hyperedge/process
+            if path_here not in bigraph['hyper_edges']:
+                bigraph['hyper_edges'][path_here] = {}
+            if 'wires' in child:
+                for port, state_path in child['wires'].items():
+                    bigraph['hyper_edges'][path_here][port] = get_state_path_extended(state_path)
+            if 'inputs' in child:
+                for port, state_path in child['inputs'].items():
+                    bigraph['hyper_edges'][path_here][port] = get_state_path_extended(state_path)
+            if 'outputs' in child:
+                for port, state_path in child['outputs'].items():
+                    bigraph['hyper_edges'][path_here][port] = get_state_path_extended(state_path)
+            if '_depends_on' in child:
+                depends_on = child.get('_depends_on', [])
+                if path_here not in bigraph['flow']:
+                    bigraph['flow'][path_here] = []
+                if isinstance(depends_on, str):
+                    depends_on = [depends_on]
+                for state_path in depends_on:
+                    if isinstance(state_path, str):
+                        state_path = [state_path]
+                    state_path = state_path_tuple(state_path)
+                    state_path.insert(0, '..')  # go up one to the same level as the process
+                    bigraph['flow'][path_here].append(state_path)
 
-                bigraph['process_nodes'] += [node]
-            else:
-                bigraph['state_nodes'] += [node]
+            # check for mismatch, there might be disconnected wires or mismatch with declared wires
+            wire_ports = []
+            if 'wires' in child:
+                wire_ports = child['wires'].keys()
+            if '_ports' in child:
+                # wires need to match schema
+                schema_ports = child['_ports'].keys()
+                assert all(item in schema_ports for item in wire_ports), \
+                    f"attempting to wire undeclared process ports: " \
+                    f"wire ports: {wire_ports}, schema ports: {schema_ports}"
+                disconnected_ports = [port_id for port_id in schema_ports if port_id not in wire_ports]
+                if disconnected_ports and path_here not in bigraph['disconnected_hyper_edges']:
+                    bigraph['disconnected_hyper_edges'][path_here] = {}
+                for port in disconnected_ports:
+                    bigraph['disconnected_hyper_edges'][path_here][port] = [port, ]
+            if '_tunnels' in child:
+                tunnels = child['_tunnels']
+                if path_here not in bigraph['tunnels']:
+                    bigraph['tunnels'][path_here] = {}
+                for port, state_path in tunnels.items():
+                    assert port in bigraph['disconnected_hyper_edges'][path_here].keys() or \
+                           port in bigraph['hyper_edges'][path_here].keys(), f"tunnel '{port}' " \
+                                                                             f"is not declared in ports"
+                    bigraph['tunnels'][path_here][port] = state_path_tuple(state_path)
 
-            # check inner states
-            if isinstance(child, dict):
-                # this is a branch node
-                child_bigraph_network = get_bigraph_network(child, path=path_here, remove_nodes=remove_nodes)
-                bigraph = extend_bigraph(bigraph, child_bigraph_network)
+            bigraph['process_nodes'] += [node]
+        else:
+            bigraph['state_nodes'] += [node]
 
-                # add place edges to this layer
-                for node in child.keys():
-                    child_path = path_here + (node,)
-                    if node in schema_keys or check_if_path_in_removed_nodes(child_path, remove_nodes):
-                        continue
-                    bigraph['place_edges'] += [(path_here, child_path)]
+        # check inner states
+        if isinstance(child, dict):
+            # this is a branch node
+            child_bigraph_network = get_bigraph_network(
+                child, 
+                path=path_here, 
+                remove_nodes=remove_nodes, 
+                show_process_schema=show_process_schema)
+            bigraph = extend_bigraph(bigraph, child_bigraph_network)
+
+            # add place edges to this layer
+            for node in child.keys():
+                
+                # skip process schema
+                if not show_process_schema and node in process_schema_keys:
+                    continue
+                
+                child_path = path_here + (node,)
+                if node in schema_keys or check_if_path_in_removed_nodes(child_path, remove_nodes):
+                    continue
+                place_edge = [(path_here, child_path)]
+                bigraph['place_edges'] += place_edge
 
     return bigraph
 
@@ -371,6 +391,7 @@ def plot_bigraph(
         node_label_size='12pt',
         show_values=False,
         show_types=False,
+        show_process_schema=False,
         collapse_processes=False,
         port_labels=True,
         port_label_size='10pt',
@@ -398,6 +419,7 @@ def plot_bigraph(
         node_label_size (str, optional): The font size for the node labels. Default is None.
         show_values (bool, optional): Display on value info in node label. Default is False.
         show_types (bool, optional): Display on type info in node label. Default is False.
+        show_process_schema (bool, optional): Display process schema info as internal nodes. Default is False.
         collapse_processes (bool, optional): Collapse rectangular process nodes to a hyperedge vertex. Default is False.
         port_labels (bool, optional): Turn on port labels. Default is True.
         port_label_size (str, optional): The font size of the port labels (example: '10pt'). Default is None.
@@ -437,9 +459,14 @@ def plot_bigraph(
     out_dir = kwargs.pop('out_dir')
     filename = kwargs.pop('filename')
     remove_nodes = kwargs.pop('remove_nodes')
+    show_process_schema = kwargs.pop('show_process_schema')
 
     # get the nodes and edges from the composite
-    bigraph_network = get_bigraph_network(bigraph_schema, remove_nodes=remove_nodes)
+    bigraph_network = get_bigraph_network(
+        bigraph_schema,
+        remove_nodes=remove_nodes,
+        show_process_schema=show_process_schema,
+)
 
     # make graphviz network
     graph = get_graphviz_bigraph(bigraph_network, **kwargs)
