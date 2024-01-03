@@ -95,11 +95,11 @@ def get_bigraph_network(bigraph_dict, path=None, remove_nodes=None):
                 if 'wires' in child:
                     for port, state_path in child['wires'].items():
                         bigraph['hyper_edges'][path_here][port] = get_state_path_extended(state_path)
-                if 'input' in child:
+                if 'inputs' in child:
                     for port, state_path in child['inputs'].items():
                         bigraph['hyper_edges'][path_here][port] = get_state_path_extended(state_path)
-                if 'output' in child:
-                    for port, state_path in child['inputs'].items():
+                if 'outputs' in child:
+                    for port, state_path in child['outputs'].items():
                         bigraph['hyper_edges'][path_here][port] = get_state_path_extended(state_path)
                 if '_depends_on' in child:
                     depends_on = child.get('_depends_on', [])
