@@ -1,9 +1,7 @@
 """
-====
-Plot
-====
-
-* plot_bigraph
+============
+Plot Bigraph
+============
 """
 import copy
 import os
@@ -37,6 +35,15 @@ def check_if_path_in_removed_nodes(path, remove_nodes):
     if remove_nodes:
         return any(remove_path == path[:len(remove_path)] for remove_path in remove_nodes)
     return False
+
+
+def get_state_path_extended(state_path):
+    if isinstance(state_path, tuple):
+        # support tuple paths
+        state_path = list(state_path)
+    state_path = state_path_tuple(state_path)
+    state_path.insert(0, '..')  # go up one to the same level as the process
+    return state_path
 
 
 def get_bigraph_network(bigraph_dict, path=None, remove_nodes=None):
@@ -76,19 +83,25 @@ def get_bigraph_network(bigraph_dict, path=None, remove_nodes=None):
                 node['sync_step'] = child['_sync_step']
 
             # what kind of node?
-            if 'wires' in child or '_ports' in child:
+            if ('wires' in child or
+                '_ports' in child or
+                    child.get('_type') == 'process' or
+                    child.get('_type') == 'step' or
+                    child.get('_type') == 'edge'
+            ):
                 # this is a hyperedge/process
                 if path_here not in bigraph['hyper_edges']:
                     bigraph['hyper_edges'][path_here] = {}
                 if 'wires' in child:
                     for port, state_path in child['wires'].items():
-                        if isinstance(state_path, tuple):
-                            # support tuple paths
-                            state_path = list(state_path)
-                        state_path = state_path_tuple(state_path)
-                        state_path.insert(0, '..')  # go up one to the same level as the process
-                        bigraph['hyper_edges'][path_here][port] = state_path
-                if child.get('_depends_on'):
+                        bigraph['hyper_edges'][path_here][port] = get_state_path_extended(state_path)
+                if 'input' in child:
+                    for port, state_path in child['inputs'].items():
+                        bigraph['hyper_edges'][path_here][port] = get_state_path_extended(state_path)
+                if 'output' in child:
+                    for port, state_path in child['inputs'].items():
+                        bigraph['hyper_edges'][path_here][port] = get_state_path_extended(state_path)
+                if '_depends_on' in child:
                     depends_on = child.get('_depends_on', [])
                     if path_here not in bigraph['flow']:
                         bigraph['flow'][path_here] = []
