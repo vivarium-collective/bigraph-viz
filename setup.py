@@ -2,7 +2,7 @@ import re
 from setuptools import setup, find_packages
 
 
-VERSION = '0.0.30'
+VERSION = '0.0.31'
 
 
 with open("README.md", "r") as readme:
@@ -45,6 +45,7 @@ setup(
     install_requires=[
         # List your package dependencies here
         "graphviz",
-        "bigraph-schema"
+        "bigraph-schema",
+        "numpy"
     ],
 )
