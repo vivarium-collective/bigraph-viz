@@ -67,7 +67,7 @@ def get_bigraph_network(
 
     for key, child in bigraph_dict.items():
         # skip process schema
-        if  not show_process_schema and  key in process_schema_keys:
+        if not show_process_schema and key in process_schema_keys:
             continue
         if key in schema_keys:
             continue
