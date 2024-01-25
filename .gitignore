@@ -1,4 +1,5 @@
 # Distribution / packaging
+__pycache__/
 .Python
 env/
 build/
@@ -18,3 +19,5 @@ wheels/
 *.egg
 *.out
 out/
+.python-version
+.ipynb_checkpoints/
