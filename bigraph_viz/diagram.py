@@ -11,9 +11,6 @@ from bigraph_viz.plot import (
 import graphviz
 
 
-# make a local type system
-core = TypeSystem()
-
 
 SCHEMA_KEYS = ['_type', 'config', 'address']  # get these from bigraph_schema
 PROCESS_INTERFACE_KEYS = ['inputs', 'outputs']
@@ -24,17 +21,18 @@ def get_flattened_wires(wires, hyperedges):
     pass
 
 
-def get_flattened_graph(
+def get_graph_dict(
         schema,
         state,
-        bigraph=None,
+        core,
+        graph_dict=None,
         path=None,
         # remove_nodes=None,
 ):
     path = path or ()
 
     # initialize bigraph
-    bigraph = bigraph or {
+    graph_dict = graph_dict or {
         'state_nodes': [],
         'process_nodes': [],
         'place_edges': [],
@@ -49,7 +47,7 @@ def get_flattened_graph(
                      'path': subpath}
 
         if core.check('edge', value):
-            bigraph['process_nodes'].append(node_spec)
+            graph_dict['process_nodes'].append(node_spec)
 
             # this is an edge, get its inputs and outputs
             input_wires = value.get('inputs', {})
@@ -57,38 +55,38 @@ def get_flattened_graph(
 
             for port, input_wire in input_wires.items():
                 target = input_wire  # todo get absolute path
-                bigraph['hyper_edges'].append({
-                    'source': subpath,
-                    'target': target,
+                graph_dict['hyper_edges'].append({
+                    'edge_path': subpath,
+                    'target_path': target,
                     'port': port,
                     'type': 'input',
                 })
             for port, output_wire in output_wires.items():
                 target = output_wire  # todo get absolute path
-                bigraph['hyper_edges'].append({
-                    'source': subpath,
-                    'target': target,
+                graph_dict['hyper_edges'].append({
+                    'edge_path': subpath,
+                    'target_path': target,
                     'port': port,
                     'type': 'output',
                 })
 
         else:
-            bigraph['state_nodes'].append(node_spec)
+            graph_dict['state_nodes'].append(node_spec)
 
 
 
-    return bigraph
+    return graph_dict
 
 
 def get_graphviz_fig(
-        bigraph_network,
+        graph_dict,
         label_margin='0.05',
         node_label_size='12pt',
         size='16,10',
         rankdir='TB',
         dpi='70',
 ):
-    """make a graphviz figure from a bigraph_network"""
+    """make a graphviz figure from a graph_dict"""
     node_names = []
 
     # node specs
@@ -106,7 +104,7 @@ def get_graphviz_fig(
 
     # state nodes
     graph.attr('node', **state_node_spec)
-    for node in bigraph_network['state_nodes']:
+    for node in graph_dict['state_nodes']:
         node_path = node['path']
         node_name = str(node_path)
         node_names.append(node_name)
@@ -122,7 +120,7 @@ def get_graphviz_fig(
     # process nodes
     process_paths = []
     graph.attr('node', **process_node_spec)
-    for node in bigraph_network['process_nodes']:
+    for node in graph_dict['process_nodes']:
         node_path = node['path']
         process_paths.append(node_path)
         node_name = str(node_path)
@@ -132,42 +130,36 @@ def get_graphviz_fig(
 
     # place edges
     graph.attr('edge', arrowhead='none', penwidth='2')
-    for edge in bigraph_network['place_edges']:
+    for edge in graph_dict['place_edges']:
 
         # show edge
         graph.attr('edge', style='filled')
         node_name1 = str(edge[0])
-        node_name2 = str(edge[1])
-        graph.edge(node_name1, node_name2)
+        target_name = str(edge[1])
+        graph.edge(node_name1, target_name)
 
     # hyper edges
     graph.attr('edge', **hyper_edge_spec)
-    for node_path, wires in bigraph_network['hyper_edges'].items():
-        node_name = str(node_path)
-        with graph.subgraph(name=node_name) as c:
-            for port, state_path in wires.items():
-                absolute_state_path = absolute_path(node_path, state_path)
-                node_name1 = str(node_path)
-                node_name2 = str(absolute_state_path)
+    for edge in graph_dict['hyper_edges']:
+        edge_path = edge['edge_path']
+        edge_name = str(edge_path)
+        target_path = edge['target_path']
+        port = edge['port']
+        edge_type = edge['type']  # input or output
+        target_name = str(target_path)
 
-                # are the nodes already in the graph?
-                if node_name2 not in graph.body:
-                    label = make_label(absolute_state_path[-1])
-                    graph.node(node_name2, label=label, **state_node_spec)
-                c.edge(node_name2, node_name1)
+        # place it in the graph
+        if target_name not in graph.body: # is the source node already in the graph?
+            label = make_label(target_path[-1])
+            graph.node(target_name, label=label, **state_node_spec)
+        else:
+            with graph.subgraph(name=edge_name) as c:
+                c.edge(target_name, edge_name)
 
     # disconnected hyper edges
     graph.attr('edge', **hyper_edge_spec)
-    for node_path, wires in bigraph_network['disconnected_hyper_edges'].items():
-        node_name = str(node_path)
-        with graph.subgraph(name=node_name) as c:
-            for port, state_path in wires.items():
-                absolute_state_path = absolute_path(node_path, state_path)
-                node_name1 = str(node_path)
-                node_name2 = str(absolute_state_path)
-                # add invisible node for port
-                graph.node(node_name2, label='', style='invis', width='0')
-                c.edge(node_name2, node_name1)
+    for edge in graph_dict['disconnected_hyper_edges']:
+        pass
 
     return graph
 
@@ -175,21 +167,26 @@ def get_graphviz_fig(
 def plot_bigraph(
         state,
         schema=None,
+        core=None,
         out_dir=None,
         filename=None,
         file_format='png',
 ):
+    core = core or TypeSystem()
     schema = schema or {}
     schema = core.infer_schema(schema, state)
 
     # parse out the network
-    bigraph_network = get_flattened_graph(schema, state)
+    graph_dict = get_graph_dict(
+        schema=schema,
+        state=state,
+        core=core)
 
-    print(bigraph_network)
+    print(graph_dict)
 
-    # # make a figure
-    # graph = get_graphviz_fig(bigraph_network)
-    #
+    # make a figure
+    graph = get_graphviz_fig(graph_dict)
+
     # # display or save results
     # if filename is not None:
     #     out_dir = out_dir or 'out'
