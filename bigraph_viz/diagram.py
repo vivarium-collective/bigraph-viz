@@ -45,22 +45,35 @@ def get_flattened_graph(
 
     for key, value in state.items():
         subpath = path + (key,)
+        node_spec = {'name': key,
+                     'path': subpath}
 
         if core.check('edge', value):
-            bigraph['process_nodes'].append({'path': subpath})
+            bigraph['process_nodes'].append(node_spec)
 
             # this is an edge, get its inputs and outputs
             input_wires = value.get('inputs', {})
             output_wires = value.get('outputs', {})
 
             for port, input_wire in input_wires.items():
-                bigraph['hyperedges'].append({
+                target = input_wire  # todo get absolute path
+                bigraph['hyper_edges'].append({
                     'source': subpath,
-                    'target': input_wires,
+                    'target': target,
+                    'port': port,
+                    'type': 'input',
+                })
+            for port, output_wire in output_wires.items():
+                target = output_wire  # todo get absolute path
+                bigraph['hyper_edges'].append({
+                    'source': subpath,
+                    'target': target,
+                    'port': port,
+                    'type': 'output',
                 })
 
         else:
-            bigraph['state_nodes'].append(subpath)
+            bigraph['state_nodes'].append(node_spec)
 
 
 
@@ -172,17 +185,19 @@ def plot_bigraph(
     # parse out the network
     bigraph_network = get_flattened_graph(schema, state)
 
-    # make a figure
-    graph = get_graphviz_fig(bigraph_network)
+    print(bigraph_network)
 
-    # display or save results
-    if filename is not None:
-        out_dir = out_dir or 'out'
-        os.makedirs(out_dir, exist_ok=True)
-        fig_path = os.path.join(out_dir, filename)
-        print(f"Writing {fig_path}")
-        graph.render(filename=fig_path, format=file_format)
-    return graph
+    # # make a figure
+    # graph = get_graphviz_fig(bigraph_network)
+    #
+    # # display or save results
+    # if filename is not None:
+    #     out_dir = out_dir or 'out'
+    #     os.makedirs(out_dir, exist_ok=True)
+    #     fig_path = os.path.join(out_dir, filename)
+    #     print(f"Writing {fig_path}")
+    #     graph.render(filename=fig_path, format=file_format)
+    # return graph
 
 
 def test_diagram_plot():
@@ -200,7 +215,7 @@ def test_diagram_plot():
 
     cell = {
         'cell': {
-            '_type': 'process',
+            '_type': 'edge',
             'config': {},
             'address': 'local:cell',   # TODO -- this is where the ports/inputs/outputs come from
             '_inputs': {
