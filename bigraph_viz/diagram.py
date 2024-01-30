@@ -17,8 +17,25 @@ PROCESS_INTERFACE_KEYS = ['inputs', 'outputs']
 EDGE_TYPES = ['process', 'step', 'edge']
 
 
-def get_flattened_wires(wires, hyperedges):
-    pass
+def get_graph_wires(schema, wires, graph_dict, schema_key, edge_path, port):
+
+    if isinstance(wires, dict):
+        for port, subwire in wires.items():
+            subschema = schema.get(port, schema)
+            graph_dict = get_graph_wires(
+                subschema, subwire, graph_dict, schema_key, edge_path, port)
+    elif isinstance(wires, (list, tuple)):
+        absolute_path = edge_path + tuple(wires)   # TODO -- make sure this resolves ...
+        graph_dict['hyper_edges'].append({
+            'edge_path': edge_path,
+            'target_path': absolute_path,
+            'port': port,
+            'type': schema_key,
+        })
+    else:
+        raise ValueError(f"Unexpected wire type: {wires}")
+
+    return graph_dict
 
 
 def get_graph_dict(
@@ -27,9 +44,11 @@ def get_graph_dict(
         core,
         graph_dict=None,
         path=None,
+        top_state=None,
         # remove_nodes=None,
 ):
     path = path or ()
+    top_state = top_state or state
 
     # initialize bigraph
     graph_dict = graph_dict or {
@@ -46,34 +65,44 @@ def get_graph_dict(
         node_spec = {'name': key,
                      'path': subpath}
 
-        if core.check('edge', value):
+        if core.check('edge', value):   # Maybe make a more specific type for this
+            # this is a process/edge node
             graph_dict['process_nodes'].append(node_spec)
 
             # this is an edge, get its inputs and outputs
             input_wires = value.get('inputs', {})
             output_wires = value.get('outputs', {})
+            input_schema = value.get('_inputs', {})
+            output_schema = value.get('_outputs', {})
 
-            for port, input_wire in input_wires.items():
-                target = input_wire  # todo get absolute path
-                graph_dict['hyper_edges'].append({
-                    'edge_path': subpath,
-                    'target_path': target,
-                    'port': port,
-                    'type': 'input',
-                })
-            for port, output_wire in output_wires.items():
-                target = output_wire  # todo get absolute path
-                graph_dict['hyper_edges'].append({
-                    'edge_path': subpath,
-                    'target_path': target,
-                    'port': port,
-                    'type': 'output',
-                })
+            # (schema, wires, graph_dict, schema_key, edge_path, port)
+            graph_dict = get_graph_wires(
+                input_schema, input_wires, graph_dict, schema_key='inputs', edge_path=subpath, port=())
+            graph_dict = get_graph_wires(
+                output_schema, output_wires, graph_dict, schema_key='outputs', edge_path=subpath, port=())
 
         else:
+            # this is a state node
             graph_dict['state_nodes'].append(node_spec)
 
+        if isinstance(value, dict):
+            sub_graph_dict = get_graph_dict(
+                schema=schema,
+                state=value,
+                core=core,
+                # graph_dict=graph_dict,
+                path=subpath,
+                top_state=top_state,
+            )
 
+            # TODO -- merge this in
+
+            # get the place edge
+            for node in value.keys():
+                child_path = subpath + (node,)
+                graph_dict['place_edges'].append({
+                    'parent': subpath,
+                    'child': child_path})
 
     return graph_dict
 
