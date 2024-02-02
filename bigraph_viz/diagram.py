@@ -1,7 +1,6 @@
 """
 Bigraph diagram
 """
-import os
 from bigraph_schema import TypeSystem, Edge
 # from process_bigraph import core
 from bigraph_viz.plot import (
@@ -11,8 +10,7 @@ from bigraph_viz.plot import (
 import graphviz
 
 
-
-SCHEMA_KEYS = ['_type', 'config', 'address']  # get these from bigraph_schema
+PROCESS_SCHEMA_KEYS = ['_type', 'config', 'address']  # get these from bigraph_schema
 PROCESS_INTERFACE_KEYS = ['inputs', 'outputs']
 EDGE_TYPES = ['process', 'step', 'edge']
 
@@ -25,10 +23,10 @@ def get_graph_wires(schema, wires, graph_dict, schema_key, edge_path, port):
             graph_dict = get_graph_wires(
                 subschema, subwire, graph_dict, schema_key, edge_path, port)
     elif isinstance(wires, (list, tuple)):
-        absolute_path = edge_path + tuple(wires)   # TODO -- make sure this resolves ...
+        target_path = absolute_path(edge_path[:-1], tuple(wires))   # TODO -- make sure this resolves ".."
         graph_dict['hyper_edges'].append({
             'edge_path': edge_path,
-            'target_path': absolute_path,
+            'target_path': target_path,
             'port': port,
             'type': schema_key,
         })
@@ -203,7 +201,7 @@ def plot_bigraph(
 ):
     core = core or TypeSystem()
     schema = schema or {}
-    schema = core.infer_schema(schema, state)
+    schema, state = core.complete(schema, state)
 
     # parse out the network
     graph_dict = get_graph_dict(
@@ -213,8 +211,8 @@ def plot_bigraph(
 
     print(graph_dict)
 
-    # make a figure
-    graph = get_graphviz_fig(graph_dict)
+    # # make a figure
+    # graph = get_graphviz_fig(graph_dict)
 
     # # display or save results
     # if filename is not None:
@@ -240,8 +238,9 @@ def test_diagram_plot():
 
 
     cell = {
+        # 'secretions_store': {},
         'cell': {
-            '_type': 'edge',
+            '_type': 'edge',  # TODO -- this should also accept process, step, but how in bigraph-schema?
             'config': {},
             'address': 'local:cell',   # TODO -- this is where the ports/inputs/outputs come from
             '_inputs': {
