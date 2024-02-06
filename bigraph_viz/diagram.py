@@ -10,9 +10,20 @@ from bigraph_viz.plot import (
 import graphviz
 
 
-PROCESS_SCHEMA_KEYS = ['_type', 'config', 'address']  # get these from bigraph_schema
-PROCESS_INTERFACE_KEYS = ['inputs', 'outputs']
-EDGE_TYPES = ['process', 'step', 'edge']
+PROCESS_SCHEMA_KEYS = ['config', 'address', 'interval', 'inputs', 'outputs']
+
+
+step_type = {
+    '_type': 'step',
+    '_inherit': 'edge',
+    'address': 'string',
+    'config': 'schema'}
+
+
+process_type = {
+    '_type': 'process',
+    '_inherit': 'step',
+    'interval': 'float'}
 
 
 def get_graph_wires(schema, wires, graph_dict, schema_key, edge_path, port):
@@ -43,6 +54,8 @@ def get_graph_dict(
         graph_dict=None,
         path=None,
         top_state=None,
+        retain_type_keys=False,
+        retain_process_keys=False,
         # remove_nodes=None,
 ):
     path = path or ()
@@ -59,12 +72,18 @@ def get_graph_dict(
     }
 
     for key, value in state.items():
+        if key.startswith('_') and not retain_type_keys:
+            continue
+
         subpath = path + (key,)
         node_spec = {'name': key,
                      'path': subpath}
 
         if core.check('edge', value):   # Maybe make a more specific type for this
             # this is a process/edge node
+            if key in PROCESS_SCHEMA_KEYS and not retain_process_keys:
+                continue
+
             graph_dict['process_nodes'].append(node_spec)
 
             # this is an edge, get its inputs and outputs
@@ -97,6 +116,12 @@ def get_graph_dict(
 
             # get the place edge
             for node in value.keys():
+                if node.startswith('_') and not retain_type_keys:
+                    continue
+
+                if not retain_process_keys and core.check('edge', value):
+                    continue
+
                 child_path = subpath + (node,)
                 graph_dict['place_edges'].append({
                     'parent': subpath,
@@ -199,9 +224,18 @@ def plot_bigraph(
         filename=None,
         file_format='png',
 ):
+
     core = core or TypeSystem()
     schema = schema or {}
+
+    if not core.exists('step'):
+        core.register('step', step_type)
+    if not core.exists('process'):
+        core.register('process', process_type)
+
     schema, state = core.complete(schema, state)
+
+    import ipdb; ipdb.set_trace()
 
     # parse out the network
     graph_dict = get_graph_dict(
@@ -237,18 +271,25 @@ def test_diagram_plot():
     # register('metabolic_process', metabolic_process_type)  # TODO -- register where?
 
 
+    # TODO: where does the 'map[float]' go for the schema for the
+    #   'config' key here?
+
     cell = {
         # 'secretions_store': {},
+        'config': {
+            '_type': 'map[float]',
+            'a': 11.0,
+            'b': 3333.33},
         'cell': {
-            '_type': 'edge',  # TODO -- this should also accept process, step, but how in bigraph-schema?
+            '_type': 'process',  # TODO -- this should also accept process, step, but how in bigraph-schema?
             'config': {},
             'address': 'local:cell',   # TODO -- this is where the ports/inputs/outputs come from
             '_inputs': {
-                'nutrients': 'any',
+                'nutrients': 'float',
             },
             '_outputs': {
-                'secretions': 'any',
-                'biomass': 'any',
+                'secretions': 'float',
+                'biomass': 'float',
             },
             'inputs': {
                 'nutrients': ['nutrients_store'],
