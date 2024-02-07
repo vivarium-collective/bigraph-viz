@@ -25,19 +25,30 @@ process_type = {
 
 def get_graph_wires(schema, wires, graph_dict, schema_key, edge_path, port):
 
-    if isinstance(wires, dict):
-        for port, subwire in wires.items():
-            subschema = schema.get(port, schema)
-            graph_dict = get_graph_wires(
-                subschema, subwire, graph_dict, schema_key, edge_path, port)
+    # if isinstance(wires, dict):
+    #     for port, subwire in wires.items():
+    #         subschema = schema.get(port, schema)
+    #         graph_dict = get_graph_wires(
+    #             subschema, subwire, graph_dict, schema_key, edge_path, port)
+
+    if isinstance(schema, dict):
+        for port, subschema in schema.items():
+            subwire = wires.get(port)
+            if subwire:
+                graph_dict = get_graph_wires(
+                    subschema, subwire, graph_dict, schema_key, edge_path, port)
+            else: # this is a disconnected port
+                graph_dict['disconnected_hyper_edges'].append({
+                    'edge_path': edge_path,
+                    'port': port,
+                    'type': schema_key})
     elif isinstance(wires, (list, tuple)):
-        target_path = absolute_path(edge_path[:-1], tuple(wires))   # TODO -- make sure this resolves ".."
+        target_path = absolute_path(edge_path[:-1], tuple(wires))  # TODO -- make sure this resolves ".."
         graph_dict['hyper_edges'].append({
             'edge_path': edge_path,
             'target_path': target_path,
             'port': port,
-            'type': schema_key,
-        })
+            'type': schema_key})
     else:
         raise ValueError(f"Unexpected wire type: {wires}")
 
@@ -102,8 +113,7 @@ def get_graph_dict(
                 core=core,
                 graph_dict=graph_dict,
                 path=subpath,
-                top_state=top_state,
-            )
+                top_state=top_state)
 
             # get the place edge
             for node in value.keys():
@@ -208,7 +218,25 @@ def get_graphviz_fig(
     # disconnected hyper edges
     graph.attr('edge', **hyper_edge_spec)
     for edge in graph_dict['disconnected_hyper_edges']:
-        pass
+        process_path = edge['edge_path']
+        process_name = str(process_path)
+        port = edge['port']
+        edge_type = edge['type']  # input or output
+
+        # add invisible node for port
+        node_name2 = str(absolute_path(process_path, port))
+        graph.node(node_name2, label='', style='invis', width='0')
+
+        # add the edge
+        if edge_type == 'inputs':
+            graph.attr('edge', **input_edge_spec)
+        elif edge_type == 'outputs':
+            graph.attr('edge', **output_edge_spec)
+        else:
+            graph.attr('edge', **hyper_edge_spec)
+        with graph.subgraph(name=process_name) as c:
+            label = make_label(port)
+            c.edge(node_name2, process_name, label=label, labelloc="t")
 
     return graph
 
@@ -238,8 +266,6 @@ def plot_bigraph(
         state=state,
         core=core)
 
-    # print(graph_dict)
-
     # make a figure
     graph = get_graphviz_fig(graph_dict)
 
@@ -256,7 +282,7 @@ def plot_bigraph(
 def test_diagram_plot():
     cell = {
         'config': {
-            # '_type': 'map[float]',
+            '_type': 'map[float]',
             'a': 11.0,
             'b': 3333.33},
         'cell': {
@@ -274,7 +300,7 @@ def test_diagram_plot():
                 'nutrients': ['nutrients_store'],
             },
             'outputs': {
-                'secretions': ['secretions_store'],
+                # 'secretions': ['secretions_store'],
                 'biomass': ['biomass_store'],
             }
         }
