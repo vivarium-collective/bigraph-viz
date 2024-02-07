@@ -1,12 +1,9 @@
 """
 Bigraph diagram
 """
+import os
 from bigraph_schema import TypeSystem, Edge
-# from process_bigraph import core
-from bigraph_viz.plot import (
-    absolute_path, extend_bigraph, get_state_path_extended,
-    check_if_path_in_removed_nodes, make_label,
-)
+from bigraph_viz.plot import absolute_path, make_label
 import graphviz
 
 
@@ -56,7 +53,6 @@ def get_graph_dict(
         top_state=None,
         retain_type_keys=False,
         retain_process_keys=False,
-        # remove_nodes=None,
 ):
     path = path or ()
     top_state = top_state or state
@@ -76,11 +72,9 @@ def get_graph_dict(
             continue
 
         subpath = path + (key,)
-        node_spec = {'name': key,
-                     'path': subpath}
+        node_spec = {'name': key, 'path': subpath}
 
-        if core.check('edge', value):   # Maybe make a more specific type for this
-            # this is a process/edge node
+        if core.check('edge', value):  # this is a process/edge node
             if key in PROCESS_SCHEMA_KEYS and not retain_process_keys:
                 continue
 
@@ -92,33 +86,29 @@ def get_graph_dict(
             input_schema = value.get('_inputs', {})
             output_schema = value.get('_outputs', {})
 
-            # (schema, wires, graph_dict, schema_key, edge_path, port)
+            # get the input and output wires
             graph_dict = get_graph_wires(
                 input_schema, input_wires, graph_dict, schema_key='inputs', edge_path=subpath, port=())
             graph_dict = get_graph_wires(
                 output_schema, output_wires, graph_dict, schema_key='outputs', edge_path=subpath, port=())
 
-        else:
-            # this is a state node
+        else:  # this is a state node
             graph_dict['state_nodes'].append(node_spec)
 
-        if isinstance(value, dict):
-            sub_graph_dict = get_graph_dict(
+        if isinstance(value, dict):  # get subgraph
+            graph_dict = get_graph_dict(
                 schema=schema,
                 state=value,
                 core=core,
-                # graph_dict=graph_dict,
+                graph_dict=graph_dict,
                 path=subpath,
                 top_state=top_state,
             )
-
-            # TODO -- merge this in
 
             # get the place edge
             for node in value.keys():
                 if node.startswith('_') and not retain_type_keys:
                     continue
-
                 if not retain_process_keys and core.check('edge', value):
                     continue
 
@@ -126,6 +116,7 @@ def get_graph_dict(
                 graph_dict['place_edges'].append({
                     'parent': subpath,
                     'child': child_path})
+
 
     return graph_dict
 
@@ -150,8 +141,7 @@ def get_graphviz_fig(
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'dot', 'arrowsize': '0.5'}
 
     # initialize graph
-    graph_name = 'bigraph'
-    graph = graphviz.Digraph(graph_name, engine='dot')
+    graph = graphviz.Digraph(name='bigraph', engine='dot')
     graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi)
 
     # state nodes
@@ -183,12 +173,10 @@ def get_graphviz_fig(
     # place edges
     graph.attr('edge', arrowhead='none', penwidth='2')
     for edge in graph_dict['place_edges']:
-
-        # show edge
         graph.attr('edge', style='filled')
-        node_name1 = str(edge[0])
-        target_name = str(edge[1])
-        graph.edge(node_name1, target_name)
+        parent_node = str(edge['parent'])
+        child_node = str(edge['child'])
+        graph.edge(parent_node, child_node)
 
     # hyper edges
     graph.attr('edge', **hyper_edge_spec)
@@ -201,17 +189,18 @@ def get_graphviz_fig(
         target_name = str(target_path)
 
         # place it in the graph
-        if target_name not in graph.body: # is the source node already in the graph?
+        if target_name not in graph.body:  # is the source node already in the graph?
             label = make_label(target_path[-1])
             graph.node(target_name, label=label, **state_node_spec)
-        else:
-            with graph.subgraph(name=edge_name) as c:
-                c.edge(target_name, edge_name)
 
-    # disconnected hyper edges
-    graph.attr('edge', **hyper_edge_spec)
-    for edge in graph_dict['disconnected_hyper_edges']:
-        pass
+        with graph.subgraph(name=edge_name) as c:
+            label = make_label(port)
+            c.edge(target_name, edge_name, label=label, labelloc="t")
+
+    # # disconnected hyper edges
+    # graph.attr('edge', **hyper_edge_spec)
+    # for edge in graph_dict['disconnected_hyper_edges']:
+    #     pass
 
     return graph
 
@@ -235,49 +224,31 @@ def plot_bigraph(
 
     schema, state = core.complete(schema, state)
 
-    import ipdb; ipdb.set_trace()
-
     # parse out the network
     graph_dict = get_graph_dict(
         schema=schema,
         state=state,
         core=core)
 
-    print(graph_dict)
+    # print(graph_dict)
 
-    # # make a figure
-    # graph = get_graphviz_fig(graph_dict)
+    # make a figure
+    graph = get_graphviz_fig(graph_dict)
 
-    # # display or save results
-    # if filename is not None:
-    #     out_dir = out_dir or 'out'
-    #     os.makedirs(out_dir, exist_ok=True)
-    #     fig_path = os.path.join(out_dir, filename)
-    #     print(f"Writing {fig_path}")
-    #     graph.render(filename=fig_path, format=file_format)
-    # return graph
+    # display or save results
+    if filename is not None:
+        out_dir = out_dir or 'out'
+        os.makedirs(out_dir, exist_ok=True)
+        fig_path = os.path.join(out_dir, filename)
+        print(f"Writing {fig_path}")
+        graph.render(filename=fig_path, format=file_format)
+    return graph
 
 
 def test_diagram_plot():
-    # metabolic_process_type = {
-    #     '_type': 'process',
-    #     '_inputs': {
-    #         'nutrients': 'any',
-    #     },
-    #     '_outputs': {
-    #         'se'
-    #     }
-    # }
-    # register('metabolic_process', metabolic_process_type)  # TODO -- register where?
-
-
-    # TODO: where does the 'map[float]' go for the schema for the
-    #   'config' key here?
-
     cell = {
-        # 'secretions_store': {},
         'config': {
-            '_type': 'map[float]',
+            # '_type': 'map[float]',
             'a': 11.0,
             'b': 3333.33},
         'cell': {
