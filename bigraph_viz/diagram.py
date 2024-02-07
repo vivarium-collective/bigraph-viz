@@ -83,7 +83,12 @@ def get_graph_dict(
             continue
 
         subpath = path + (key,)
-        node_spec = {'name': key, 'path': subpath}
+        node_spec = {
+            'name': key,
+            'path': subpath,
+            'value': None,
+            'type': None
+        }
 
         if core.check('edge', value):  # this is a process/edge node
             if key in PROCESS_SCHEMA_KEYS and not retain_process_keys:
@@ -104,6 +109,11 @@ def get_graph_dict(
                 output_schema, output_wires, graph_dict, schema_key='outputs', edge_path=subpath, port=())
 
         else:  # this is a state node
+            if not isinstance(value, dict):  # this is a leaf node
+                node_spec['value'] = value
+            # else:  # TODO -- this is not getting all values/types
+            #     node_spec['value'] = value.get('_value')
+            #     node_spec['type'] = value.get('_type')
             graph_dict['state_nodes'].append(node_spec)
 
         if isinstance(value, dict):  # get subgraph
@@ -137,6 +147,10 @@ def get_graphviz_fig(
         size='16,10',
         rankdir='TB',
         dpi='70',
+        show_values=False,
+        show_types=False,
+        port_labels=True,
+        port_label_size='10pt',
 ):
     """make a graphviz figure from a graph_dict"""
     node_names = []
@@ -167,6 +181,16 @@ def get_graphviz_fig(
         # make the label
         label = node_path[-1]
         schema_label = None
+        if show_values:
+            if node.get('value'):
+                if not schema_label:
+                    schema_label = '<br/>'
+                schema_label += f"value: {node['value']}"
+        if show_types:
+            if node.get('type'):
+                if not schema_label:
+                    schema_label = '<br/>'
+                schema_label += f"type: {node['type']}"
         if schema_label:
             label += schema_label
         label = make_label(label)
@@ -212,8 +236,11 @@ def get_graphviz_fig(
         else:
             graph.attr('edge', **hyper_edge_spec)
         with graph.subgraph(name=process_name) as c:
-            label = make_label(port)
-            c.edge(target_name, process_name, label=label, labelloc="t")
+            if port_labels:
+                label = make_label(port)
+                c.edge(target_name, process_name, label=label, labelloc="t", fontsize=port_label_size)
+            else:
+                c.edge(target_name, process_name)
 
     # disconnected hyper edges
     graph.attr('edge', **hyper_edge_spec)
@@ -235,8 +262,12 @@ def get_graphviz_fig(
         else:
             graph.attr('edge', **hyper_edge_spec)
         with graph.subgraph(name=process_name) as c:
-            label = make_label(port)
-            c.edge(node_name2, process_name, label=label, labelloc="t")
+            if port_labels:
+                label = make_label(port)
+                c.edge(node_name2, process_name, label=label, labelloc="t", fontsize=port_label_size
+                       )
+            else:
+                c.edge(node_name2, process_name)
 
     return graph
 
@@ -248,8 +279,39 @@ def plot_bigraph(
         out_dir=None,
         filename=None,
         file_format='png',
+        size='16,10',
+        node_label_size='12pt',
+        show_values=False,
+        show_types=False,
+        # show_process_schema=False,
+        # collapse_processes=False,
+        port_labels=True,
+        port_label_size='10pt',
+        # rankdir='TB',
+        # node_border_colors=None,
+        # node_fill_colors=None,
+        # node_groups=False,
+        # remove_nodes=None,
+        # invisible_edges=False,
+        # mark_top=False,
+        # remove_process_place_edges=False,
+        print_source=False,
+        # dpi='70',
+        # label_margin='0.05',
 ):
+    # get kwargs dict and remove plotting-specific kwargs
+    kwargs = locals()
+    state = kwargs.pop('state')
+    schema = kwargs.pop('schema')
+    core = kwargs.pop('core')
+    file_format = kwargs.pop('file_format')
+    out_dir = kwargs.pop('out_dir')
+    filename = kwargs.pop('filename')
+    print_source = kwargs.pop('print_source')
+    # remove_nodes = kwargs.pop('remove_nodes')
+    # show_process_schema = kwargs.pop('show_process_schema')
 
+    # set defaults if none provided
     core = core or TypeSystem()
     schema = schema or {}
 
@@ -267,9 +329,11 @@ def plot_bigraph(
         core=core)
 
     # make a figure
-    graph = get_graphviz_fig(graph_dict)
+    graph = get_graphviz_fig(graph_dict, **kwargs)
 
     # display or save results
+    if print_source:
+        print(graph.source)
     if filename is not None:
         out_dir = out_dir or 'out'
         os.makedirs(out_dir, exist_ok=True)
@@ -282,7 +346,7 @@ def plot_bigraph(
 def test_diagram_plot():
     cell = {
         'config': {
-            '_type': 'map[float]',
+            # '_type': 'map[float]',
             'a': 11.0,
             'b': 3333.33},
         'cell': {
@@ -305,7 +369,7 @@ def test_diagram_plot():
             }
         }
     }
-    plot_bigraph(cell, filename='bigraph_cell')
+    plot_bigraph(cell, filename='bigraph_cell', show_values=True, show_types=True, port_labels=False)
 
 
 if __name__ == '__main__':
