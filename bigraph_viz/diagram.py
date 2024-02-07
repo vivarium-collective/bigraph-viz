@@ -3,7 +3,7 @@ Bigraph diagram
 """
 import os
 from bigraph_schema import TypeSystem, Edge
-from bigraph_viz.plot import absolute_path, make_label
+from bigraph_viz.plot import absolute_path, make_label, check_if_path_in_removed_nodes
 import graphviz
 
 
@@ -64,6 +64,7 @@ def get_graph_dict(
         top_state=None,
         retain_type_keys=False,
         retain_process_keys=False,
+        remove_nodes=None,
 ):
     path = path or ()
     top_state = top_state or state
@@ -83,6 +84,10 @@ def get_graph_dict(
             continue
 
         subpath = path + (key,)
+        if check_if_path_in_removed_nodes(subpath, remove_nodes):
+            # skip node if path in removed_nodes
+            continue
+
         node_spec = {
             'name': key,
             'path': subpath,
@@ -123,7 +128,9 @@ def get_graph_dict(
                 core=core,
                 graph_dict=graph_dict,
                 path=subpath,
-                top_state=top_state)
+                top_state=top_state,
+                remove_nodes=remove_nodes
+            )
 
             # get the place edge
             for node in value.keys():
@@ -133,6 +140,8 @@ def get_graph_dict(
                     continue
 
                 child_path = subpath + (node,)
+                if check_if_path_in_removed_nodes(child_path, remove_nodes):
+                    continue
                 graph_dict['place_edges'].append({
                     'parent': subpath,
                     'child': child_path})
@@ -283,21 +292,21 @@ def plot_bigraph(
         node_label_size='12pt',
         show_values=False,
         show_types=False,
-        # show_process_schema=False,
-        # collapse_processes=False,
         port_labels=True,
         port_label_size='10pt',
-        # rankdir='TB',
+        rankdir='TB',
+        print_source=False,
+        dpi='70',
+        label_margin='0.05',
+        # show_process_schema=False,
+        # collapse_processes=False,
         # node_border_colors=None,
         # node_fill_colors=None,
         # node_groups=False,
-        # remove_nodes=None,
+        remove_nodes=None,
         # invisible_edges=False,
         # mark_top=False,
         # remove_process_place_edges=False,
-        print_source=False,
-        # dpi='70',
-        # label_margin='0.05',
 ):
     # get kwargs dict and remove plotting-specific kwargs
     kwargs = locals()
@@ -308,7 +317,7 @@ def plot_bigraph(
     out_dir = kwargs.pop('out_dir')
     filename = kwargs.pop('filename')
     print_source = kwargs.pop('print_source')
-    # remove_nodes = kwargs.pop('remove_nodes')
+    remove_nodes = kwargs.pop('remove_nodes')
     # show_process_schema = kwargs.pop('show_process_schema')
 
     # set defaults if none provided
@@ -326,7 +335,9 @@ def plot_bigraph(
     graph_dict = get_graph_dict(
         schema=schema,
         state=state,
-        core=core)
+        core=core,
+        remove_nodes=remove_nodes,
+    )
 
     # make a figure
     graph = get_graphviz_fig(graph_dict, **kwargs)
@@ -369,7 +380,17 @@ def test_diagram_plot():
             }
         }
     }
-    plot_bigraph(cell, filename='bigraph_cell', show_values=True, show_types=True, port_labels=False)
+    plot_bigraph(cell, filename='bigraph_cell',
+                 # show_values=True,
+                 # show_types=True,
+                 # port_labels=False,
+                 # rankdir='BT',
+                 # remove_nodes=[
+                 #     ('cell', 'address',),
+                 #     ('cell', 'config'),
+                 #     ('cell', 'interval'),
+                 # ]
+                 )
 
 
 if __name__ == '__main__':
