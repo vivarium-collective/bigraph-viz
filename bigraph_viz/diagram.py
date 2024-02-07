@@ -117,7 +117,6 @@ def get_graph_dict(
                     'parent': subpath,
                     'child': child_path})
 
-
     return graph_dict
 
 
@@ -139,6 +138,10 @@ def get_graphviz_fig(
         'shape': 'box', 'penwidth': '2', 'constraint': 'false', 'margin': label_margin, 'fontsize': node_label_size}
     hyper_edge_spec = {
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'dot', 'arrowsize': '0.5'}
+    input_edge_spec = {
+        'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0'}
+    output_edge_spec = {
+        'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'back'}
 
     # initialize graph
     graph = graphviz.Digraph(name='bigraph', engine='dot')
@@ -179,10 +182,9 @@ def get_graphviz_fig(
         graph.edge(parent_node, child_node)
 
     # hyper edges
-    graph.attr('edge', **hyper_edge_spec)
     for edge in graph_dict['hyper_edges']:
-        edge_path = edge['edge_path']
-        edge_name = str(edge_path)
+        process_path = edge['edge_path']
+        process_name = str(process_path)
         target_path = edge['target_path']
         port = edge['port']
         edge_type = edge['type']  # input or output
@@ -193,14 +195,20 @@ def get_graphviz_fig(
             label = make_label(target_path[-1])
             graph.node(target_name, label=label, **state_node_spec)
 
-        with graph.subgraph(name=edge_name) as c:
+        if edge_type == 'inputs':
+            graph.attr('edge', **input_edge_spec)
+        elif edge_type == 'outputs':
+            graph.attr('edge', **output_edge_spec)
+        else:
+            graph.attr('edge', **hyper_edge_spec)
+        with graph.subgraph(name=process_name) as c:
             label = make_label(port)
-            c.edge(target_name, edge_name, label=label, labelloc="t")
+            c.edge(target_name, process_name, label=label, labelloc="t")
 
-    # # disconnected hyper edges
-    # graph.attr('edge', **hyper_edge_spec)
-    # for edge in graph_dict['disconnected_hyper_edges']:
-    #     pass
+    # disconnected hyper edges
+    graph.attr('edge', **hyper_edge_spec)
+    for edge in graph_dict['disconnected_hyper_edges']:
+        pass
 
     return graph
 
