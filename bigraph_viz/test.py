@@ -47,7 +47,7 @@ def test_composite_spec():
                 '_type': 'int'
             },
             'process1': {
-                '_ports': {
+                '_inputs': {
                     'port1': {'_type': 'type'},
                     'port2': {'_type': 'type'},
                 },
