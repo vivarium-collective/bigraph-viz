@@ -400,7 +400,22 @@ def test_diagram_plot():
 def test_bio_schema():
     b = {
         'environment': {
-            'cells': {},
+            'cells': {
+                'cell1': {
+                    'nucleus': {
+                        'transcription': {
+                            '_type': 'process',
+                            'inputs': {
+                                'DNA': ['chromosome']
+                            },
+                            'outputs': {
+                                'RNA': ['..', 'cytoplasm']
+                            }
+                        }
+                    },
+
+                }
+            },
             'fields': {},
             'barriers': {},
             'diffusion': {
@@ -410,6 +425,9 @@ def test_bio_schema():
                 # },
                 'inputs': {
                     'fields': ['fields',]
+                },
+                'outputs': {
+                    'fields': ['fields', ]
                 }
             }
         }}

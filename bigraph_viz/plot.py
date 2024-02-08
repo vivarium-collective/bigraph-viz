@@ -8,6 +8,12 @@ import os
 
 from bigraph_viz.dict_utils import absolute_path, schema_keys, process_schema_keys
 import graphviz
+import warnings
+
+warnings.warn(
+    "The `plot_bigraph` method from `bigraph_viz.plot` is deprecated and will be removed in a future release. "
+    "Please use the new `plot_bigraph` from `bigraph_viz.diagram`.",
+    DeprecationWarning)
 
 
 def extend_bigraph(bigraph, bigraph2):
