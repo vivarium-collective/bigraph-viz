@@ -25,23 +25,22 @@ process_type = {
 
 def get_graph_wires(schema, wires, graph_dict, schema_key, edge_path, port):
 
-    # if isinstance(wires, dict):
-    #     for port, subwire in wires.items():
-    #         subschema = schema.get(port, schema)
-    #         graph_dict = get_graph_wires(
-    #             subschema, subwire, graph_dict, schema_key, edge_path, port)
-
-    if isinstance(schema, dict):
+    if isinstance(schema, dict) and schema:
         for port, subschema in schema.items():
             subwire = wires.get(port)
             if subwire:
                 graph_dict = get_graph_wires(
                     subschema, subwire, graph_dict, schema_key, edge_path, port)
-            else: # this is a disconnected port
+            else:  # this is a disconnected port
                 graph_dict['disconnected_hyper_edges'].append({
                     'edge_path': edge_path,
                     'port': port,
                     'type': schema_key})
+    elif isinstance(wires, dict):
+        for port, subwire in wires.items():
+            subschema = schema.get(port, schema)
+            graph_dict = get_graph_wires(
+                subschema, subwire, graph_dict, schema_key, edge_path, port)
     elif isinstance(wires, (list, tuple)):
         target_path = absolute_path(edge_path[:-1], tuple(wires))  # TODO -- make sure this resolves ".."
         graph_dict['hyper_edges'].append({
@@ -68,6 +67,7 @@ def get_graph_dict(
 ):
     path = path or ()
     top_state = top_state or state
+    remove_nodes = remove_nodes or []
 
     # initialize bigraph
     graph_dict = graph_dict or {
@@ -95,7 +95,8 @@ def get_graph_dict(
             'type': None
         }
 
-        if core.check('edge', value):  # this is a process/edge node
+        is_edge = core.check('edge', value)
+        if is_edge:  # this is a process/edge node
             if key in PROCESS_SCHEMA_KEYS and not retain_process_keys:
                 continue
 
@@ -116,14 +117,19 @@ def get_graph_dict(
         else:  # this is a state node
             if not isinstance(value, dict):  # this is a leaf node
                 node_spec['value'] = value
-            # else:  # TODO -- this is not getting all values/types
-            #     node_spec['value'] = value.get('_value')
-            #     node_spec['type'] = value.get('_type')
+                node_spec['type'] = schema.get(key, {}).get('_type')
+            else:
+                # node_spec['value'] = str(value)
+                node_spec['type'] = schema.get(key, {}).get('_type')
             graph_dict['state_nodes'].append(node_spec)
 
         if isinstance(value, dict):  # get subgraph
+            if is_edge:
+                removed_process_schema_keys = [subpath + (schema_key,) for schema_key in PROCESS_SCHEMA_KEYS]
+                remove_nodes.extend(removed_process_schema_keys)
+
             graph_dict = get_graph_dict(
-                schema=schema,
+                schema=schema.get(key, schema),
                 state=value,
                 core=core,
                 graph_dict=graph_dict,
@@ -135,8 +141,6 @@ def get_graph_dict(
             # get the place edge
             for node in value.keys():
                 if node.startswith('_') and not retain_type_keys:
-                    continue
-                if not retain_process_keys and core.check('edge', value):
                     continue
 
                 child_path = subpath + (node,)
@@ -193,13 +197,13 @@ def get_graphviz_fig(
         if show_values:
             if node.get('value'):
                 if not schema_label:
-                    schema_label = '<br/>'
-                schema_label += f"value: {node['value']}"
+                    schema_label = ''
+                schema_label += f": {node['value']}"
         if show_types:
             if node.get('type'):
                 if not schema_label:
                     schema_label = '<br/>'
-                schema_label += f"type: {node['type']}"
+                schema_label += f"[{node['type']}]"
         if schema_label:
             label += schema_label
         label = make_label(label)
@@ -357,13 +361,14 @@ def plot_bigraph(
 def test_diagram_plot():
     cell = {
         'config': {
-            # '_type': 'map[float]',
-            'a': 11.0,
+            '_type': 'map[float]',
+            'a': 11.0,  #{'_type': 'float', '_value': 11.0},
             'b': 3333.33},
         'cell': {
             '_type': 'process',  # TODO -- this should also accept process, step, but how in bigraph-schema?
             'config': {},
             'address': 'local:cell',   # TODO -- this is where the ports/inputs/outputs come from
+            'internal': 1.0,
             '_inputs': {
                 'nutrients': 'float',
             },
@@ -372,7 +377,7 @@ def test_diagram_plot():
                 'biomass': 'float',
             },
             'inputs': {
-                'nutrients': ['nutrients_store'],
+                'nutrients': ['down', 'nutrients_store'],
             },
             'outputs': {
                 # 'secretions': ['secretions_store'],
@@ -381,8 +386,8 @@ def test_diagram_plot():
         }
     }
     plot_bigraph(cell, filename='bigraph_cell',
-                 # show_values=True,
-                 # show_types=True,
+                 show_values=True,
+                 show_types=True,
                  # port_labels=False,
                  # rankdir='BT',
                  # remove_nodes=[
@@ -392,6 +397,27 @@ def test_diagram_plot():
                  # ]
                  )
 
+def test_bio_schema():
+    b = {
+        'environment': {
+            'cells': {},
+            'fields': {},
+            'barriers': {},
+            'diffusion': {
+                '_type': 'process',
+                # '_inputs': {
+                #     'fields': 'array'
+                # },
+                'inputs': {
+                    'fields': ['fields',]
+                }
+            }
+        }}
+
+    plot_bigraph(b, filename='bioschema')
+
+
 
 if __name__ == '__main__':
-    test_diagram_plot()
+    # test_diagram_plot()
+    test_bio_schema()
