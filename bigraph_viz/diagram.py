@@ -473,30 +473,31 @@ def test_bio_schema():
     plot_bigraph(b, filename='bioschema')
 
 def test_input_output():
-    # flat_composite_spec = {
-    #     'store1.1': 'float',
-    #     'store1.2': 'int',
-    #     'process1': {
-    #         '_type': 'process',
-    #         'outputs': {
-    #             'port1': ['store1.1'],
-    #             'port2': ['store1.2'],
-    #         }
-    #     },
-    #     'process2': {
-    #         '_type': 'process',
-    #         '_inputs': {
-    #             'port1': 'any',
-    #             'port2': 'any',
-    #         },
-    #         'inputs': {
-    #             'port1': ['store1.1'],
-    #             'port2': ['store1.2'],
-    #         }
-    #     },
-    # }
-    # plot_bigraph(flat_composite_spec, rankdir='RL', filename='flat_composite')
+    flat_composite_spec = {
+        'store1.1': 'float',
+        'store1.2': 'int',
+        'process1': {
+            '_type': 'process',
+            'outputs': {
+                'port1': ['store1.1'],
+                'port2': ['store1.2'],
+            }
+        },
+        'process2': {
+            '_type': 'process',
+            '_inputs': {
+                'port1': 'any',
+                'port2': 'any',
+            },
+            'inputs': {
+                'port1': ['store1.1'],
+                'port2': ['store1.2'],
+            }
+        },
+    }
+    plot_bigraph(flat_composite_spec, rankdir='RL', filename='flat_composite')
 
+def test_multi_processes():
     process_schema = {
         '_type': 'process',
         '_inputs': {
@@ -514,7 +515,40 @@ def test_input_output():
     }
     plot_bigraph(processes_spec, rankdir='BT', filename='multiple_processes')
 
+def test_nested_processes():
+    nested_composite_spec = {
+        'store1': {
+            'store1.1': 'float',
+            'store1.2': 'int',
+            'process1': {
+                '_type': 'process',
+                'inputs': {
+                    'port1': ['store1.1'],
+                    'port2': ['store1.2'],
+                }
+            },
+            'process2': {
+                '_type': 'process',
+                'outputs': {
+                    'port1': ['store1.1'],
+                    'port2': ['store1.2'],
+                }
+            },
+        },
+        'process3': {
+            '_type': 'process',
+            'inputs': {
+                'port1': ['store1'],
+            }
+        }
+    }
+    plot_bigraph(nested_composite_spec,
+                 # **plot_settings,
+                 filename='nested_composite')
+
 if __name__ == '__main__':
     # test_diagram_plot()
     # test_bio_schema()
-    test_input_output()
+    # test_input_output()
+    # test_multi_processes()
+    test_nested_processes()
