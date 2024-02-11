@@ -22,12 +22,11 @@ process_type = {
     '_inherit': 'step',
     'interval': 'float'}
 
-def plot_edges(graph, edge, edge_spec, port_labels, port_label_size, state_node_spec):
+def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec):
     process_path = edge['edge_path']
     process_name = str(process_path)
     target_path = edge['target_path']
     port = edge['port']
-    # edge_type = edge['type']  # input or output
     target_name = str(target_path)
 
     # place it in the graph
@@ -41,12 +40,12 @@ def plot_edges(graph, edge, edge_spec, port_labels, port_label_size, state_node_
         label = make_label(port)
 
     with graph.subgraph(name=process_name) as c:
-        graph.attr('edge', **edge_spec)
         c.edge(
             target_name, process_name,
             label=label,
             labelloc="t",
             fontsize=port_label_size)
+
 
 def get_graph_wires(schema, wires, graph_dict, schema_key, edge_path, port):
 
@@ -57,10 +56,18 @@ def get_graph_wires(schema, wires, graph_dict, schema_key, edge_path, port):
                 graph_dict = get_graph_wires(
                     subschema, subwire, graph_dict, schema_key, edge_path, port)
             else:  # this is a disconnected port
-                graph_dict['disconnected_hyper_edges'].append({
-                    'edge_path': edge_path,
-                    'port': port,
-                    'type': schema_key})
+                if schema_key == 'inputs':
+                    graph_dict['disconnected_input_edges'].append({
+                        'edge_path': edge_path,
+                        'port': port,
+                        'type': schema_key})
+                elif schema_key == 'outputs':
+                    graph_dict['disconnected_output_edges'].append({
+                        'edge_path': edge_path,
+                        'port': port,
+                        'type': schema_key})
+                else:
+                    raise Exception(f'invalid schema key {schema_key}')
     elif isinstance(wires, dict):
         for port, subwire in wires.items():
             subschema = schema.get(port, schema)
@@ -105,10 +112,10 @@ def get_graph_dict(
         'state_nodes': [],
         'process_nodes': [],
         'place_edges': [],
-        # 'hyper_edges': [],
         'input_edges': [],
         'output_edges': [],
-        'disconnected_hyper_edges': [],
+        'disconnected_input_edges': [],
+        'disconnected_output_edges': [],
         'bridges': [],
     }
 
@@ -279,45 +286,39 @@ def get_graphviz_fig(
 
     # input edges
     for edge in graph_dict['input_edges']:
-        plot_edges(
-            graph, edge, input_edge_spec,
-            port_labels, port_label_size, state_node_spec)
+        graph.attr('edge', **input_edge_spec)
+        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
+
+    # output edges
     for edge in graph_dict['output_edges']:
-        plot_edges(
-            graph, edge, output_edge_spec,
-            port_labels, port_label_size, state_node_spec)
-        
-    # disconnected hyper edges
-    graph.attr('edge', **hyper_edge_spec)
-    for edge in graph_dict['disconnected_hyper_edges']:
+        graph.attr('edge', **output_edge_spec)
+        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
+
+    # disconnected input edges
+    for edge in graph_dict['disconnected_input_edges']:
         process_path = edge['edge_path']
-        process_name = str(process_path)
         port = edge['port']
-        edge_type = edge['type']  # input or output
 
         # add invisible node for port
         node_name2 = str(absolute_path(process_path, port))
         graph.node(node_name2, label='', style='invis', width='0')
+        edge['target_path'] = node_name2
 
-        # port label
-        label = ''
-        if port_labels:
-            label = make_label(port)
+        graph.attr('edge', **input_edge_spec)
+        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
 
-        # add the edge
-        with graph.subgraph(name=process_name) as c:
-            if edge_type == 'inputs':
-                graph.attr('edge', **input_edge_spec)
-            elif edge_type == 'outputs':
-                graph.attr('edge', **output_edge_spec)
-            else:
-                graph.attr('edge', **hyper_edge_spec)
-            c.edge(
-                node_name2, process_name,
-                label=label,
-                labelloc="t",
-                fontsize=port_label_size
-            )
+    # disconnected output edges
+    for edge in graph_dict['disconnected_output_edges']:
+        process_path = edge['edge_path']
+        port = edge['port']
+
+        # add invisible node for port
+        node_name2 = str(absolute_path(process_path, port))
+        graph.node(node_name2, label='', style='invis', width='0')
+        edge['target_path'] = node_name2
+
+        graph.attr('edge', **output_edge_spec)
+        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
 
     return graph
 
@@ -472,29 +473,46 @@ def test_bio_schema():
     plot_bigraph(b, filename='bioschema')
 
 def test_input_output():
-    flat_composite_spec = {
-        'store1.1': 'float',
-        'store1.2': 'int',
-        'process1': {
-            '_type': 'process',
-            'outputs': {
-                'port1': ['store1.1'],
-                'port2': ['store1.2'],
-            }
+    # flat_composite_spec = {
+    #     'store1.1': 'float',
+    #     'store1.2': 'int',
+    #     'process1': {
+    #         '_type': 'process',
+    #         'outputs': {
+    #             'port1': ['store1.1'],
+    #             'port2': ['store1.2'],
+    #         }
+    #     },
+    #     'process2': {
+    #         '_type': 'process',
+    #         '_inputs': {
+    #             'port1': 'any',
+    #             'port2': 'any',
+    #         },
+    #         'inputs': {
+    #             'port1': ['store1.1'],
+    #             'port2': ['store1.2'],
+    #         }
+    #     },
+    # }
+    # plot_bigraph(flat_composite_spec, rankdir='RL', filename='flat_composite')
+
+    process_schema = {
+        '_type': 'process',
+        '_inputs': {
+            'port1': 'Any',
         },
-        'process2': {
-            '_type': 'process',
-            '_inputs': {
-                'port1': 'any',
-                'port2': 'any',
-            },
-            'inputs': {
-                'port1': ['store1.1'],
-                'port2': ['store1.2'],
-            }
+        '_outputs': {
+            'port2': 'Any'
         },
     }
-    plot_bigraph(flat_composite_spec, rankdir='RL', filename='flat_composite')
+
+    processes_spec = {
+        'process1': process_schema,
+        'process2': process_schema,
+        'process3': process_schema,
+    }
+    plot_bigraph(processes_spec, rankdir='BT', filename='multiple_processes')
 
 if __name__ == '__main__':
     # test_diagram_plot()
