@@ -22,6 +22,31 @@ process_type = {
     '_inherit': 'step',
     'interval': 'float'}
 
+def plot_edges(graph, edge, edge_spec, port_labels, port_label_size, state_node_spec):
+    process_path = edge['edge_path']
+    process_name = str(process_path)
+    target_path = edge['target_path']
+    port = edge['port']
+    # edge_type = edge['type']  # input or output
+    target_name = str(target_path)
+
+    # place it in the graph
+    if target_name not in graph.body:  # is the source node already in the graph?
+        label = make_label(target_path[-1])
+        graph.node(target_name, label=label, **state_node_spec)
+
+    # port label
+    label = ''
+    if port_labels:
+        label = make_label(port)
+
+    with graph.subgraph(name=process_name) as c:
+        graph.attr('edge', **edge_spec)
+        c.edge(
+            target_name, process_name,
+            label=label,
+            labelloc="t",
+            fontsize=port_label_size)
 
 def get_graph_wires(schema, wires, graph_dict, schema_key, edge_path, port):
 
@@ -43,7 +68,13 @@ def get_graph_wires(schema, wires, graph_dict, schema_key, edge_path, port):
                 subschema, subwire, graph_dict, schema_key, edge_path, port)
     elif isinstance(wires, (list, tuple)):
         target_path = absolute_path(edge_path[:-1], tuple(wires))  # TODO -- make sure this resolves ".."
-        graph_dict['hyper_edges'].append({
+        if schema_key == 'inputs':
+            edge_key = 'input_edges'
+        elif schema_key == 'outputs':
+            edge_key = 'output_edges'
+        else:
+            raise Exception(f'invalid schema key {schema_key}')
+        graph_dict[edge_key].append({
             'edge_path': edge_path,
             'target_path': target_path,
             'port': port,
@@ -74,7 +105,9 @@ def get_graph_dict(
         'state_nodes': [],
         'process_nodes': [],
         'place_edges': [],
-        'hyper_edges': [],
+        # 'hyper_edges': [],
+        'input_edges': [],
+        'output_edges': [],
         'disconnected_hyper_edges': [],
         'bridges': [],
     }
@@ -164,9 +197,13 @@ def get_graphviz_fig(
         show_types=False,
         port_labels=True,
         port_label_size='10pt',
+        invisible_edges=False,
+        remove_process_place_edges=False,
 ):
     """make a graphviz figure from a graph_dict"""
+
     node_names = []
+    invisible_edges = invisible_edges or []
 
     # node specs
     state_node_spec = {
@@ -223,38 +260,33 @@ def get_graphviz_fig(
     # place edges
     graph.attr('edge', arrowhead='none', penwidth='2')
     for edge in graph_dict['place_edges']:
-        graph.attr('edge', style='filled')
+
+        # show edge or not
+        show_edge = True
+        if remove_process_place_edges and edge['child'] in process_paths:
+            show_edge = False
+        elif edge in invisible_edges:
+            show_edge = False
+
+        if show_edge:
+            graph.attr('edge', style='filled')
+        else:
+            graph.attr('edge', style='invis')
+
         parent_node = str(edge['parent'])
         child_node = str(edge['child'])
         graph.edge(parent_node, child_node)
 
-    # hyper edges
-    for edge in graph_dict['hyper_edges']:
-        process_path = edge['edge_path']
-        process_name = str(process_path)
-        target_path = edge['target_path']
-        port = edge['port']
-        edge_type = edge['type']  # input or output
-        target_name = str(target_path)
-
-        # place it in the graph
-        if target_name not in graph.body:  # is the source node already in the graph?
-            label = make_label(target_path[-1])
-            graph.node(target_name, label=label, **state_node_spec)
-
-        if edge_type == 'inputs':
-            graph.attr('edge', **input_edge_spec)
-        elif edge_type == 'outputs':
-            graph.attr('edge', **output_edge_spec)
-        else:
-            graph.attr('edge', **hyper_edge_spec)
-        with graph.subgraph(name=process_name) as c:
-            if port_labels:
-                label = make_label(port)
-                c.edge(target_name, process_name, label=label, labelloc="t", fontsize=port_label_size)
-            else:
-                c.edge(target_name, process_name)
-
+    # input edges
+    for edge in graph_dict['input_edges']:
+        plot_edges(
+            graph, edge, input_edge_spec,
+            port_labels, port_label_size, state_node_spec)
+    for edge in graph_dict['output_edges']:
+        plot_edges(
+            graph, edge, output_edge_spec,
+            port_labels, port_label_size, state_node_spec)
+        
     # disconnected hyper edges
     graph.attr('edge', **hyper_edge_spec)
     for edge in graph_dict['disconnected_hyper_edges']:
@@ -267,20 +299,25 @@ def get_graphviz_fig(
         node_name2 = str(absolute_path(process_path, port))
         graph.node(node_name2, label='', style='invis', width='0')
 
+        # port label
+        label = ''
+        if port_labels:
+            label = make_label(port)
+
         # add the edge
-        if edge_type == 'inputs':
-            graph.attr('edge', **input_edge_spec)
-        elif edge_type == 'outputs':
-            graph.attr('edge', **output_edge_spec)
-        else:
-            graph.attr('edge', **hyper_edge_spec)
         with graph.subgraph(name=process_name) as c:
-            if port_labels:
-                label = make_label(port)
-                c.edge(node_name2, process_name, label=label, labelloc="t", fontsize=port_label_size
-                       )
+            if edge_type == 'inputs':
+                graph.attr('edge', **input_edge_spec)
+            elif edge_type == 'outputs':
+                graph.attr('edge', **output_edge_spec)
             else:
-                c.edge(node_name2, process_name)
+                graph.attr('edge', **hyper_edge_spec)
+            c.edge(
+                node_name2, process_name,
+                label=label,
+                labelloc="t",
+                fontsize=port_label_size
+            )
 
     return graph
 
@@ -308,9 +345,9 @@ def plot_bigraph(
         # node_fill_colors=None,
         # node_groups=False,
         remove_nodes=None,
-        # invisible_edges=False,
+        invisible_edges=False,
         # mark_top=False,
-        # remove_process_place_edges=False,
+        remove_process_place_edges=False,
 ):
     # get kwargs dict and remove plotting-specific kwargs
     kwargs = locals()
@@ -434,8 +471,32 @@ def test_bio_schema():
 
     plot_bigraph(b, filename='bioschema')
 
-
+def test_input_output():
+    flat_composite_spec = {
+        'store1.1': 'float',
+        'store1.2': 'int',
+        'process1': {
+            '_type': 'process',
+            'outputs': {
+                'port1': ['store1.1'],
+                'port2': ['store1.2'],
+            }
+        },
+        'process2': {
+            '_type': 'process',
+            '_inputs': {
+                'port1': 'any',
+                'port2': 'any',
+            },
+            'inputs': {
+                'port1': ['store1.1'],
+                'port2': ['store1.2'],
+            }
+        },
+    }
+    plot_bigraph(flat_composite_spec, rankdir='RL', filename='flat_composite')
 
 if __name__ == '__main__':
     # test_diagram_plot()
-    test_bio_schema()
+    # test_bio_schema()
+    test_input_output()
