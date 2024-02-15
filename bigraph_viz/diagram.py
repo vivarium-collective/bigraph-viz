@@ -7,8 +7,9 @@ from bigraph_viz.plot import absolute_path, make_label, check_if_path_in_removed
 import graphviz
 
 
-PROCESS_SCHEMA_KEYS = ['config', 'address', 'interval', 'inputs', 'outputs']
+PROCESS_SCHEMA_KEYS = ['config', 'address', 'interval', 'inputs', 'outputs', 'instance']
 
+REMOVE_KEYS = ['global_time']
 
 step_type = {
     '_type': 'step',
@@ -155,6 +156,8 @@ def get_graph_dict(
                 output_schema, output_wires, graph_dict, schema_key='outputs', edge_path=subpath, port=())
 
         else:  # this is a state node
+            if key in REMOVE_KEYS:
+                continue
             if not isinstance(value, dict):  # this is a leaf node
                 node_spec['value'] = value
                 node_spec['type'] = schema.get(key, {}).get('_type')
