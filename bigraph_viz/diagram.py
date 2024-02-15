@@ -209,9 +209,12 @@ def get_graphviz_fig(
         port_label_size='10pt',
         invisible_edges=False,
         remove_process_place_edges=False,
+        node_border_colors=None,
+        node_fill_colors=None,
+        node_groups=False,
 ):
     """make a graphviz figure from a graph_dict"""
-
+    node_groups = node_groups or []
     node_names = []
     invisible_edges = invisible_edges or []
 
@@ -323,6 +326,31 @@ def get_graphviz_fig(
         graph.attr('edge', **output_edge_spec)
         plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
 
+    # grouped nodes
+    for group in node_groups:
+        group_name = str(group)
+        with graph.subgraph(name=group_name) as c:
+            c.attr(rank='same')
+            previous_node = None
+            for path in group:
+                node_name = str(path)
+                if node_name in node_names:
+                    c.node(node_name)
+                    if previous_node:
+                        # out them in the order declared in the group
+                        c.edge(previous_node, node_name, style='invis', ordering='out')
+                    previous_node = node_name
+                else:
+                    print(f'node {node_name} not in graph')
+
+    # formatting
+    if node_border_colors:
+        for node_name, color in node_border_colors.items():
+            graph.node(str(node_name), color=color)
+    if node_fill_colors:
+        for node_name, color in node_fill_colors.items():
+            graph.node(str(node_name), color=color, style='filled')
+
     return graph
 
 
@@ -345,9 +373,9 @@ def plot_bigraph(
         label_margin='0.05',
         # show_process_schema=False,
         # collapse_processes=False,
-        # node_border_colors=None,
-        # node_fill_colors=None,
-        # node_groups=False,
+        node_border_colors=None,
+        node_fill_colors=None,
+        node_groups=False,
         remove_nodes=None,
         invisible_edges=False,
         # mark_top=False,
