@@ -4,7 +4,7 @@ Tests for bigraph-viz
 =====================
 """
 
-from bigraph_viz import plot_bigraph, plot_flow, plot_multitimestep, pp
+from bigraph_viz import plot_bigraph  #, plot_flow, plot_multitimestep
 from bigraph_viz.dict_utils import schema_state_to_dict, compose, pf
 
 
@@ -310,7 +310,7 @@ def test_schema_value_to_dict():
         }
     }
     schema_state_dict = schema_state_to_dict(schema, state)
-    pp(schema_state_dict)
+    print(schema_state_dict)
 
 
 def test_flow():
