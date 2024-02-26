@@ -3,7 +3,7 @@ Bigraph diagram
 """
 import os
 from bigraph_schema import TypeSystem, Edge
-from bigraph_viz.plot import absolute_path, make_label, check_if_path_in_removed_nodes
+from bigraph_viz.plot_old import absolute_path, make_label, check_if_path_in_removed_nodes
 import graphviz
 
 
@@ -11,10 +11,21 @@ PROCESS_SCHEMA_KEYS = ['config', 'address', 'interval', 'inputs', 'outputs', 'in
 
 REMOVE_KEYS = ['global_time']
 
+updated_path_type = {
+        '_type': 'path',
+        '_inherit': 'list[string]~string',
+        # '_apply': apply_path
+}
+
 step_type = {
     '_type': 'step',
     '_inherit': 'edge',
     'address': 'string',
+    # '_default': {
+    #     'inputs': {},
+    #     'outputs': {}},
+    # '_inputs': 'string~tuple',
+    # '_outputs': 'string~tuple',
     'config': 'schema'}
 
 
@@ -74,7 +85,9 @@ def get_graph_wires(schema, wires, graph_dict, schema_key, edge_path, port):
             subschema = schema.get(port, schema)
             graph_dict = get_graph_wires(
                 subschema, subwire, graph_dict, schema_key, edge_path, port)
-    elif isinstance(wires, (list, tuple)):
+    elif isinstance(wires, (list, tuple, str)):
+        if isinstance(wires, str):
+            wires = [wires]
         target_path = absolute_path(edge_path[:-1], tuple(wires))  # TODO -- make sure this resolves ".."
         if schema_key == 'inputs':
             edge_key = 'input_edges'
@@ -397,6 +410,7 @@ def plot_bigraph(
     core = core or TypeSystem()
     schema = schema or {}
 
+    core.register('path', updated_path_type, force=True)
     if not core.exists('step'):
         core.register('step', step_type)
     if not core.exists('process'):
