@@ -7,7 +7,14 @@ from bigraph_viz.plot_old import absolute_path, make_label, check_if_path_in_rem
 import graphviz
 
 
-PROCESS_SCHEMA_KEYS = ['config', 'address', 'interval', 'inputs', 'outputs', 'instance']
+PROCESS_SCHEMA_KEYS = [
+    'config',
+    'address',
+    # 'interval',
+    'inputs',
+    'outputs', 
+    'instance',
+]
 
 REMOVE_KEYS = ['global_time']
 
