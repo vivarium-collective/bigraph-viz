@@ -6,7 +6,7 @@ Convert
 
 import copy
 
-from bigraph_viz import plot_bigraph, pp
+from bigraph_viz import plot_bigraph
 from bigraph_viz.dict_utils import deep_merge, absolute_path, nest_path
 
 
