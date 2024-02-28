@@ -10,7 +10,7 @@ import graphviz
 PROCESS_SCHEMA_KEYS = [
     'config',
     'address',
-    # 'interval',
+    'interval',
     'inputs',
     'outputs', 
     'instance',
@@ -123,10 +123,13 @@ def get_graph_dict(
         retain_type_keys=False,
         retain_process_keys=False,
         remove_nodes=None,
+        show_process_schema_keys=None,
 ):
     path = path or ()
     top_state = top_state or state
     remove_nodes = remove_nodes or []
+    show_process_schema_keys = show_process_schema_keys or []
+    removed_process_keys = list(set(PROCESS_SCHEMA_KEYS) - set(show_process_schema_keys))
 
     # initialize bigraph
     graph_dict = graph_dict or {
@@ -158,7 +161,7 @@ def get_graph_dict(
 
         is_edge = core.check('edge', value)
         if is_edge:  # this is a process/edge node
-            if key in PROCESS_SCHEMA_KEYS and not retain_process_keys:
+            if key in removed_process_keys and not retain_process_keys:
                 continue
 
             graph_dict['process_nodes'].append(node_spec)
@@ -188,7 +191,7 @@ def get_graph_dict(
 
         if isinstance(value, dict):  # get subgraph
             if is_edge:
-                removed_process_schema_keys = [subpath + (schema_key,) for schema_key in PROCESS_SCHEMA_KEYS]
+                removed_process_schema_keys = [subpath + (schema_key,) for schema_key in removed_process_keys]
                 remove_nodes.extend(removed_process_schema_keys)
 
             graph_dict = get_graph_dict(
@@ -400,6 +403,7 @@ def plot_bigraph(
         invisible_edges=False,
         # mark_top=False,
         remove_process_place_edges=False,
+        show_process_schema_keys=['interval'],
 ):
     # get kwargs dict and remove plotting-specific kwargs
     kwargs = locals()
@@ -411,13 +415,13 @@ def plot_bigraph(
     filename = kwargs.pop('filename')
     print_source = kwargs.pop('print_source')
     remove_nodes = kwargs.pop('remove_nodes')
-    # show_process_schema = kwargs.pop('show_process_schema')
+    show_process_schema_keys = kwargs.pop('show_process_schema_keys')
 
     # set defaults if none provided
     core = core or TypeSystem()
     schema = schema or {}
 
-    core.register('path', updated_path_type, force=True)
+    core.register('path', updated_path_type)
     if not core.exists('step'):
         core.register('step', step_type)
     if not core.exists('process'):
@@ -431,6 +435,7 @@ def plot_bigraph(
         state=state,
         core=core,
         remove_nodes=remove_nodes,
+        show_process_schema_keys=show_process_schema_keys,
     )
 
     # make a figure
@@ -522,7 +527,7 @@ def test_bio_schema():
             }
         }}
 
-    plot_bigraph(b, filename='bioschema')
+    plot_bigraph(b, filename='bioschema', show_process_schema_keys=[])
 
 def test_input_output():
     flat_composite_spec = {
@@ -599,8 +604,8 @@ def test_nested_processes():
                  filename='nested_composite')
 
 if __name__ == '__main__':
-    # test_diagram_plot()
-    # test_bio_schema()
-    # test_input_output()
-    # test_multi_processes()
+    test_diagram_plot()
+    test_bio_schema()
+    test_input_output()
+    test_multi_processes()
     test_nested_processes()
