@@ -70,8 +70,8 @@ def get_graph_wires(schema, wires, graph_dict, schema_key, edge_path, port):
 
     if isinstance(schema, dict) and schema:
         for port, subschema in schema.items():
-            subwire = wires.get(port)
-            if subwire:
+            if isinstance(wires, dict) and wires.get(port):
+                subwire = wires.get(port)
                 graph_dict = get_graph_wires(
                     subschema, subwire, graph_dict, schema_key, edge_path, port)
             else:  # this is a disconnected port
@@ -144,6 +144,8 @@ def get_graph_dict(
     }
 
     for key, value in state.items():
+        subschema = schema.get(key, schema)
+
         if key.startswith('_') and not retain_type_keys:
             continue
 
@@ -169,8 +171,8 @@ def get_graph_dict(
             # this is an edge, get its inputs and outputs
             input_wires = value.get('inputs', {})
             output_wires = value.get('outputs', {})
-            input_schema = value.get('_inputs', {})
-            output_schema = value.get('_outputs', {})
+            input_schema = subschema.get('_inputs') or value.get('_inputs', {})
+            output_schema = subschema.get('_outputs') or value.get('_outputs', {})
 
             # get the input and output wires
             graph_dict = get_graph_wires(
