@@ -66,49 +66,49 @@ def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec):
             fontsize=port_label_size)
 
 
-def get_graph_wires(schema, wires, graph_dict, schema_key, edge_path, port):
-
-    if isinstance(schema, dict) and schema:
-        for port, subschema in schema.items():
-            if isinstance(wires, dict) and wires.get(port):
-                subwire = wires.get(port)
-                graph_dict = get_graph_wires(
-                    subschema, subwire, graph_dict, schema_key, edge_path, port)
-            else:  # this is a disconnected port
-                if schema_key == 'inputs':
-                    graph_dict['disconnected_input_edges'].append({
-                        'edge_path': edge_path,
-                        'port': port,
-                        'type': schema_key})
-                elif schema_key == 'outputs':
-                    graph_dict['disconnected_output_edges'].append({
-                        'edge_path': edge_path,
-                        'port': port,
-                        'type': schema_key})
-                else:
-                    raise Exception(f'invalid schema key {schema_key}')
-    elif isinstance(wires, dict):
-        for port, subwire in wires.items():
-            subschema = schema.get(port, schema)
-            graph_dict = get_graph_wires(
-                subschema, subwire, graph_dict, schema_key, edge_path, port)
-    elif isinstance(wires, (list, tuple, str)):
-        if isinstance(wires, str):
-            wires = [wires]
-        target_path = absolute_path(edge_path[:-1], tuple(wires))  # TODO -- make sure this resolves ".."
-        if schema_key == 'inputs':
-            edge_key = 'input_edges'
-        elif schema_key == 'outputs':
-            edge_key = 'output_edges'
+def get_graph_wires(
+        schema,     # the ports schema
+        wires,      # the wires, from port to path
+        graph_dict, # the current graph dict that is being built
+        schema_key, # inputs or outputs
+        edge_path,  # the path up to this process
+        port,       # the port id
+):
+    """
+    TODO -- support subwires with advanced wiring. This currently assumes each port has a simple wire.
+    """
+    for port, subschema in schema.items():
+        wire = wires.get(port)
+        if not wire:
+            # there is no wire for this port, it is disconnected
+            if schema_key == 'inputs':
+                graph_dict['disconnected_input_edges'].append({
+                    'edge_path': edge_path,
+                    'port': port,
+                    'type': schema_key})
+            elif schema_key == 'outputs':
+                graph_dict['disconnected_output_edges'].append({
+                    'edge_path': edge_path,
+                    'port': port,
+                    'type': schema_key})
+        elif isinstance(wire, (list, tuple, str)):
+            # the wire is defined, add it to edges
+            if isinstance(wire, str):
+                wire = [wire]
+            target_path = absolute_path(edge_path[:-1], tuple(wire))  # TODO -- make sure this resolves ".."
+            if schema_key == 'inputs':
+                edge_key = 'input_edges'
+            elif schema_key == 'outputs':
+                edge_key = 'output_edges'
+            else:
+                raise Exception(f'invalid schema key {schema_key}')
+            graph_dict[edge_key].append({
+                'edge_path': edge_path,
+                'target_path': target_path,
+                'port': port,
+                'type': schema_key})
         else:
-            raise Exception(f'invalid schema key {schema_key}')
-        graph_dict[edge_key].append({
-            'edge_path': edge_path,
-            'target_path': target_path,
-            'port': port,
-            'type': schema_key})
-    else:
-        raise ValueError(f"Unexpected wire type: {wires}")
+            raise ValueError(f"Unexpected wire type: {wires}")
 
     return graph_dict
 
@@ -418,6 +418,7 @@ def plot_bigraph(
     print_source = kwargs.pop('print_source')
     remove_nodes = kwargs.pop('remove_nodes')
     show_process_schema_keys = kwargs.pop('show_process_schema_keys')
+    remaining_kwargs = dict(kwargs)
 
     # set defaults if none provided
     core = core or TypeSystem()
@@ -441,7 +442,7 @@ def plot_bigraph(
     )
 
     # make a figure
-    graph = get_graphviz_fig(graph_dict, **kwargs)
+    graph = get_graphviz_fig(graph_dict, **remaining_kwargs)
 
     # display or save results
     if print_source:
