@@ -81,32 +81,37 @@ def get_graph_wires(
         wire = wires.get(port)
         if not wire:
             # there is no wire for this port, it is disconnected
+            edge = {'edge_path': edge_path,
+                    'port': port}
             if schema_key == 'inputs':
                 graph_dict['disconnected_input_edges'].append({
-                    'edge_path': edge_path,
-                    'port': port,
-                    'type': schema_key})
+                    **edge, 'type': schema_key})
             elif schema_key == 'outputs':
                 graph_dict['disconnected_output_edges'].append({
-                    'edge_path': edge_path,
-                    'port': port,
-                    'type': schema_key})
+                    **edge, 'type': schema_key})
+            elif schema_key == 'wires':
+                graph_dict['disconnected_output_edges'].append({
+                    **edge, 'type': 'inputs'})
+                graph_dict['disconnected_output_edges'].append({
+                    **edge, 'type': 'outputs'})
         elif isinstance(wire, (list, tuple, str)):
             # the wire is defined, add it to edges
             if isinstance(wire, str):
                 wire = [wire]
             target_path = absolute_path(edge_path[:-1], tuple(wire))  # TODO -- make sure this resolves ".."
+            edge = {'edge_path': edge_path,
+                    'target_path': target_path,
+                    'port': port}
             if schema_key == 'inputs':
-                edge_key = 'input_edges'
+                graph_dict['input_edges'].append({**edge, 'type': schema_key})
             elif schema_key == 'outputs':
-                edge_key = 'output_edges'
+                graph_dict['output_edges'].append({**edge, 'type': schema_key})
+            elif schema_key == 'wires':
+                graph_dict['input_edges'].append({**edge, 'type': schema_key})
+                graph_dict['output_edges'].append({**edge, 'type': schema_key})
             else:
                 raise Exception(f'invalid schema key {schema_key}')
-            graph_dict[edge_key].append({
-                'edge_path': edge_path,
-                'target_path': target_path,
-                'port': port,
-                'type': schema_key})
+
         else:
             raise ValueError(f"Unexpected wire type: {wires}")
 
@@ -171,14 +176,18 @@ def get_graph_dict(
             # this is an edge, get its inputs and outputs
             input_wires = value.get('inputs', {})
             output_wires = value.get('outputs', {})
+            wires = value.get('wires', {})
             input_schema = subschema.get('_inputs') or value.get('_inputs', {})
             output_schema = subschema.get('_outputs') or value.get('_outputs', {})
+            ports_schema = subschema.get('_ports') or value.get('_ports', {})
 
             # get the input and output wires
             graph_dict = get_graph_wires(
                 input_schema, input_wires, graph_dict, schema_key='inputs', edge_path=subpath, port=())
             graph_dict = get_graph_wires(
                 output_schema, output_wires, graph_dict, schema_key='outputs', edge_path=subpath, port=())
+            graph_dict = get_graph_wires(
+                ports_schema, wires, graph_dict, schema_key='wires', edge_path=subpath, port=())
 
         else:  # this is a state node
             if key in REMOVE_KEYS:
@@ -254,6 +263,8 @@ def get_graphviz_fig(
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0'}
     output_edge_spec = {
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'back'}
+    inputoutput_edge_spec = {
+        'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'both'}
 
     # initialize graph
     graph = graphviz.Digraph(name='bigraph', engine='dot')
@@ -342,14 +353,34 @@ def get_graphviz_fig(
     for edge in graph_dict['disconnected_output_edges']:
         process_path = edge['edge_path']
         port = edge['port']
+        edge_type = edge['type']
 
         # add invisible node for port
+        if isinstance(port, str):
+            port = (port,)
         node_name2 = str(absolute_path(process_path, port))
         graph.node(node_name2, label='', style='invis', width='0')
         edge['target_path'] = node_name2
 
-        graph.attr('edge', **output_edge_spec)
-        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
+        for edg in graph_dict['disconnected_output_edges']:
+            if process_path == edg['edge_path'] and edge['port'] == edg['port'] and edge_type != edg['type']:
+                # this edge has a complementary edge going the other direction
+                # only plot it once, so skip if inputs and plot if outputs
+                if edge_type == 'inputs':
+                    edge_type = 'skip'
+                else:
+                    edge_type = 'both'
+                break
+
+        if edge_type == 'inputs':
+            graph.attr('edge', **input_edge_spec)
+        elif edge_type == 'ouputs':
+            graph.attr('edge', **output_edge_spec)
+        elif edge_type == 'both':
+            graph.attr('edge', **inputoutput_edge_spec)
+
+        if edge_type != 'skip':
+            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
 
     # grouped nodes
     for group in node_groups:
@@ -606,9 +637,41 @@ def test_nested_processes():
                  # **plot_settings,
                  filename='nested_composite')
 
+def sup(str1, str2):
+    return f'{str1}<sup><font point-size="8">{str2}</font></sup>'
+
+def sub(str1, str2):
+    return f'{str1}<sub><font point-size="8">{str2}</font></sub>'
+
+def test_ports_wires():
+    cell_schema = {
+        'cell': {
+            '_type': 'step',
+            '_ports': {
+                'shape': '',
+                'metabolite<br/>exchange': '',
+                'surface<br/>proteins': '',
+                'temperature': '',
+                'light': '',
+                'electricity': '',
+                f'{sup("H", "+")}<br/>{sub("O", "2")}<br/>{sub("CO", "2")}': '',
+                'viscosity': '',
+                'sheer<br/>stress': '',
+                'mechanical<br/>forces': '',
+                'adhesion': '',
+                '?': '',
+            },
+        }
+    }
+
+    plot_bigraph(cell_schema, rankdir='TB', filename='cell_interface')
+
+
+
 if __name__ == '__main__':
     test_diagram_plot()
     test_bio_schema()
     test_input_output()
     test_multi_processes()
     test_nested_processes()
+    test_ports_wires()
