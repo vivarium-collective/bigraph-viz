@@ -606,9 +606,87 @@ def test_nested_processes():
                  # **plot_settings,
                  filename='nested_composite')
 
+
+def test_multi_input_output():
+    process_schema = {
+        '_type': 'process',
+        '_inputs': {
+            'port1': 'Any',
+        },
+        '_outputs': {
+            'port2': 'Any'
+        },
+    }
+
+    processes_spec = {
+        'process1': process_schema,
+        'process2': process_schema,
+        'process3': process_schema,
+    }
+    plot_bigraph(processes_spec, show_process_schema_keys=None, rankdir='BT', filename='multiple_processes')
+
+
+def test_cell_hierarchy():
+    cell_struct_func = {
+        'cell': {
+            'membrane': {
+                'transporters': 'concentrations',
+                'lipids': 'concentrations',
+                'transmembrane transport': {
+                    '_type': 'process',
+                    'outputs': {
+                        'transporters': ['transporters'],
+                        'internal': ['..', 'cytoplasm', 'metabolites']},
+                    '_outputs': {
+                        'transporters': 'concentrations',
+                        'internal': 'concentrations',
+                        'external': 'concentrations'
+                    }
+                }
+            },
+            'cytoplasm': {
+                'metabolites': {
+                    '_value': 1.1,
+                    '_type': 'concentrations'
+                },
+                'ribosomal complexes': {
+                    '_value': 2.2,
+                    '_type': 'concentrations'
+                },
+                'transcript regulation complex': {
+                    '_value': 0.01,
+                    'transcripts': {
+                        '_value': 0.1,
+                        # '_type': 'concentrations'  # TODO -- why is this causing infinite recursion?
+                    }
+                },
+                'translation': {
+                    '_type': 'process',
+                    'outputs': {
+                        'p1': ['ribosomal complexes'],
+                        'p2': ['transcript regulation complex', 'transcripts']
+                    }
+                }
+            },
+            'nucleoid': {
+                'chromosome': {
+                    'genes': 'sequences'
+                }
+            }
+        }
+    }
+
+    core = TypeSystem()
+    core.register('concentrations', 'float')
+    core.register('sequences', 'float')
+    plot_bigraph(cell_struct_func, core=core, remove_process_place_edges=True, out_dir='out', filename='cell')
+
+
 if __name__ == '__main__':
-    test_diagram_plot()
-    test_bio_schema()
-    test_input_output()
-    test_multi_processes()
-    test_nested_processes()
+    # test_diagram_plot()
+    # test_bio_schema()
+    # test_input_output()
+    # test_multi_processes()
+    # test_nested_processes()
+    # test_multi_input_output()
+    test_cell_hierarchy()
