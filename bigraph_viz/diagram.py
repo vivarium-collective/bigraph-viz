@@ -77,6 +77,16 @@ def get_graph_wires(
     """
     TODO -- support subwires with advanced wiring. This currently assumes each port has a simple wire.
     """
+    if isinstance(schema, str):
+        schema = {}
+
+    # Find keys in schema but not in wires and vice versa
+    schema_not_wires = set(schema) - set(wires)
+    wires_not_schema = set(wires) - set(schema)
+    for wire in wires_not_schema:
+        # add to schema so these look like real ports
+        schema[wire] = 'any'
+
     for port, subschema in schema.items():
         wire = wires.get(port)
         if not wire:
@@ -149,7 +159,7 @@ def get_graph_dict(
     }
 
     for key, value in state.items():
-        subschema = schema.get(key, schema)
+        subschema = schema.get(key, {})
 
         if key.startswith('_') and not retain_type_keys:
             continue
@@ -436,7 +446,7 @@ def plot_bigraph(
         invisible_edges=False,
         # mark_top=False,
         remove_process_place_edges=False,
-        show_process_schema_keys=['interval'],
+        show_process_schema_keys=[],  # ['interval'] to show interval
 ):
     # get kwargs dict and remove plotting-specific kwargs
     kwargs = locals()
