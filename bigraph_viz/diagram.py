@@ -2,6 +2,7 @@
 Bigraph diagram
 """
 import os
+import copy
 from bigraph_schema import TypeSystem, Edge
 from bigraph_viz.plot_old import absolute_path, make_label, check_if_path_in_removed_nodes
 import graphviz
@@ -101,7 +102,7 @@ def get_graph_wires(
                 graph_dict['disconnected_output_edges'].append({
                     **edge, 'type': schema_key})
             elif schema_key == 'wires':
-                graph_dict['disconnected_output_edges'].append({
+                graph_dict['disconnected_input_edges'].append({
                     **edge, 'type': 'inputs'})
                 graph_dict['disconnected_output_edges'].append({
                     **edge, 'type': 'outputs'})
@@ -339,32 +340,37 @@ def get_graphviz_fig(
 
     # input edges
     for edge in graph_dict['input_edges']:
-        graph.attr('edge', **input_edge_spec)
-        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
+        process_path = edge['edge_path']
+        for edg in graph_dict['output_edges']:
+            if process_path == edg['edge_path'] and edge['port'] == edg['port']:
+                # this edge has a complementary edge going the other direction
+                # only plot it under outputs
+                edge_type='both'
+
+        # only plot inputs, skip if both
+        if edge_type == 'inputs':
+            graph.attr('edge', **input_edge_spec)
+            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
 
     # output edges
     for edge in graph_dict['output_edges']:
-        graph.attr('edge', **output_edge_spec)
+        process_path = edge['edge_path']
+        for edg in graph_dict['input_edges']:
+            if process_path == edg['edge_path'] and edge['port'] == edg['port']:
+                # this edge has a complementary edge going the other direction
+                # only plot it under outputs
+                edge_type='both'
+
+        if edge_type == 'outputs':
+            graph.attr('edge', **output_edge_spec)
+        elif edge_type == 'both':
+            graph.attr('edge', **inputoutput_edge_spec)
         plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
 
     # disconnected input edges
     for edge in graph_dict['disconnected_input_edges']:
         process_path = edge['edge_path']
         port = edge['port']
-
-        # add invisible node for port
-        node_name2 = str(absolute_path(process_path, port))
-        graph.node(node_name2, label='', style='invis', width='0')
-        edge['target_path'] = node_name2
-
-        graph.attr('edge', **input_edge_spec)
-        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
-
-    # disconnected output edges
-    for edge in graph_dict['disconnected_output_edges']:
-        process_path = edge['edge_path']
-        port = edge['port']
-        edge_type = edge['type']
 
         # add invisible node for port
         if isinstance(port, str):
@@ -374,24 +380,40 @@ def get_graphviz_fig(
         edge['target_path'] = node_name2
 
         for edg in graph_dict['disconnected_output_edges']:
-            if process_path == edg['edge_path'] and edge['port'] == edg['port'] and edge_type != edg['type']:
+            if process_path == edg['edge_path'] and edge['port'] == edg['port']:
                 # this edge has a complementary edge going the other direction
-                # only plot it once, so skip if inputs and plot if outputs
-                if edge_type == 'inputs':
-                    edge_type = 'skip'
-                else:
-                    edge_type = 'both'
-                break
+                # only plot it under outputs
+                edge_type='both'
 
+        # only plot inputs, skip if both
         if edge_type == 'inputs':
             graph.attr('edge', **input_edge_spec)
-        elif edge_type == 'ouputs':
+            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
+
+    # disconnected output edges
+    for edge in graph_dict['disconnected_output_edges']:
+        process_path = edge['edge_path']
+        port = edge['port']
+
+        # add invisible node for port
+        if isinstance(port, str):
+            port = (port,)
+        node_name2 = str(absolute_path(process_path, port))
+        graph.node(node_name2, label='', style='invis', width='0')
+        edge['target_path'] = node_name2
+
+        for edg in graph_dict['disconnected_input_edges']:
+            if process_path == edg['edge_path'] and edge['port'] == edg['port']:
+                # this edge has a complementary edge going the other direction
+                # only plot it under outputs
+                edge_type='both'
+
+        if edge_type == 'outputs':
             graph.attr('edge', **output_edge_spec)
         elif edge_type == 'both':
             graph.attr('edge', **inputoutput_edge_spec)
 
-        if edge_type != 'skip':
-            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
+        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
 
     # grouped nodes
     for group in node_groups:
@@ -700,12 +722,73 @@ def test_ports_wires():
     }
     plot_bigraph(cell_environment,  rankdir='TD', filename='cell_environment')
 
+def test_cell_structure_function():
+    toy_cell_structure = {
+        'cell': {
+            'membrane': {
+                'transporters': '',
+                'lipids': '',
+            },
+            'cytoplasm': {
+                'metabolites': '',
+                'ribosomal complexes': '',
+                'transcript regulation complex': {
+                    'transcripts': '',
+                },
+            },
+            'nucleoid': {
+                'chromosome': {
+                    'genes': '',
+                }
+            }
+        }
+    }
+
+    transport_process = {
+        'transmembrane transport': {
+            '_type': 'process',
+            '_ports': {
+                'transporters': '',
+                'internal': '',
+                'external': ''
+            },
+            'wires': {
+                'transporters': 'transporters',
+                'internal': ['..', 'cytoplasm', 'metabolites'],
+            }
+        }
+    }
+    translation_process = {
+        'translation': {
+            '_type': 'process',
+            'wires': {
+                'p1': 'ribosomal complexes',
+                'p2': ['transcript regulation complex', 'transcripts'],
+            }
+        }
+    }
+    transcription_process = {
+        'transcription': {
+            '_type': 'process',
+            'wires': {
+                'p1': 'genes',
+                # 'p2': ['transcript regulation complex', 'transcripts'],
+            }
+        }
+    }
+    cell_structure_function = copy.deepcopy(toy_cell_structure)
+    cell_structure_function['cell']['membrane'].update(transport_process)
+    cell_structure_function['cell']['cytoplasm'].update(translation_process)
+    cell_structure_function['cell']['nucleoid']['chromosome'].update(transcription_process)
+    plot_bigraph(cell_structure_function, filename='cell_structure_function')
+
 
 
 if __name__ == '__main__':
-    test_diagram_plot()
-    test_bio_schema()
-    test_input_output()
-    test_multi_processes()
-    test_nested_processes()
+    # test_diagram_plot()
+    # test_bio_schema()
+    # test_input_output()
+    # test_multi_processes()
+    # test_nested_processes()
     test_ports_wires()
+    test_cell_structure_function()
