@@ -12,7 +12,8 @@ PROCESS_SCHEMA_KEYS = [
     'address',
     'interval',
     'inputs',
-    'outputs', 
+    'outputs',
+    'wires',
     'instance',
 ]
 
@@ -675,6 +676,29 @@ def test_ports_wires():
     }
 
     plot_bigraph(cell_schema, rankdir='TB', filename='cell_interface')
+
+    cell_environment = {
+        'environment': {
+            'molecules': {},
+            'barriers': {},
+            'other cells': {},
+            'cell': {
+                '_type': 'process',
+                '_ports': {
+                    'chemical': 'any',
+                    'mechanical<br/>forces': 'any',
+                    'adhesion': 'any',
+                    '?': 'any',
+                },
+                'wires': {
+                    'chemical': 'molecules',
+                    'mechanical<br/>forces': 'barriers',
+                    'adhesion': 'other cells'
+                },
+            },
+        }
+    }
+    plot_bigraph(cell_environment,  rankdir='TD', filename='cell_environment')
 
 
 
