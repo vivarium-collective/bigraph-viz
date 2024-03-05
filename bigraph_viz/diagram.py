@@ -41,6 +41,15 @@ process_type = {
     '_inherit': 'step',
     'interval': 'float'}
 
+
+def generate_types():
+    core = TypeSystem()
+    core.register('path', updated_path_type)
+    core.register('step', step_type)
+    core.register('process', process_type)
+    return core
+
+
 def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec):
     process_path = edge['edge_path']
     process_name = str(process_path)
@@ -119,14 +128,12 @@ def get_graph_dict(
         core,
         graph_dict=None,
         path=None,
-        top_state=None,
         retain_type_keys=False,
         retain_process_keys=False,
         remove_nodes=None,
         show_process_schema_keys=None,
 ):
     path = path or ()
-    top_state = top_state or state
     remove_nodes = remove_nodes or []
     show_process_schema_keys = show_process_schema_keys or []
     removed_process_keys = list(set(PROCESS_SCHEMA_KEYS) - set(show_process_schema_keys))
@@ -144,7 +151,7 @@ def get_graph_dict(
     }
 
     for key, value in state.items():
-        subschema = schema.get(key, schema)
+        subschema = schema.get(key, {})
 
         if key.startswith('_') and not retain_type_keys:
             continue
@@ -193,6 +200,7 @@ def get_graph_dict(
 
         if isinstance(value, dict):  # get subgraph
             if is_edge:
+                # remove process schema keys
                 removed_process_schema_keys = [subpath + (schema_key,) for schema_key in removed_process_keys]
                 remove_nodes.extend(removed_process_schema_keys)
 
@@ -202,7 +210,6 @@ def get_graph_dict(
                 core=core,
                 graph_dict=graph_dict,
                 path=subpath,
-                top_state=top_state,
                 remove_nodes=remove_nodes
             )
 
@@ -405,7 +412,7 @@ def plot_bigraph(
         invisible_edges=False,
         # mark_top=False,
         remove_process_place_edges=False,
-        show_process_schema_keys=['interval'],
+        show_process_schema_keys=[],  # ['interval']
 ):
     # get kwargs dict and remove plotting-specific kwargs
     kwargs = locals()
@@ -421,15 +428,8 @@ def plot_bigraph(
     remaining_kwargs = dict(kwargs)
 
     # set defaults if none provided
-    core = core or TypeSystem()
+    core = core or generate_types()
     schema = schema or {}
-
-    core.register('path', updated_path_type)
-    if not core.exists('step'):
-        core.register('step', step_type)
-    if not core.exists('process'):
-        core.register('process', process_type)
-
     schema, state = core.complete(schema, state)
 
     # parse out the network
@@ -496,13 +496,18 @@ def test_diagram_plot():
                  )
 
 def test_bio_schema():
+    core = generate_types()
     b = {
         'environment': {
             'cells': {
                 'cell1': {
+                    'cytoplasm': {},
                     'nucleus': {
+                        'chromosome': {},
                         'transcription': {
                             '_type': 'process',
+                            '_inputs': {'DNA': 'any'},
+                            '_outputs': {'RNA': 'any'},
                             'inputs': {
                                 'DNA': ['chromosome']
                             },
@@ -518,9 +523,8 @@ def test_bio_schema():
             'barriers': {},
             'diffusion': {
                 '_type': 'process',
-                # '_inputs': {
-                #     'fields': 'array'
-                # },
+                '_inputs': {'fields': 'any'},
+                '_outputs': {'fields': 'any'},
                 'inputs': {
                     'fields': ['fields',]
                 },
@@ -530,7 +534,7 @@ def test_bio_schema():
             }
         }}
 
-    plot_bigraph(b, filename='bioschema', show_process_schema_keys=[])
+    plot_bigraph(b, core=core, filename='bioschema', show_process_schema_keys=[])
 
 def test_input_output():
     flat_composite_spec = {
@@ -606,9 +610,93 @@ def test_nested_processes():
                  # **plot_settings,
                  filename='nested_composite')
 
+
+def test_multi_input_output():
+    process_schema = {
+        '_type': 'process',
+        '_inputs': {
+            'port1': 'Any',
+        },
+        '_outputs': {
+            'port2': 'Any'
+        },
+    }
+
+    processes_spec = {
+        'process1': process_schema,
+        'process2': process_schema,
+        'process3': process_schema,
+    }
+    plot_bigraph(processes_spec, show_process_schema_keys=None, rankdir='BT', filename='multiple_processes')
+
+
+def test_cell_hierarchy():
+    core = generate_types()
+
+    core.register('concentrations', 'float')
+    core.register('sequences', 'float')
+    core.register('membrane', {
+        'transporters': 'concentrations',
+        'lipids': 'concentrations',
+        'transmembrane transport': {
+            '_type': 'process',
+            '_inputs': {},
+            '_outputs': {
+                'transporters': 'concentrations',
+                'internal': 'concentrations',
+                'external': 'concentrations'
+            }
+        }
+    })
+
+    core.register('cytoplasm', {
+        'metabolites': 'concentrations',
+        'ribosomal complexes': 'concentrations',
+        'transcript regulation complex': {
+            'transcripts': 'concentrations'},
+        'translation': {
+            '_type': 'process',
+            '_outputs': {
+                'p1': 'concentrations',
+                'p2': 'concentrations'}}})
+
+    core.register('nucleoid', {
+        'chromosome': {
+            'genes': 'sequences'}})
+
+    core.register('cell', {
+            'membrane': 'membrane',
+            'cytoplasm': 'cytoplasm',
+            'nucleoid': 'nucleoid'})
+
+    # state
+    cell_struct_state = {
+        'cell': {
+            'membrane': {
+                'transmembrane transport': {
+                    'outputs': {
+                        'transporters': ['transporters'],
+                        'internal': ['..', 'cytoplasm', 'metabolites']}}},
+            'cytoplasm': {
+                'translation': {
+                    'outputs': {
+                        'p1': ['ribosomal complexes'],
+                        'p2': ['transcript regulation complex', 'transcripts']}}}}}
+
+    plot_bigraph(
+        cell_struct_state,
+        schema={'cell': 'cell'},
+        core=core,
+        remove_process_place_edges=True,
+        out_dir='out',
+        filename='cell')
+
+
 if __name__ == '__main__':
     test_diagram_plot()
     test_bio_schema()
     test_input_output()
     test_multi_processes()
     test_nested_processes()
+    test_multi_input_output()
+    test_cell_hierarchy()
