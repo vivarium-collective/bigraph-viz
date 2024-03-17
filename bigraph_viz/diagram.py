@@ -338,7 +338,7 @@ def get_graphviz_fig(
         port = edge['port']
 
         # add invisible node for port
-        node_name2 = str(absolute_path(process_path, port))
+        node_name2 = str(absolute_path(process_path, port)) + '_input'
         graph.node(node_name2, label='', style='invis', width='0')
         edge['target_path'] = node_name2
 
@@ -351,7 +351,7 @@ def get_graphviz_fig(
         port = edge['port']
 
         # add invisible node for port
-        node_name2 = str(absolute_path(process_path, port))
+        node_name2 = str(absolute_path(process_path, port)) + '_output'
         graph.node(node_name2, label='', style='invis', width='0')
         edge['target_path'] = node_name2
 
@@ -692,11 +692,36 @@ def test_cell_hierarchy():
         filename='cell')
 
 
+def test_plot_disconnected():
+    core = generate_types()
+
+    spec = {
+        'process': {
+            '_type': 'process',
+            '_inputs': {
+                'port1': 'Any',
+                'port2': 'Any',
+            },
+            '_outputs': {
+                'port1': 'Any',
+                'port2': 'Any',
+            },
+        },
+    }
+
+    plot_bigraph(
+        spec,
+        core=core,
+        out_dir='out',
+        filename='multiple_disconnected')
+
+
 if __name__ == '__main__':
-    test_diagram_plot()
-    test_bio_schema()
-    test_input_output()
-    test_multi_processes()
-    test_nested_processes()
-    test_multi_input_output()
-    test_cell_hierarchy()
+    # test_diagram_plot()
+    # test_bio_schema()
+    # test_input_output()
+    # test_multi_processes()
+    # test_nested_processes()
+    # test_multi_input_output()
+    # test_cell_hierarchy()
+    test_plot_disconnected()
