@@ -716,6 +716,65 @@ def test_plot_disconnected():
         filename='multiple_disconnected')
 
 
+def test_nested_composite():
+    core = generate_types()
+
+    nested_composite_spec = {
+        'store1': {
+            'store1.1': {
+                '_value': 1.1,
+                '_type': 'float',
+            },
+            'store1.2': {
+                '_value': 2,
+                '_type': 'integer',
+            },
+            'store1.3': {
+                '_value': 1.1,
+                '_type': 'float',
+            },
+            'process1': {
+                '_type': 'process',
+                '_inputs': {
+                    'port1': 'float',
+                    'port2': 'integer',
+                },
+                '_outputs': {},
+                'inputs': {
+                    'port1': ['store1.1'],
+                    'port2': ['store1.2'],
+                },
+                'outputs': {},
+            },
+            'process2': {
+                '_type': 'process',
+                '_outputs': {
+                    'port1': 'float',
+                    'port2': 'integer',
+                },
+                'outputs': {
+                    'port1': ['store1.1'],
+                    'port2': ['store1.2'],
+                }
+            },
+        },
+        'process3': {
+            '_type': 'process',
+            '_outputs': {
+                'port1': 'any'
+            },
+            'outputs': {
+                'port1': ['store1'],
+            }
+        }
+    }
+    plot_bigraph(
+        nested_composite_spec,
+        core=core,
+        out_dir='out',
+        filename='nest_composite')
+
+
 if __name__ == '__main__':
     # test_diagram_plot()
     # test_bio_schema()
@@ -724,4 +783,5 @@ if __name__ == '__main__':
     # test_nested_processes()
     # test_multi_input_output()
     # test_cell_hierarchy()
-    test_plot_disconnected()
+    # test_plot_disconnected()
+    test_nested_composite()
