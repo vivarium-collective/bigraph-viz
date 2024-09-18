@@ -42,6 +42,7 @@ process_type = {
     'interval': 'float'}
 
 
+
 def generate_types():
     core = TypeSystem()
     core.register('path', updated_path_type)
@@ -456,6 +457,13 @@ def plot_bigraph(
     return graph
 
 
+# Begin Tests
+###############
+
+plot_settings = {'out_dir': 'out',
+                 'dpi': '150',}
+
+
 def test_diagram_plot():
     cell = {
         'config': {
@@ -486,6 +494,7 @@ def test_diagram_plot():
     plot_bigraph(cell, filename='bigraph_cell',
                  show_values=True,
                  show_types=True,
+                 **plot_settings
                  # port_labels=False,
                  # rankdir='BT',
                  # remove_nodes=[
@@ -534,9 +543,10 @@ def test_bio_schema():
             }
         }}
 
-    plot_bigraph(b, core=core, filename='bioschema', show_process_schema_keys=[])
+    plot_bigraph(b, core=core, filename='bioschema', show_process_schema_keys=[],
+                 **plot_settings)
 
-def test_input_output():
+def test_flat_composite():
     flat_composite_spec = {
         'store1.1': 'float',
         'store1.2': 'int',
@@ -559,7 +569,9 @@ def test_input_output():
             }
         },
     }
-    plot_bigraph(flat_composite_spec, rankdir='RL', filename='flat_composite')
+    plot_bigraph(flat_composite_spec, rankdir='RL',
+                 filename='flat_composite',
+                 **plot_settings)
 
 def test_multi_processes():
     process_schema = {
@@ -577,10 +589,11 @@ def test_multi_processes():
         'process2': process_schema,
         'process3': process_schema,
     }
-    plot_bigraph(processes_spec, rankdir='BT', filename='multiple_processes')
+    plot_bigraph(processes_spec, rankdir='BT', filename='multiple_processes',
+                 **plot_settings)
 
 def test_nested_processes():
-    nested_composite_spec = {
+    nested_process_spec = {
         'store1': {
             'store1.1': 'float',
             'store1.2': 'int',
@@ -606,9 +619,9 @@ def test_nested_processes():
             }
         }
     }
-    plot_bigraph(nested_composite_spec,
-                 # **plot_settings,
-                 filename='nested_composite')
+    plot_bigraph(nested_process_spec,
+                 **plot_settings,
+                 filename='nested_processes')
 
 
 def test_multi_input_output():
@@ -627,7 +640,10 @@ def test_multi_input_output():
         'process2': process_schema,
         'process3': process_schema,
     }
-    plot_bigraph(processes_spec, show_process_schema_keys=None, rankdir='BT', filename='multiple_processes')
+    plot_bigraph(
+        processes_spec, show_process_schema_keys=None,
+        rankdir='BT', filename='multiple_processes',
+        **plot_settings)
 
 
 def test_cell_hierarchy():
@@ -688,11 +704,11 @@ def test_cell_hierarchy():
         schema={'cell': 'cell'},
         core=core,
         remove_process_place_edges=True,
-        out_dir='out',
-        filename='cell')
+        filename='cell',
+        **plot_settings)
 
 
-def test_plot_disconnected():
+def test_multiple_disconnected_ports():
     core = generate_types()
 
     spec = {
@@ -712,16 +728,17 @@ def test_plot_disconnected():
     plot_bigraph(
         spec,
         core=core,
-        out_dir='out',
-        filename='multiple_disconnected')
+        # out_dir='out',
+        filename='multiple_disconnected_ports',
+        **plot_settings)
 
 
 if __name__ == '__main__':
-    # test_diagram_plot()
-    # test_bio_schema()
-    # test_input_output()
-    # test_multi_processes()
-    # test_nested_processes()
-    # test_multi_input_output()
-    # test_cell_hierarchy()
-    test_plot_disconnected()
+    test_diagram_plot()
+    test_bio_schema()
+    test_flat_composite()
+    test_multi_processes()
+    test_nested_processes()
+    test_multi_input_output()
+    test_cell_hierarchy()
+    test_multiple_disconnected_ports()
