@@ -130,7 +130,19 @@ def get_graph_wires(
             raise ValueError(f"Unexpected wire type: {wires}")
 
         if bridge:
-            pass
+            target_path = absolute_path(edge_path, tuple(bridge))
+            if schema_key == 'inputs':
+                graph_dict['input_edges'].append({
+                    'edge_path': edge_path ,
+                    'target_path': target_path,
+                    'port': f'bridge_{port}',
+                    'type': f'bridge_{schema_key}'})
+            elif schema_key == 'outputs':
+                graph_dict['output_edges'].append({
+                    'edge_path': edge_path,
+                    'target_path': target_path,
+                    'port': f'bridge_{port}',
+                    'type': f'bridge_{schema_key}'})
 
     return graph_dict
 
