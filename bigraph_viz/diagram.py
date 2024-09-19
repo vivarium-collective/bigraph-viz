@@ -372,18 +372,20 @@ def get_graphviz_fig(
 
     # input edges
     for edge in graph_dict['input_edges']:
-        graph.attr('edge', **input_edge_spec)
         if edge['type'] == 'bridge_inputs':
+            graph.attr('edge', **output_edge_spec) # reverse arrow direction to go from composite to store
             plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
         else:
+            graph.attr('edge', **input_edge_spec)
             plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
 
     # output edges
     for edge in graph_dict['output_edges']:
-        graph.attr('edge', **output_edge_spec)
         if edge['type'] == 'bridge_outputs':
+            graph.attr('edge', **input_edge_spec) # reverse arrow direction to go from store to composite
             plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
         else:
+            graph.attr('edge', **output_edge_spec)
             plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
 
     # disconnected input edges
@@ -836,12 +838,12 @@ def test_composite_process():
 
 
 if __name__ == '__main__':
-    test_diagram_plot()
-    test_bio_schema()
-    test_flat_composite()
-    test_multi_processes()
-    test_nested_processes()
-    test_multi_input_output()
-    test_cell_hierarchy()
-    test_multiple_disconnected_ports()
+    # test_diagram_plot()
+    # test_bio_schema()
+    # test_flat_composite()
+    # test_multi_processes()
+    # test_nested_processes()
+    # test_multi_input_output()
+    # test_cell_hierarchy()
+    # test_multiple_disconnected_ports()
     test_composite_process()
