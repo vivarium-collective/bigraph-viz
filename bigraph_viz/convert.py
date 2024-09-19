@@ -165,7 +165,7 @@ def test_convert_nested():
     plot_bigraph(bigraph_spec, **plot_settings_test, filename='vivarium_convert_nested')
 
 
-def test_composite_process():
+def test_microbiome_composite():
     vivarium_composite = {
         'processes': {
             'microbiome': {
@@ -227,4 +227,4 @@ def test_composite_process():
 if __name__ == '__main__':
     test_convert_flat()
     test_convert_nested()
-    test_composite_process()
+    test_microbiome_composite()

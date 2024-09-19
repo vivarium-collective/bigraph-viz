@@ -42,12 +42,19 @@ process_type = {
     'interval': 'float'}
 
 
+composite_type = {
+    '_type': 'composite',
+    '_inherit': 'process',
+    'bridge': 'wires',
+    # 'config': 'schema'
+}
 
 def generate_types():
     core = TypeSystem()
     core.register('path', updated_path_type)
     core.register('step', step_type)
     core.register('process', process_type)
+    core.register('composite', composite_type)
     return core
 
 
@@ -82,7 +89,6 @@ def get_graph_wires(
         graph_dict, # the current graph dict that is being built
         schema_key, # inputs or outputs
         edge_path,  # the path up to this process
-        port,       # the port id
 ):
     """
     TODO -- support subwires with advanced wiring. This currently assumes each port has a simple wire.
@@ -179,14 +185,15 @@ def get_graph_dict(
             # this is an edge, get its inputs and outputs
             input_wires = value.get('inputs', {})
             output_wires = value.get('outputs', {})
+            bridge_wires = value.get('bridge', {})
             input_schema = subschema.get('_inputs') or value.get('_inputs', {})
             output_schema = subschema.get('_outputs') or value.get('_outputs', {})
 
             # get the input and output wires
             graph_dict = get_graph_wires(
-                input_schema, input_wires, graph_dict, schema_key='inputs', edge_path=subpath, port=())
+                input_schema, input_wires, graph_dict, schema_key='inputs', edge_path=subpath)
             graph_dict = get_graph_wires(
-                output_schema, output_wires, graph_dict, schema_key='outputs', edge_path=subpath, port=())
+                output_schema, output_wires, graph_dict, schema_key='outputs', edge_path=subpath)
 
         else:  # this is a state node
             if key in REMOVE_KEYS:
@@ -732,13 +739,63 @@ def test_multiple_disconnected_ports():
         filename='multiple_disconnected_ports',
         **plot_settings)
 
+def test_composite_process():
+    core = generate_types()
+
+    spec = {
+        'composite': {
+            '_type': 'composite',
+            '_inputs': {
+                'port1': 'any',
+            },
+            '_outputs': {
+                'port2': 'any',
+            },
+            'inputs': {
+                'port1': ['external store'],
+            },
+            'store1': 'any',
+            'store2': 'any',
+            'bridge': {
+                'inputs': {
+                    'port1': ['store1'],
+                },
+                'outputs': {
+                    'port2': ['store2'],
+                }
+            },
+            'process1': {
+                '_type': 'process',
+                '_inputs': {
+                    'port3': 'any',
+                },
+                '_outputs': {
+                    'port4': 'any',
+                },
+                'inputs': {
+                    'port3': ['store1'],
+                },
+                'outputs': {
+                    'port4': ['store2'],
+                }
+            },
+        },
+    }
+
+    plot_bigraph(
+        spec,
+        core=core,
+        filename='composite_process',
+        **plot_settings)
+
 
 if __name__ == '__main__':
-    test_diagram_plot()
-    test_bio_schema()
-    test_flat_composite()
-    test_multi_processes()
-    test_nested_processes()
-    test_multi_input_output()
-    test_cell_hierarchy()
-    test_multiple_disconnected_ports()
+    # test_diagram_plot()
+    # test_bio_schema()
+    # test_flat_composite()
+    # test_multi_processes()
+    # test_nested_processes()
+    # test_multi_input_output()
+    # test_cell_hierarchy()
+    # test_multiple_disconnected_ports()
+    test_composite_process()
