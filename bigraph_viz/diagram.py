@@ -301,10 +301,10 @@ def get_graphviz_fig(
         'shape': 'circle', 'penwidth': '2', 'margin': label_margin, 'fontsize': node_label_size}
     process_node_spec = {
         'shape': 'box', 'penwidth': '2', 'constraint': 'false', 'margin': label_margin, 'fontsize': node_label_size}
-    hyper_edge_spec = {
-        'style': 'dashed', 'penwidth': '1', 'arrowhead': 'dot', 'arrowsize': '0.5'}
+    # hyper_edge_spec = {
+    #     'style': 'dashed', 'penwidth': '1', 'arrowhead': 'dot', 'arrowsize': '0.5'}
     input_edge_spec = {
-        'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0'}
+        'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'forward'}
     output_edge_spec = {
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'back'}
 
@@ -373,12 +373,18 @@ def get_graphviz_fig(
     # input edges
     for edge in graph_dict['input_edges']:
         graph.attr('edge', **input_edge_spec)
-        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
+        if edge['type'] == 'bridge_inputs':
+            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
+        else:
+            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
 
     # output edges
     for edge in graph_dict['output_edges']:
         graph.attr('edge', **output_edge_spec)
-        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
+        if edge['type'] == 'bridge_outputs':
+            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
+        else:
+            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
 
     # disconnected input edges
     for edge in graph_dict['disconnected_input_edges']:
@@ -830,12 +836,12 @@ def test_composite_process():
 
 
 if __name__ == '__main__':
-    # test_diagram_plot()
-    # test_bio_schema()
-    # test_flat_composite()
-    # test_multi_processes()
-    # test_nested_processes()
-    # test_multi_input_output()
-    # test_cell_hierarchy()
-    # test_multiple_disconnected_ports()
+    test_diagram_plot()
+    test_bio_schema()
+    test_flat_composite()
+    test_multi_processes()
+    test_nested_processes()
+    test_multi_input_output()
+    test_cell_hierarchy()
+    test_multiple_disconnected_ports()
     test_composite_process()
