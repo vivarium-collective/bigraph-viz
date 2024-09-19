@@ -838,12 +838,12 @@ def test_composite_process():
 
 
 if __name__ == '__main__':
-    # test_diagram_plot()
-    # test_bio_schema()
-    # test_flat_composite()
-    # test_multi_processes()
-    # test_nested_processes()
-    # test_multi_input_output()
-    # test_cell_hierarchy()
-    # test_multiple_disconnected_ports()
+    test_diagram_plot()
+    test_bio_schema()
+    test_flat_composite()
+    test_multi_processes()
+    test_nested_processes()
+    test_multi_input_output()
+    test_cell_hierarchy()
+    test_multiple_disconnected_ports()
     test_composite_process()
