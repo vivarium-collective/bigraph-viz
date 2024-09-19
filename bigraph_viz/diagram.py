@@ -89,12 +89,15 @@ def get_graph_wires(
         graph_dict, # the current graph dict that is being built
         schema_key, # inputs or outputs
         edge_path,  # the path up to this process
+        bridge_wires=None,
 ):
     """
     TODO -- support subwires with advanced wiring. This currently assumes each port has a simple wire.
     """
     for port, subschema in schema.items():
         wire = wires.get(port)
+        bridge = bridge_wires.get(port) if bridge_wires else None
+
         if not wire:
             # there is no wire for this port, it is disconnected
             if schema_key == 'inputs':
@@ -125,6 +128,9 @@ def get_graph_wires(
                 'type': schema_key})
         else:
             raise ValueError(f"Unexpected wire type: {wires}")
+
+        if bridge:
+            pass
 
     return graph_dict
 
@@ -185,15 +191,26 @@ def get_graph_dict(
             # this is an edge, get its inputs and outputs
             input_wires = value.get('inputs', {})
             output_wires = value.get('outputs', {})
-            bridge_wires = value.get('bridge', {})
             input_schema = subschema.get('_inputs') or value.get('_inputs', {})
             output_schema = subschema.get('_outputs') or value.get('_outputs', {})
 
+            # bridge
+            bridge_wires = value.pop('bridge', {})  # TODO -- does this pop alter the original data? that would be bad
+            bridge_inputs = bridge_wires.get('inputs', {})
+            bridge_outputs = bridge_wires.get('outputs', {})
+
             # get the input and output wires
             graph_dict = get_graph_wires(
-                input_schema, input_wires, graph_dict, schema_key='inputs', edge_path=subpath)
+                input_schema, input_wires, graph_dict,
+                schema_key='inputs', edge_path=subpath, bridge_wires=bridge_inputs)
             graph_dict = get_graph_wires(
-                output_schema, output_wires, graph_dict, schema_key='outputs', edge_path=subpath)
+                output_schema, output_wires, graph_dict,
+                schema_key='outputs', edge_path=subpath, bridge_wires=bridge_outputs)
+
+            # get the input and output bridge wires
+            if bridge_wires:
+                # check that the bridge wires connect to valid ports
+                assert set(bridge_wires.keys()).issubset({'inputs', 'outputs'})
 
         else:  # this is a state node
             if key in REMOVE_KEYS:
