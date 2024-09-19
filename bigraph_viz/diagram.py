@@ -58,7 +58,14 @@ def generate_types():
     return core
 
 
-def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec):
+def plot_edges(
+        graph,
+        edge,
+        port_labels,
+        port_label_size,
+        state_node_spec,
+        constraint='false',
+):
     process_path = edge['edge_path']
     process_name = str(process_path)
     target_path = edge['target_path']
@@ -66,6 +73,7 @@ def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec):
     target_name = str(target_path)
 
     # place it in the graph
+    # TODO -- not sure this is working, it might be remaking the node
     if target_name not in graph.body:  # is the source node already in the graph?
         label = make_label(target_path[-1])
         graph.node(target_name, label=label, **state_node_spec)
@@ -77,7 +85,9 @@ def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec):
 
     with graph.subgraph(name=process_name) as c:
         c.edge(
-            target_name, process_name,
+            target_name,
+            process_name,
+            constraint=constraint,
             label=label,
             labelloc="t",
             fontsize=port_label_size)
@@ -172,7 +182,6 @@ def get_graph_dict(
         'output_edges': [],
         'disconnected_input_edges': [],
         'disconnected_output_edges': [],
-        'bridges': [],
     }
 
     for key, value in state.items():
@@ -326,7 +335,7 @@ def get_graphviz_fig(
         if schema_label:
             label += schema_label
         label = make_label(label)
-        graph.node(node_name, label=label)
+        graph.node(str(node_name), label=label)
 
     # process nodes
     process_paths = []
@@ -357,17 +366,19 @@ def get_graphviz_fig(
 
         parent_node = str(edge['parent'])
         child_node = str(edge['child'])
-        graph.edge(parent_node, child_node)
+        graph.edge(parent_node, child_node,
+                   dir='forward', constraint='true'
+                   )
 
     # input edges
     for edge in graph_dict['input_edges']:
         graph.attr('edge', **input_edge_spec)
-        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
+        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
 
     # output edges
     for edge in graph_dict['output_edges']:
         graph.attr('edge', **output_edge_spec)
-        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
+        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
 
     # disconnected input edges
     for edge in graph_dict['disconnected_input_edges']:
@@ -380,7 +391,7 @@ def get_graphviz_fig(
         edge['target_path'] = node_name2
 
         graph.attr('edge', **input_edge_spec)
-        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
+        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
 
     # disconnected output edges
     for edge in graph_dict['disconnected_output_edges']:
@@ -393,7 +404,7 @@ def get_graphviz_fig(
         edge['target_path'] = node_name2
 
         graph.attr('edge', **output_edge_spec)
-        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec)
+        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
 
     # grouped nodes
     for group in node_groups:
