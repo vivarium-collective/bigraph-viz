@@ -1,0 +1,113 @@
+,Well,Label,Tag,Mg,T7RNAP,Ribosome,EnergyMix,ProtMix,DNA,Row,Column
+0,A:1,exp,exp,4.0,2.5,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,A,1
+1,C:1,exp,exp,4.0,5.0,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,C,1
+2,E:1,exp,exp,4.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,E,1
+3,G:1,exp,exp,4.0,15.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,G,1
+4,I:1,exp,exp,4.0,10.0,0.9,b.next eng mix,b.next prot mix 03-1,deGFP,I,1
+5,K:1,exp,exp,4.0,10.0,1.26,b.next eng mix,b.next prot mix 03-1,deGFP,K,1
+6,M:1,exp,exp,4.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,M,1
+7,O:1,exp,exp,4.0,10.0,2.16,b.next eng mix,b.next prot mix 03-1,deGFP,O,1
+8,A:3,exp,exp,6.0,2.5,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,A,3
+9,C:3,exp,exp,6.0,5.0,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,C,3
+10,E:3,exp,exp,6.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,E,3
+11,G:3,exp,exp,6.0,15.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,G,3
+12,I:3,exp,exp,6.0,10.0,0.9,b.next eng mix,b.next prot mix 03-1,deGFP,I,3
+13,K:3,exp,exp,6.0,10.0,1.26,b.next eng mix,b.next prot mix 03-1,deGFP,K,3
+14,M:3,exp,exp,6.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,M,3
+15,O:3,exp,exp,6.0,10.0,2.16,b.next eng mix,b.next prot mix 03-1,deGFP,O,3
+16,A:5,exp,exp,8.0,2.5,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,A,5
+17,C:5,exp,exp,8.0,5.0,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,C,5
+18,E:5,exp,exp,8.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,E,5
+19,G:5,exp,exp,8.0,15.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,G,5
+20,I:5,exp,exp,8.0,10.0,0.9,b.next eng mix,b.next prot mix 03-1,deGFP,I,5
+21,K:5,exp,exp,8.0,10.0,1.26,b.next eng mix,b.next prot mix 03-1,deGFP,K,5
+22,M:5,exp,exp,8.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,M,5
+23,O:5,exp,exp,8.0,10.0,2.16,b.next eng mix,b.next prot mix 03-1,deGFP,O,5
+24,A:7,exp,exp,10.0,2.5,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,A,7
+25,C:7,exp,exp,10.0,5.0,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,C,7
+26,E:7,exp,exp,10.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,E,7
+27,G:7,exp,exp,10.0,15.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,G,7
+28,I:7,exp,exp,10.0,10.0,0.9,b.next eng mix,b.next prot mix 03-1,deGFP,I,7
+29,K:7,exp,exp,10.0,10.0,1.26,b.next eng mix,b.next prot mix 03-1,deGFP,K,7
+30,M:7,exp,exp,10.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,M,7
+31,O:7,exp,exp,10.0,10.0,2.16,b.next eng mix,b.next prot mix 03-1,deGFP,O,7
+32,A:9,exp,exp,12.0,2.5,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,A,9
+33,C:9,exp,exp,12.0,5.0,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,C,9
+34,E:9,exp,exp,12.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,E,9
+35,G:9,exp,exp,12.0,15.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,G,9
+36,I:9,exp,exp,12.0,10.0,0.9,b.next eng mix,b.next prot mix 03-1,deGFP,I,9
+37,K:9,exp,exp,12.0,10.0,1.26,b.next eng mix,b.next prot mix 03-1,deGFP,K,9
+38,M:9,exp,exp,12.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,M,9
+39,O:9,exp,exp,12.0,10.0,2.16,b.next eng mix,b.next prot mix 03-1,deGFP,O,9
+40,A:11,exp,exp,14.0,2.5,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,A,11
+41,C:11,exp,exp,14.0,5.0,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,C,11
+42,E:11,exp,exp,14.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,E,11
+43,G:11,exp,exp,14.0,15.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,G,11
+44,I:11,exp,exp,14.0,10.0,0.9,b.next eng mix,b.next prot mix 03-1,deGFP,I,11
+45,K:11,exp,exp,14.0,10.0,1.26,b.next eng mix,b.next prot mix 03-1,deGFP,K,11
+46,M:11,exp,exp,14.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,M,11
+47,O:11,exp,exp,14.0,10.0,2.16,b.next eng mix,b.next prot mix 03-1,deGFP,O,11
+48,A:13,exp,exp,16.0,2.5,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,A,13
+49,C:13,exp,exp,16.0,5.0,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,C,13
+50,E:13,exp,exp,16.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,E,13
+51,G:13,exp,exp,16.0,15.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,G,13
+52,I:13,exp,exp,16.0,10.0,0.9,b.next eng mix,b.next prot mix 03-1,deGFP,I,13
+53,K:13,exp,exp,16.0,10.0,1.26,b.next eng mix,b.next prot mix 03-1,deGFP,K,13
+54,M:13,exp,exp,16.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,M,13
+55,O:13,exp,exp,16.0,10.0,2.16,b.next eng mix,b.next prot mix 03-1,deGFP,O,13
+56,A:15,exp,exp,18.0,2.5,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,A,15
+57,C:15,exp,exp,18.0,5.0,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,C,15
+58,E:15,exp,exp,18.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,E,15
+59,G:15,exp,exp,18.0,15.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,G,15
+60,I:15,exp,exp,18.0,10.0,0.9,b.next eng mix,b.next prot mix 03-1,deGFP,I,15
+61,K:15,exp,exp,18.0,10.0,1.26,b.next eng mix,b.next prot mix 03-1,deGFP,K,15
+62,M:15,exp,exp,18.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,M,15
+63,O:15,exp,exp,18.0,10.0,2.16,b.next eng mix,b.next prot mix 03-1,deGFP,O,15
+64,A:17,exp,exp,20.0,2.5,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,A,17
+65,C:17,exp,exp,20.0,5.0,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,C,17
+66,E:17,exp,exp,20.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,E,17
+67,G:17,exp,exp,20.0,15.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,G,17
+68,I:17,exp,exp,20.0,10.0,0.9,b.next eng mix,b.next prot mix 03-1,deGFP,I,17
+69,K:17,exp,exp,20.0,10.0,1.26,b.next eng mix,b.next prot mix 03-1,deGFP,K,17
+70,M:17,exp,exp,20.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,M,17
+71,O:17,exp,exp,20.0,10.0,2.16,b.next eng mix,b.next prot mix 03-1,deGFP,O,17
+72,A:19,exp,exp,22.0,2.5,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,A,19
+73,C:19,exp,exp,22.0,5.0,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,C,19
+74,E:19,exp,exp,22.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,E,19
+75,G:19,exp,exp,22.0,15.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,G,19
+76,I:19,exp,exp,22.0,10.0,0.9,b.next eng mix,b.next prot mix 03-1,deGFP,I,19
+77,K:19,exp,exp,22.0,10.0,1.26,b.next eng mix,b.next prot mix 03-1,deGFP,K,19
+78,M:19,exp,exp,22.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,M,19
+79,O:19,exp,exp,22.0,10.0,2.16,b.next eng mix,b.next prot mix 03-1,deGFP,O,19
+80,A:21,exp,exp,24.0,2.5,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,A,21
+81,C:21,exp,exp,24.0,5.0,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,C,21
+82,E:21,exp,exp,24.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,E,21
+83,G:21,exp,exp,24.0,15.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,G,21
+84,I:21,exp,exp,24.0,10.0,0.9,b.next eng mix,b.next prot mix 03-1,deGFP,I,21
+85,K:21,exp,exp,24.0,10.0,1.26,b.next eng mix,b.next prot mix 03-1,deGFP,K,21
+86,M:21,exp,exp,24.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,M,21
+87,O:21,exp,exp,24.0,10.0,2.16,b.next eng mix,b.next prot mix 03-1,deGFP,O,21
+88,A:23,exp,exp,26.0,2.5,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,A,23
+89,C:23,exp,exp,26.0,5.0,1.8,b.next eng mix,b.next prot mix dT7RNAP 03-1,deGFP,C,23
+90,E:23,exp,exp,26.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,E,23
+91,G:23,exp,exp,26.0,15.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,G,23
+92,I:23,exp,exp,26.0,10.0,0.9,b.next eng mix,b.next prot mix 03-1,deGFP,I,23
+93,K:23,exp,exp,26.0,10.0,1.26,b.next eng mix,b.next prot mix 03-1,deGFP,K,23
+94,M:23,exp,exp,26.0,10.0,1.8,b.next eng mix,b.next prot mix 03-1,deGFP,M,23
+95,O:23,exp,exp,26.0,10.0,2.16,b.next eng mix,b.next prot mix 03-1,deGFP,O,23
+96,B:6,NEB (+),control,,,,NEB SolA,NEB SolB,deGFP,B,6
+97,F:12,NEB (+),control,,,,NEB SolA,NEB SolB,deGFP,F,12
+98,J:18,NEB (+),control,,,,NEB SolA,NEB SolB,deGFP,J,18
+99,N:24,NEB (+),control,,,,NEB SolA,NEB SolB,deGFP,N,24
+100,F:6,NEB (-),control,,,,NEB SolA,NEB SolB,H2O,F,6
+101,J:12,NEB (-),control,,,,NEB SolA,NEB SolB,H2O,J,12
+102,N:18,NEB (-),control,,,,NEB SolA,NEB SolB,H2O,N,18
+103,B:24,NEB (-),control,,,,NEB SolA,NEB SolB,H2O,B,24
+104,J:6,ProtMix Control,control,,,,b.next eng mix,NEB SolB,deGFP,J,6
+105,N:12,ProtMix Control,control,,,,b.next eng mix,NEB SolB,deGFP,N,12
+106,B:18,ProtMix Control,control,,,,b.next eng mix,NEB SolB,deGFP,B,18
+107,F:24,ProtMix Control,control,,,,b.next eng mix,NEB SolB,deGFP,F,24
+108,N:6,H2O,control,,,,H2O,H2O,H2O,N,6
+109,B:12,H2O,control,,,,H2O,H2O,H2O,B,12
+110,F:18,H2O,control,,,,H2O,H2O,H2O,F,18
+111,J:24,H2O,control,,,,H2O,H2O,H2O,J,24
