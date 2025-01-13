@@ -9,7 +9,7 @@ import pprint
 from typing import Any
 import copy
 
-from bigraph_schema.registry import type_schema_keys
+from bigraph_schema import type_schema_keys
 
 pretty = pprint.PrettyPrinter(indent=2)
 
