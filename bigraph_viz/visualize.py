@@ -1,7 +1,16 @@
-from bigraph_schema import TypeSystem, is_schema_key
+import os
 
+from bigraph_schema import TypeSystem, is_schema_key
+from bigraph_viz.dict_utils import absolute_path
+
+import graphviz
 
 REMOVE_KEYS = ['global_time']
+
+
+def make_label(label):
+    # label = label.replace(' ', '<br/>')  # replace spaces with new lines
+    return f'<{label}>'
 
 
 def check_if_path_in_removed_nodes(path, remove_nodes):
@@ -141,11 +150,39 @@ def graphviz_edge(core, schema, state, path, options, graph):
     return graph
 
 
-visualize_types = {
-    'any': {
-        '_graphviz': graphviz_any},
-    'edge': {
-        '_graphviz': graphviz_edge}}
+def plot_edges(
+        graph,
+        edge,
+        port_labels,
+        port_label_size,
+        state_node_spec,
+        constraint='false',
+):
+    process_path = edge['edge_path']
+    process_name = str(process_path)
+    target_path = edge['target_path']
+    port = edge['port']
+    target_name = str(target_path)
+
+    # place it in the graph
+    # TODO -- not sure this is working, it might be remaking the node
+    if target_name not in graph.body:  # is the source node already in the graph?
+        label = make_label(target_path[-1])
+        graph.node(target_name, label=label, **state_node_spec)
+
+    # port label
+    label = ''
+    if port_labels:
+        label = make_label(port)
+
+    with graph.subgraph(name=process_name) as c:
+        c.edge(
+            target_name,
+            process_name,
+            constraint=constraint,
+            label=label,
+            labelloc="t",
+            fontsize=port_label_size)
 
 
 def get_graphviz_fig(
@@ -387,6 +424,19 @@ def plot_bigraph(
     return graph
 
 
+visualize_types = {
+    'any': {
+        '_graphviz': graphviz_any},
+    'edge': {
+        '_graphviz': graphviz_edge},
+    'step': {
+        '_inherit': ['edge']},
+    'process': {
+        '_inherit': ['edge']}}
+
+
+# TODO: we want to visualize things that are not yet complete
+
 class VisualizeTypes(TypeSystem):
     def __init__(self):
         super().__init__()
@@ -419,19 +469,113 @@ class VisualizeTypes(TypeSystem):
             graph)
         
 
-    def render_graphviz(self, schema, state, path, options):
-        graph = self.graphviz(schema, state, path, options)
+    def generate_graphviz(self, schema, state, path, options):
+        full_schema, full_state = self.generate(schema, state)
+        return self.graphviz(full_schema, full_state, path, options)
 
-        # TODO: make this all work
-        plot_bigraph(graph)
+
+    def plot_graphviz(self, graph_dict, options):
+        import ipdb; ipdb.set_trace()
+
+        out_dir = 'out'
+        filename = None
+        print_source = False
+        file_format = 'png'
+
+        if 'out_dir' in options:
+            out_dir = options.pop('out_dir')
+        if 'filename' in options:
+            filename = options.pop('filename')
+        if 'print_source' in options:
+            print_source = True
+            options.pop('print_source')
+        if 'file_format' in options:
+            file_format = options.pop('file_format')
+
+        # make a figure
+        graph = get_graphviz_fig(
+            graph_dict,
+            **options)
+
+        # display or save results
+        if print_source:
+            print(graph.source)
+
+        if filename is not None:
+            os.makedirs(out_dir, exist_ok=True)
+            fig_path = os.path.join(out_dir, filename)
+            print(f"Writing {fig_path}")
+            graph.render(filename=fig_path, format=file_format)
+
+
+    def render_graphviz(self, schema, state, path, options):
+        graph = self.graphviz(
+            schema,
+            state,
+            path,
+            options['graphviz'])
+
+        self.plot_bigraph(
+            graph,
+            options['plot'])
 
 
 
 # Begin Tests
 ###############
 
+
 plot_settings = {'out_dir': 'out',
                  'dpi': '150',}
+
+def test_graphviz():
+    cell = {
+        'config': {
+            '_type': 'map[float]',
+            'a': 11.0,  #{'_type': 'float', '_value': 11.0},
+            'b': 3333.33},
+        'cell': {
+            '_type': 'process',  # TODO -- this should also accept process, step, but how in bigraph-schema?
+            # 'config': {},
+            # 'address': 'local:cell',   # TODO -- this is where the ports/inputs/outputs come from
+            'internal': 1.0,
+            '_inputs': {
+                'nutrients': 'float',
+            },
+            '_outputs': {
+                'secretions': 'float',
+                'biomass': 'float',
+            },
+            'inputs': {
+                'nutrients': ['down', 'nutrients_store'],
+            },
+            'outputs': {
+                # 'secretions': ['secretions_store'],
+                'biomass': ['biomass_store'],
+            }
+        }
+    }
+
+    graph_settings = {
+        'plot': {
+            'out_dir': 'out',
+            'filename': 'test_graphviz'},
+        'graphviz': {
+            'dpi': '150'}}
+
+
+    core = VisualizeTypes()
+    graphviz = core.generate_graphviz(
+        {},
+        cell,
+        (),
+        graph_settings['graphviz'])
+
+    core.plot_graphviz(
+        graphviz,
+        graph_settings['plot'])
+
+    import ipdb; ipdb.set_trace()
 
 
 def test_diagram_plot():
@@ -461,6 +605,7 @@ def test_diagram_plot():
             }
         }
     }
+
     plot_bigraph(cell, filename='bigraph_cell',
                  show_values=True,
                  show_types=True,
@@ -753,12 +898,13 @@ def test_composite_process():
 
 
 if __name__ == '__main__':
-    test_diagram_plot()
-    test_bio_schema()
-    test_flat_composite()
-    test_multi_processes()
-    test_nested_processes()
-    test_multi_input_output()
-    test_cell_hierarchy()
-    test_multiple_disconnected_ports()
-    test_composite_process()
+    test_graphviz()
+    # test_diagram_plot()
+    # test_bio_schema()
+    # test_flat_composite()
+    # test_multi_processes()
+    # test_nested_processes()
+    # test_multi_input_output()
+    # test_cell_hierarchy()
+    # test_multiple_disconnected_ports()
+    # test_composite_process()
