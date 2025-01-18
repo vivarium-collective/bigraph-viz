@@ -444,7 +444,7 @@ class VisualizeTypes(TypeSystem):
         self.update_types(visualize_types)
 
 
-    def graphviz(self, schema, state, path, options, graph=None):
+    def get_graph_dict(self, schema, state, path, options, graph=None):
         path = path or ()
         graph = graph or {
             'state_nodes': [],
@@ -471,31 +471,21 @@ class VisualizeTypes(TypeSystem):
 
     def generate_graphviz(self, schema, state, path, options):
         full_schema, full_state = self.generate(schema, state)
-        return self.graphviz(full_schema, full_state, path, options)
+        return self.get_graph_dict(full_schema, full_state, path, options)
 
 
-    def plot_graphviz(self, graph_dict, options):
-        import ipdb; ipdb.set_trace()
-
-        out_dir = 'out'
-        filename = None
-        print_source = False
-        file_format = 'png'
-
-        if 'out_dir' in options:
-            out_dir = options.pop('out_dir')
-        if 'filename' in options:
-            filename = options.pop('filename')
-        if 'print_source' in options:
-            print_source = True
-            options.pop('print_source')
-        if 'file_format' in options:
-            file_format = options.pop('file_format')
-
+    def plot_graph(self,
+                   graph_dict,
+                   out_dir='out',
+                   filename=None,
+                   file_format='png',
+                   print_source=False,
+                   graph_options={}
+                   ):
         # make a figure
         graph = get_graphviz_fig(
             graph_dict,
-            **options)
+            **graph_options)
 
         # display or save results
         if print_source:
@@ -508,16 +498,16 @@ class VisualizeTypes(TypeSystem):
             graph.render(filename=fig_path, format=file_format)
 
 
-    def render_graphviz(self, schema, state, path, options):
-        graph = self.graphviz(
-            schema,
-            state,
-            path,
-            options['graphviz'])
-
-        self.plot_bigraph(
-            graph,
-            options['plot'])
+    # def render_graphviz(self, schema, state, path, options):
+    #     graph = self.get_graph_dict(
+    #         schema,
+    #         state,
+    #         path,
+    #         options['graphviz'])
+    # 
+    #     self.plot_bigraph(
+    #         graph,
+    #         options['plot'])
 
 
 
