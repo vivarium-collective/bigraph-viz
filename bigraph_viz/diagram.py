@@ -238,10 +238,10 @@ def get_graph_dict(
                 continue
             if not isinstance(value, dict):  # this is a leaf node
                 node_spec['value'] = value
-                node_spec['type'] = schema.get(key, {}).get('_type')
+                node_spec['type'] = core.representation(schema) #schema.get(key, {}).get('_type')
             else:
                 # node_spec['value'] = str(value)
-                node_spec['type'] = schema.get(key, {}).get('_type')
+                node_spec['type'] = core.representation(schema) #schema.get(key, {}).get('_type')
             graph_dict['state_nodes'].append(node_spec)
 
         if isinstance(value, dict):  # get subgraph
@@ -321,17 +321,16 @@ def get_graphviz_fig(
 
         # make the label
         label = node_path[-1]
-        schema_label = None
+        schema_label = ''
         if show_values:
-            if node.get('value'):
-                if not schema_label:
-                    schema_label = ''
-                schema_label += f": {node['value']}"
+            if node.get('value') is not None:
+                schema_label += f"<br/> {node['value']}"
         if show_types:
             if node.get('type'):
-                if not schema_label:
-                    schema_label = '<br/>'
-                schema_label += f"[{node['type']}]"
+                if schema_label == '':
+                    schema_label += f"<br/> [{node['type']}]"
+                else:
+                    schema_label += f" : [{node['type']}]"
         if schema_label:
             label += schema_label
         label = make_label(label)

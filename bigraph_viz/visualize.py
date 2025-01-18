@@ -100,7 +100,7 @@ def graphviz_any(core, schema, state, path, options, graph):
         for key, value in state.items():
             if not is_schema_key(key):
                 subpath = path + (key,)                
-                graph = core.graphviz(
+                graph = core.get_graph_dict(
                     schema.get(key),
                     value,
                     subpath,
