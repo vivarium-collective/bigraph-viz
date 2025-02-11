@@ -17,6 +17,7 @@ optional_schema_keys = {'_type', '_value', '_description', '_type_parameters', '
 
 type_schema_keys = required_schema_keys | optional_schema_keys
 
+
 pretty = pprint.PrettyPrinter(indent=2)
 
 # TODO -- sync this up with bigraph-schema
