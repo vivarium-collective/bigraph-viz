@@ -110,8 +110,8 @@ def plot_edges(
     target_path = edge['target_path']
     port = edge['port']
     target_name = str(target_path)
+
     # place it in the graph
-    # TODO -- not sure this is working, it might be remaking the node
     if target_name not in graph.body:  # is the source node already in the graph?
         label = make_label(target_path[-1])
         graph.node(target_name, label=label, **state_node_spec)
@@ -150,20 +150,21 @@ def get_graphviz_fig(
     node_groups = node_groups or []
     node_names = []
     invisible_edges = invisible_edges or []
+
     # node specs
     state_node_spec = {
         'shape': 'circle', 'penwidth': '2', 'margin': label_margin, 'fontsize': node_label_size}
     process_node_spec = {
         'shape': 'box', 'penwidth': '2', 'constraint': 'false', 'margin': label_margin, 'fontsize': node_label_size}
-    # hyper_edge_spec = {
-    #     'style': 'dashed', 'penwidth': '1', 'arrowhead': 'dot', 'arrowsize': '0.5'}
     input_edge_spec = {
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'forward'}
     output_edge_spec = {
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'back'}
+
     # initialize graph
     graph = graphviz.Digraph(name='bigraph', engine='dot')
     graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi)
+
     # state nodes
     graph.attr('node', **state_node_spec)
     for node in graph_dict['state_nodes']:
@@ -187,6 +188,7 @@ def get_graphviz_fig(
             label += schema_label
         label = make_label(label)
         graph.node(str(node_name), label=label)
+
     # process nodes
     process_paths = []
     graph.attr('node', **process_node_spec)
@@ -197,6 +199,7 @@ def get_graphviz_fig(
         node_names.append(node_name)
         label = make_label(node_path[-1])
         graph.node(node_name, label=label)
+
     # place edges
     graph.attr('edge', arrowhead='none', penwidth='2')
     for edge in graph_dict['place_edges']:
@@ -215,6 +218,7 @@ def get_graphviz_fig(
         graph.edge(parent_node, child_node,
                    dir='forward', constraint='true'
                    )
+
     # input edges
     for edge in graph_dict['input_edges']:
         if edge['type'] == 'bridge_inputs':
@@ -231,6 +235,7 @@ def get_graphviz_fig(
         else:
             graph.attr('edge', **output_edge_spec)
             plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
+
     # disconnected input edges
     for edge in graph_dict['disconnected_input_edges']:
         process_path = edge['edge_path']
@@ -409,18 +414,33 @@ def graphviz_edge(core, schema, state, path, options, graph):
         # check that the bridge wires connect to valid ports
         assert set(bridge_wires.keys()).issubset({'inputs', 'outputs'})
 
-    # if composite, get the subgraph
-    if schema.get('_type') == 'composite':
-        for key, value in state.items():
-            if not is_schema_key(key) and key not in PROCESS_SCHEMA_KEYS:
-                subpath = path + (key,)
-                graph = core.get_graph_dict(
-                    schema.get(key),
-                    value,
-                    subpath,
-                    options,
-                    graph)
+    return graph
 
+def graphviz_none(core, schema, state, path, options, graph):
+    return graph
+
+def graphviz_composite(core, schema, state, path, options, graph):
+    # add the composite edge
+    graph = graphviz_edge(core, schema, state, path, options, graph)
+
+    # get the inner state and schema
+    inner_state = state.get('config', {}).get('state')
+    inner_schema = state.get('config', {}).get('composition')
+    if inner_state is None:
+        inner_state = state
+        inner_schema = schema
+    inner_schema, inner_state = core.generate(inner_schema, inner_state)
+
+    # add the inner nodes and edges
+    for key, value in inner_state.items():
+        if not is_schema_key(key) and key not in PROCESS_SCHEMA_KEYS:
+            subpath = path + (key,)
+            graph = core.get_graph_dict(
+                inner_schema.get(key),
+                value,
+                subpath,
+                options,
+                graph)
     return graph
 
 
@@ -432,6 +452,9 @@ visualize_types = {
     'edge': {
         '_graphviz': graphviz_edge
     },
+    'quote': {
+        '_graphviz': graphviz_none,
+    },
     'step': {
         '_inherit': ['edge']
     },
@@ -439,7 +462,8 @@ visualize_types = {
         '_inherit': ['edge']
     },
     'composite': {
-        '_inherit': ['process']
+        '_inherit': ['process'],
+        '_graphviz': graphviz_composite,
     },
 }
 
@@ -476,7 +500,7 @@ class VisualizeTypes(TypeSystem):
             path,
             options,
             graph)
-        
+
 
     def generate_graph_dict(self, schema, state, path, options):
         full_schema, full_state = self.generate(schema, state)
@@ -543,6 +567,50 @@ def test_forest():
     }
     plot_bigraph(forest, **plot_settings, filename='forest')
 
+def test_nested_composite():
+    state = {
+        'environment': {
+            '0': {
+                'mass': 1.0,
+                'grow_divide': {
+                    '_type': 'composite',
+                    'inputs': {
+                        'mass': ['mass']},
+                    'outputs': {
+                        'mass': ['mass'],
+                        'environment': ['..']},
+                    'interval': 1.0,
+                    'address': 'local:composite',
+                    'config': {'_type': 'quote',
+                              'state': {'grow': {'_type': 'process',
+                                                 'address': 'local:grow',
+                                                 'config': {'rate': 0.03},
+                                                 'inputs': {'mass': ['mass']},
+                                                 'outputs': {'mass': ['mass']}},
+                                        'divide': {'_type': 'process',
+                                                   'address': 'local:divide',
+                                                   'config': {'agent_id': '0',
+                                                              'agent_schema': {'mass': 'float'},
+                                                              'threshold': 2.0,
+                                                              'divisions': 2},
+                                                   'inputs': {'trigger': ['mass']},
+                                                   'outputs': {'environment': ['environment']}},
+                                        'global_time': 0.0},
+                              'bridge': {'inputs': {'mass': ['mass']},
+                                         'outputs': {'mass': ['mass'],
+                                                     'environment': ['environment']}},
+                              'composition': {'global_time': 'float'},
+                              'interface': {'inputs': {}, 'outputs': {}},
+                              'emitter': {'path': ['emitter'],
+                                          'address': 'local:ram-emitter',
+                                          'config': {},
+                                          'mode': 'none',
+                                          'emit': {}},
+                              'global_time_precision': None}
+                }}}}
+    plot_bigraph(state,
+                 filename='nested_composite',
+                 **plot_settings)
 
 def test_graphviz():
     cell = {
@@ -878,13 +946,15 @@ def test_composite_process():
 
 
 if __name__ == '__main__':
+    test_simple_store()
+    test_forest()
+    test_nested_composite()
     test_graphviz()
     test_bigraph_cell()
     test_bio_schema()
     test_flat_composite()
     test_multi_processes()
     test_nested_processes()
-    test_multi_input_output()
     test_cell_hierarchy()
     test_multiple_disconnected_ports()
     test_composite_process()
