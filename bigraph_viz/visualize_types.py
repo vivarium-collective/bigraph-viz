@@ -412,9 +412,10 @@ def plot_bigraph(
         invisible_edges=False,
         # mark_top=False,
         remove_process_place_edges=False,
-        show_process_schema_keys=[],  # ['interval']
+        show_process_schema_keys=None,  # ['interval']
 ):
     # get kwargs dict and remove plotting-specific kwargs
+    show_process_schema_keys = show_process_schema_keys or  []
     kwargs = locals()
     state = kwargs.pop('state')
     schema = kwargs.pop('schema')
@@ -650,8 +651,7 @@ def test_graphviz():
         filename='test_graphviz'
     )
 
-
-def test_diagram_plot():
+def test_bigraph_cell():
     cell = {
         'config': {
             '_type': 'map[float]',
@@ -679,17 +679,11 @@ def test_diagram_plot():
         }
     }
 
-    plot_bigraph(cell, filename='bigraph_cell',
+    plot_bigraph(cell,
+                 filename='bigraph_cell',
                  show_values=True,
-                 show_types=True,
+                 # show_types=True,
                  **plot_settings
-                 # port_labels=False,
-                 # rankdir='BT',
-                 # remove_nodes=[
-                 #     ('cell', 'address',),
-                 #     ('cell', 'config'),
-                 #     ('cell', 'interval'),
-                 # ]
                  )
 
 def test_bio_schema():
@@ -731,7 +725,7 @@ def test_bio_schema():
             }
         }}
 
-    plot_bigraph(b, core=core, filename='bioschema', show_process_schema_keys=[],
+    plot_bigraph(b, core=core, filename='bio_schema', show_process_schema_keys=[],
                  **plot_settings)
 
 def test_flat_composite():
@@ -811,7 +805,6 @@ def test_nested_processes():
                  **plot_settings,
                  filename='nested_processes')
 
-
 def test_multi_input_output():
     process_schema = {
         '_type': 'process',
@@ -829,10 +822,10 @@ def test_multi_input_output():
         'process3': process_schema,
     }
     plot_bigraph(
-        processes_spec, show_process_schema_keys=None,
+        processes_spec,
+        show_process_schema_keys=None,
         rankdir='BT', filename='multiple_processes',
         **plot_settings)
-
 
 def test_cell_hierarchy():
     core = VisualizeTypes()
@@ -894,7 +887,6 @@ def test_cell_hierarchy():
         remove_process_place_edges=True,
         filename='cell',
         **plot_settings)
-
 
 def test_multiple_disconnected_ports():
     core = VisualizeTypes()
@@ -972,7 +964,7 @@ def test_composite_process():
 
 if __name__ == '__main__':
     test_graphviz()
-    test_diagram_plot()
+    test_bigraph_cell()
     test_bio_schema()
     test_flat_composite()
     test_multi_processes()
