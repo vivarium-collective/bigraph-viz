@@ -39,6 +39,7 @@ def get_graph_wires(
     """
     TODO -- support subwires with advanced wiring. This currently assumes each port has a simple wire.
     """
+    wires = wires or {}
     for port, subschema in schema.items():
         wire = wires.get(port)
         bridge = bridge_wires.get(port) if bridge_wires else None
@@ -413,7 +414,10 @@ visualize_types = {
     'step': {
         '_inherit': ['edge']},
     'process': {
-        '_inherit': ['edge']}}
+        '_inherit': ['edge']},
+    'composite': {
+        '_inherit': ['process']},
+}
 
 
 # TODO: we want to visualize things that are not yet complete
