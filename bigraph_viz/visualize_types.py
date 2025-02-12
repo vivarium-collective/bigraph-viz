@@ -625,7 +625,8 @@ def test_flat_composite():
             }
         },
     }
-    plot_bigraph(flat_composite_spec, rankdir='RL',
+    plot_bigraph(flat_composite_spec,
+                 rankdir='RL',
                  filename='flat_composite',
                  **plot_settings)
 
@@ -645,7 +646,9 @@ def test_multi_processes():
         'process2': process_schema,
         'process3': process_schema,
     }
-    plot_bigraph(processes_spec, rankdir='BT', filename='multiple_processes',
+    plot_bigraph(processes_spec,
+                 rankdir='BT',
+                 filename='multiple_processes',
                  **plot_settings)
 
 def test_nested_processes():
@@ -698,7 +701,8 @@ def test_multi_input_output():
     plot_bigraph(
         processes_spec,
         show_process_schema_keys=None,
-        rankdir='BT', filename='multiple_processes',
+        rankdir='BT',
+        filename='multiple_processes',
         **plot_settings)
 
 def test_cell_hierarchy():
