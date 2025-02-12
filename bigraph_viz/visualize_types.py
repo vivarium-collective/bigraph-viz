@@ -14,6 +14,7 @@ PROCESS_SCHEMA_KEYS = [
     'inputs',
     'outputs',
     'instance',
+    'bridge',
 ]
 
 
@@ -408,21 +409,38 @@ def graphviz_edge(core, schema, state, path, options, graph):
         # check that the bridge wires connect to valid ports
         assert set(bridge_wires.keys()).issubset({'inputs', 'outputs'})
 
+    # if composite, get the subgraph
+    if schema.get('_type') == 'composite':
+        for key, value in state.items():
+            if not is_schema_key(key) and key not in PROCESS_SCHEMA_KEYS:
+                subpath = path + (key,)
+                graph = core.get_graph_dict(
+                    schema.get(key),
+                    value,
+                    subpath,
+                    options,
+                    graph)
+
     return graph
 
 
 # dict with different types and their graphviz functions
 visualize_types = {
     'any': {
-        '_graphviz': graphviz_any},
+        '_graphviz': graphviz_any
+    },
     'edge': {
-        '_graphviz': graphviz_edge},
+        '_graphviz': graphviz_edge
+    },
     'step': {
-        '_inherit': ['edge']},
+        '_inherit': ['edge']
+    },
     'process': {
-        '_inherit': ['edge']},
+        '_inherit': ['edge']
+    },
     'composite': {
-        '_inherit': ['process']},
+        '_inherit': ['process']
+    },
 }
 
 
