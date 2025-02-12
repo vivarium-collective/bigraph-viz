@@ -398,7 +398,7 @@ def plot_bigraph(
     # set defaults if none provided
     core = core or generate_types()
     schema = schema or {}
-    schema, state = core.complete(schema, state)
+    schema, state = core.generate(schema, state)
 
     # parse out the network
     graph_dict = get_graph_dict(
@@ -562,11 +562,9 @@ def test_graphviz():
         (),
         graph_settings['graphviz'])
 
-    core.plot_graphviz(
+    core.plot_graph(
         graphviz,
         graph_settings['plot'])
-
-    import ipdb; ipdb.set_trace()
 
 
 def test_diagram_plot():

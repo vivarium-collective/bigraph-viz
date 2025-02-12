@@ -485,7 +485,7 @@ def plot_bigraph(
     # set defaults if none provided
     core = core or generate_types()
     schema = schema or {}
-    schema, state = core.complete(schema, state)
+    schema, state = core.generate(schema, state)
 
     # parse out the network
     graph_dict = get_graph_dict(
@@ -549,13 +549,6 @@ def test_diagram_plot():
                  show_values=True,
                  show_types=True,
                  **plot_settings
-                 # port_labels=False,
-                 # rankdir='BT',
-                 # remove_nodes=[
-                 #     ('cell', 'address',),
-                 #     ('cell', 'config'),
-                 #     ('cell', 'interval'),
-                 # ]
                  )
 
 def test_bio_schema():

@@ -45,7 +45,7 @@ setup(
     install_requires=[
         # List your package dependencies here
         "graphviz",
-        "bigraph-schema",
+        "bigraph-schema>=0.0.51",
         "numpy"
     ],
 )
