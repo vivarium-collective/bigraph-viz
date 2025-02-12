@@ -368,7 +368,7 @@ def graphviz_any(core, schema, state, path, options, graph):
             if not is_schema_key(key):
                 subpath = path + (key,)                
                 graph = core.get_graph_dict(
-                    schema.get(key),
+                    schema.get(key, {}),
                     value,
                     subpath,
                     options,
