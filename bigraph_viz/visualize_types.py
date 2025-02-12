@@ -29,7 +29,7 @@ def check_if_path_in_removed_nodes(path, remove_nodes):
 
 
 def get_graph_wires(
-        schema,     # the ports schema
+        ports_schema,     # the ports schema
         wires,      # the wires, from port to path
         graph_dict, # the current graph dict that is being built
         schema_key, # inputs or outputs
@@ -40,7 +40,9 @@ def get_graph_wires(
     TODO -- support subwires with advanced wiring. This currently assumes each port has a simple wire.
     """
     wires = wires or {}
-    for port, subschema in schema.items():
+    inferred_ports = set(list(ports_schema.keys()) + list(wires.keys()))
+
+    for port in inferred_ports:
         wire = wires.get(port)
         bridge = bridge_wires.get(port) if bridge_wires else None
 
@@ -56,6 +58,7 @@ def get_graph_wires(
                     'edge_path': edge_path,
                     'port': port,
                     'type': schema_key})
+
         elif isinstance(wire, (list, tuple, str)):
             # the wire is defined, add it to edges
             if isinstance(wire, str):
@@ -320,7 +323,7 @@ def plot_bigraph(
     schema = schema or {}
     schema, state = core.generate(schema, state)
 
-    graphviz = core.generate_graph_dict(
+    graph_dict = core.generate_graph_dict(
         schema,
         state,
         (),
@@ -328,7 +331,7 @@ def plot_bigraph(
     )
 
     core.plot_graph(
-        graphviz,
+        graph_dict,
         filename=filename,
         out_dir=out_dir,
         options=remaining_kwargs)
@@ -347,6 +350,8 @@ def graphviz_any(core, schema, state, path, options, graph):
             node_spec['value'] = state
 
         graph['state_nodes'].append(node_spec)
+
+    if len(path) > 1:
         graph['place_edges'].append({
             'parent': path[:-1],
             'child': path})
@@ -366,36 +371,37 @@ def graphviz_any(core, schema, state, path, options, graph):
         
 
 def graphviz_edge(core, schema, state, path, options, graph):
+
+    # add process node to graph
     node_spec = {
         'name': path[-1],
         'path': path,
         'value': None,
         'type': core.representation(schema)}
-
-            # if key in removed_process_keys and not retain_process_keys:
-            #     continue
-
     graph['process_nodes'].append(node_spec)
 
-    # this is an edge, get its inputs and outputs
+    # get the wires and ports
     input_wires = state.get('inputs', {})
     output_wires = state.get('outputs', {})
-    input_schema = state.get('_inputs', schema.get('_inputs', {}))
-    output_schema = state.get('_outputs', schema.get('_outputs', {}))
+    input_ports = state.get('_inputs', schema.get('_inputs', {}))
+    output_ports = state.get('_outputs', schema.get('_outputs', {}))
 
     # bridge
     bridge_wires = state.get('bridge', {})
     bridge_inputs = bridge_wires.get('inputs', {})
     bridge_outputs = bridge_wires.get('outputs', {})
 
-    # get the input and output wires
+    # get the input wires
     graph = get_graph_wires(
-        input_schema, input_wires, graph,
-        schema_key='inputs', edge_path=path, bridge_wires=bridge_inputs)
+        input_ports, input_wires, graph,
+        schema_key='inputs', edge_path=path,
+        bridge_wires=bridge_inputs)
 
+    # get the output wires
     graph = get_graph_wires(
-        output_schema, output_wires, graph,
-        schema_key='outputs', edge_path=path, bridge_wires=bridge_outputs)
+        output_ports, output_wires, graph,
+        schema_key='outputs', edge_path=path,
+        bridge_wires=bridge_outputs)
 
     # get the input and output bridge wires
     if bridge_wires:
@@ -689,29 +695,6 @@ def test_nested_processes():
                  **plot_settings,
                  filename='nested_processes')
 
-def test_multi_input_output():
-    process_schema = {
-        '_type': 'process',
-        '_inputs': {
-            'port1': 'Any',
-        },
-        '_outputs': {
-            'port2': 'Any'
-        },
-    }
-
-    processes_spec = {
-        'process1': process_schema,
-        'process2': process_schema,
-        'process3': process_schema,
-    }
-    plot_bigraph(
-        processes_spec,
-        show_process_schema_keys=None,
-        rankdir='BT',
-        filename='multiple_processes',
-        **plot_settings)
-
 def test_cell_hierarchy():
     core = VisualizeTypes()
 
@@ -770,7 +753,7 @@ def test_cell_hierarchy():
         schema={'cell': 'cell'},
         core=core,
         remove_process_place_edges=True,
-        filename='cell',
+        filename='cell_hierarchy',
         **plot_settings)
 
 def test_multiple_disconnected_ports():
