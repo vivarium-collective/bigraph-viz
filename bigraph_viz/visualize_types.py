@@ -345,6 +345,7 @@ def plot_bigraph(
 
 # Visualize Types
 def graphviz_any(core, schema, state, path, options, graph):
+    schema = schema or {}
     if len(path) > 0:
         node_spec = {
             'name': path[-1],
@@ -377,13 +378,18 @@ def graphviz_any(core, schema, state, path, options, graph):
         
 
 def graphviz_edge(core, schema, state, path, options, graph):
-
     # add process node to graph
     node_spec = {
         'name': path[-1],
         'path': path,
         'value': None,
         'type': core.representation(schema)}
+
+    # check if this is actually a composite node
+    if state.get('address') == 'local:composite' and node_spec not in graph['process_nodes']:
+        graph['process_nodes'].append(node_spec)
+        return graphviz_composite(core, schema, state, path, options, graph)
+
     graph['process_nodes'].append(node_spec)
 
     # get the wires and ports
@@ -502,6 +508,7 @@ class VisualizeTypes(TypeSystem):
             graph)
 
 
+
     def generate_graph_dict(self, schema, state, path, options):
         full_schema, full_state = self.generate(schema, state)
         return self.get_graph_dict(full_schema, full_state, path, options)
@@ -573,7 +580,7 @@ def test_nested_composite():
             '0': {
                 'mass': 1.0,
                 'grow_divide': {
-                    '_type': 'composite',
+                    '_type': 'process',
                     'inputs': {
                         'mass': ['mass']},
                     'outputs': {
