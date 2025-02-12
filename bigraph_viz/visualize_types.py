@@ -1,100 +1,36 @@
-"""
-Bigraph diagram
-"""
 import os
-from bigraph_schema import TypeSystem, Edge
-from bigraph_viz.plot_old import absolute_path, make_label, check_if_path_in_removed_nodes
 import graphviz
 
+from bigraph_schema import TypeSystem, is_schema_key
+from bigraph_viz.dict_utils import absolute_path
+
+
+REMOVE_KEYS = ['global_time']
 
 PROCESS_SCHEMA_KEYS = [
     'config',
     'address',
     'interval',
     'inputs',
-    'outputs', 
+    'outputs',
     'instance',
+    'bridge',
 ]
 
-REMOVE_KEYS = ['global_time']
 
-updated_path_type = {
-        '_type': 'path',
-        '_inherit': 'list[string]~string',
-        # '_apply': apply_path
-}
-
-step_type = {
-    '_type': 'step',
-    '_inherit': 'edge',
-    'address': 'string',
-    # '_default': {
-    #     'inputs': {},
-    #     'outputs': {}},
-    # '_inputs': 'string~tuple',
-    # '_outputs': 'string~tuple',
-    'config': 'schema'}
+def make_label(label):
+    # label = label.replace(' ', '<br/>')  # replace spaces with new lines
+    return f'<{label}>'
 
 
-process_type = {
-    '_type': 'process',
-    '_inherit': 'step',
-    'interval': 'float'}
-
-
-composite_type = {
-    '_type': 'composite',
-    '_inherit': 'process',
-    'bridge': 'wires',
-    # 'config': 'schema'
-}
-
-def generate_types():
-    core = TypeSystem()
-    core.register('path', updated_path_type)
-    core.register('step', step_type)
-    core.register('process', process_type)
-    core.register('composite', composite_type)
-    return core
-
-
-def plot_edges(
-        graph,
-        edge,
-        port_labels,
-        port_label_size,
-        state_node_spec,
-        constraint='false',
-):
-    process_path = edge['edge_path']
-    process_name = str(process_path)
-    target_path = edge['target_path']
-    port = edge['port']
-    target_name = str(target_path)
-
-    # place it in the graph
-    # TODO -- not sure this is working, it might be remaking the node
-    if target_name not in graph.body:  # is the source node already in the graph?
-        label = make_label(target_path[-1])
-        graph.node(target_name, label=label, **state_node_spec)
-
-    # port label
-    label = ''
-    if port_labels:
-        label = make_label(port)
-
-    with graph.subgraph(name=process_name) as c:
-        c.edge(
-            target_name,
-            process_name,
-            constraint=constraint,
-            label=label,
-            labelloc="t",
-            fontsize=port_label_size)
+def check_if_path_in_removed_nodes(path, remove_nodes):
+    if remove_nodes:
+        return any(remove_path == path[:len(remove_path)] for remove_path in remove_nodes)
+    return False
 
 
 def get_graph_wires(
-        schema,     # the ports schema
+        ports_schema,     # the ports schema
         wires,      # the wires, from port to path
         graph_dict, # the current graph dict that is being built
         schema_key, # inputs or outputs
@@ -104,7 +40,10 @@ def get_graph_wires(
     """
     TODO -- support subwires with advanced wiring. This currently assumes each port has a simple wire.
     """
-    for port, subschema in schema.items():
+    wires = wires or {}
+    inferred_ports = set(list(ports_schema.keys()) + list(wires.keys()))
+
+    for port in inferred_ports:
         wire = wires.get(port)
         bridge = bridge_wires.get(port) if bridge_wires else None
 
@@ -120,6 +59,7 @@ def get_graph_wires(
                     'edge_path': edge_path,
                     'port': port,
                     'type': schema_key})
+
         elif isinstance(wire, (list, tuple, str)):
             # the wire is defined, add it to edges
             if isinstance(wire, str):
@@ -157,121 +97,36 @@ def get_graph_wires(
     return graph_dict
 
 
-def get_graph_dict(
-        schema,
-        state,
-        core,
-        graph_dict=None,
-        path=None,
-        retain_type_keys=False,
-        retain_process_keys=False,
-        remove_nodes=None,
-        show_process_schema_keys=None,
+def plot_edges(
+        graph,
+        edge,
+        port_labels,
+        port_label_size,
+        state_node_spec,
+        constraint='false',
 ):
-    path = path or ()
-    remove_nodes = remove_nodes or []
-    show_process_schema_keys = show_process_schema_keys or []
-    removed_process_keys = list(set(PROCESS_SCHEMA_KEYS) - set(show_process_schema_keys))
-
-    # initialize bigraph
-    graph_dict = graph_dict or {
-        'state_nodes': [],
-        'process_nodes': [],
-        'place_edges': [],
-        'input_edges': [],
-        'output_edges': [],
-        'disconnected_input_edges': [],
-        'disconnected_output_edges': [],
-    }
-
-    for key, value in state.items():
-        subschema = schema.get(key, {})
-
-        if key.startswith('_') and not retain_type_keys:
-            continue
-
-        subpath = path + (key,)
-        if check_if_path_in_removed_nodes(subpath, remove_nodes):
-            # skip node if path in removed_nodes
-            continue
-
-        node_spec = {
-            'name': key,
-            'path': subpath,
-            'value': None,
-            'type': None
-        }
-
-        is_edge = core.check('edge', value)
-        if is_edge:  # this is a process/edge node
-            if key in removed_process_keys and not retain_process_keys:
-                continue
-
-            graph_dict['process_nodes'].append(node_spec)
-
-            # this is an edge, get its inputs and outputs
-            input_wires = value.get('inputs', {})
-            output_wires = value.get('outputs', {})
-            input_schema = subschema.get('_inputs') or value.get('_inputs', {})
-            output_schema = subschema.get('_outputs') or value.get('_outputs', {})
-
-            # bridge
-            bridge_wires = value.pop('bridge', {})  # TODO -- does this pop alter the original data? that would be bad
-            bridge_inputs = bridge_wires.get('inputs', {})
-            bridge_outputs = bridge_wires.get('outputs', {})
-
-            # get the input and output wires
-            graph_dict = get_graph_wires(
-                input_schema, input_wires, graph_dict,
-                schema_key='inputs', edge_path=subpath, bridge_wires=bridge_inputs)
-            graph_dict = get_graph_wires(
-                output_schema, output_wires, graph_dict,
-                schema_key='outputs', edge_path=subpath, bridge_wires=bridge_outputs)
-
-            # get the input and output bridge wires
-            if bridge_wires:
-                # check that the bridge wires connect to valid ports
-                assert set(bridge_wires.keys()).issubset({'inputs', 'outputs'})
-
-        else:  # this is a state node
-            if key in REMOVE_KEYS:
-                continue
-            if not isinstance(value, dict):  # this is a leaf node
-                node_spec['value'] = value
-                node_spec['type'] = schema.get(key, {}).get('_type')
-            else:
-                # node_spec['value'] = str(value)
-                node_spec['type'] = schema.get(key, {}).get('_type')
-            graph_dict['state_nodes'].append(node_spec)
-
-        if isinstance(value, dict):  # get subgraph
-            if is_edge:
-                # remove process schema keys
-                removed_process_schema_keys = [subpath + (schema_key,) for schema_key in removed_process_keys]
-                remove_nodes.extend(removed_process_schema_keys)
-
-            graph_dict = get_graph_dict(
-                schema=schema.get(key, schema),
-                state=value,
-                core=core,
-                graph_dict=graph_dict,
-                path=subpath,
-                remove_nodes=remove_nodes
-            )
-
-            # get the place edge
-            for node in value.keys():
-                if node.startswith('_') and not retain_type_keys:
-                    continue
-
-                child_path = subpath + (node,)
-                if check_if_path_in_removed_nodes(child_path, remove_nodes):
-                    continue
-                graph_dict['place_edges'].append({
-                    'parent': subpath,
-                    'child': child_path})
-
-    return graph_dict
+    process_path = edge['edge_path']
+    process_name = str(process_path)
+    target_path = edge['target_path']
+    port = edge['port']
+    target_name = str(target_path)
+    # place it in the graph
+    # TODO -- not sure this is working, it might be remaking the node
+    if target_name not in graph.body:  # is the source node already in the graph?
+        label = make_label(target_path[-1])
+        graph.node(target_name, label=label, **state_node_spec)
+    # port label
+    label = ''
+    if port_labels:
+        label = make_label(port)
+    with graph.subgraph(name=process_name) as c:
+        c.edge(
+            target_name,
+            process_name,
+            constraint=constraint,
+            label=label,
+            labelloc="t",
+            fontsize=port_label_size)
 
 
 def get_graphviz_fig(
@@ -295,7 +150,6 @@ def get_graphviz_fig(
     node_groups = node_groups or []
     node_names = []
     invisible_edges = invisible_edges or []
-
     # node specs
     state_node_spec = {
         'shape': 'circle', 'penwidth': '2', 'margin': label_margin, 'fontsize': node_label_size}
@@ -307,18 +161,15 @@ def get_graphviz_fig(
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'forward'}
     output_edge_spec = {
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'back'}
-
     # initialize graph
     graph = graphviz.Digraph(name='bigraph', engine='dot')
     graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi)
-
     # state nodes
     graph.attr('node', **state_node_spec)
     for node in graph_dict['state_nodes']:
         node_path = node['path']
         node_name = str(node_path)
         node_names.append(node_name)
-
         # make the label
         label = node_path[-1]
         schema_label = None
@@ -336,7 +187,6 @@ def get_graphviz_fig(
             label += schema_label
         label = make_label(label)
         graph.node(str(node_name), label=label)
-
     # process nodes
     process_paths = []
     graph.attr('node', **process_node_spec)
@@ -347,29 +197,24 @@ def get_graphviz_fig(
         node_names.append(node_name)
         label = make_label(node_path[-1])
         graph.node(node_name, label=label)
-
     # place edges
     graph.attr('edge', arrowhead='none', penwidth='2')
     for edge in graph_dict['place_edges']:
-
         # show edge or not
         show_edge = True
         if remove_process_place_edges and edge['child'] in process_paths:
             show_edge = False
         elif edge in invisible_edges:
             show_edge = False
-
         if show_edge:
             graph.attr('edge', style='filled')
         else:
             graph.attr('edge', style='invis')
-
         parent_node = str(edge['parent'])
         child_node = str(edge['child'])
         graph.edge(parent_node, child_node,
                    dir='forward', constraint='true'
                    )
-
     # input edges
     for edge in graph_dict['input_edges']:
         if edge['type'] == 'bridge_inputs':
@@ -378,7 +223,6 @@ def get_graphviz_fig(
         else:
             graph.attr('edge', **input_edge_spec)
             plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
-
     # output edges
     for edge in graph_dict['output_edges']:
         if edge['type'] == 'bridge_outputs':
@@ -387,33 +231,26 @@ def get_graphviz_fig(
         else:
             graph.attr('edge', **output_edge_spec)
             plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
-
     # disconnected input edges
     for edge in graph_dict['disconnected_input_edges']:
         process_path = edge['edge_path']
         port = edge['port']
-
         # add invisible node for port
         node_name2 = str(absolute_path(process_path, port)) + '_input'
         graph.node(node_name2, label='', style='invis', width='0')
         edge['target_path'] = node_name2
-
         graph.attr('edge', **input_edge_spec)
         plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
-
     # disconnected output edges
     for edge in graph_dict['disconnected_output_edges']:
         process_path = edge['edge_path']
         port = edge['port']
-
         # add invisible node for port
         node_name2 = str(absolute_path(process_path, port)) + '_output'
         graph.node(node_name2, label='', style='invis', width='0')
         edge['target_path'] = node_name2
-
         graph.attr('edge', **output_edge_spec)
         plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
-
     # grouped nodes
     for group in node_groups:
         group_name = str(group)
@@ -430,7 +267,6 @@ def get_graphviz_fig(
                     previous_node = node_name
                 else:
                     print(f'node {node_name} not in graph')
-
     # formatting
     if node_border_colors:
         for node_name, color in node_border_colors.items():
@@ -438,7 +274,6 @@ def get_graphviz_fig(
     if node_fill_colors:
         for node_name, color in node_fill_colors.items():
             graph.node(str(node_name), color=color, style='filled')
-
     return graph
 
 
@@ -468,15 +303,16 @@ def plot_bigraph(
         invisible_edges=False,
         # mark_top=False,
         remove_process_place_edges=False,
-        show_process_schema_keys=[],  # ['interval']
+        show_process_schema_keys=None,  # ['interval']
 ):
     # get kwargs dict and remove plotting-specific kwargs
+    show_process_schema_keys = show_process_schema_keys or  []
     kwargs = locals()
     state = kwargs.pop('state')
     schema = kwargs.pop('schema')
     core = kwargs.pop('core')
     file_format = kwargs.pop('file_format')
-    out_dir = kwargs.pop('out_dir')
+    out_dir = kwargs.pop('out_dir', 'out')
     filename = kwargs.pop('filename')
     print_source = kwargs.pop('print_source')
     remove_nodes = kwargs.pop('remove_nodes')
@@ -484,42 +320,272 @@ def plot_bigraph(
     remaining_kwargs = dict(kwargs)
 
     # set defaults if none provided
-    core = core or generate_types()
+    core = core or VisualizeTypes()
     schema = schema or {}
-    schema, state = core.complete(schema, state)
+    schema, state = core.generate(schema, state)
 
-    # parse out the network
-    graph_dict = get_graph_dict(
-        schema=schema,
-        state=state,
-        core=core,
-        remove_nodes=remove_nodes,
-        show_process_schema_keys=show_process_schema_keys,
+    graph_dict = core.generate_graph_dict(
+        schema,
+        state,
+        (),
+        options={}   # TODO
     )
 
-    # make a figure
-    graph = get_graphviz_fig(graph_dict, **remaining_kwargs)
+    return core.plot_graph(
+        graph_dict,
+        filename=filename,
+        out_dir=out_dir,
+        options=remaining_kwargs)
 
-    # display or save results
-    if print_source:
-        print(graph.source)
-    if filename is not None:
-        out_dir = out_dir or 'out'
-        os.makedirs(out_dir, exist_ok=True)
-        fig_path = os.path.join(out_dir, filename)
-        print(f"Writing {fig_path}")
-        graph.render(filename=fig_path, format=file_format)
+
+# Visualize Types
+def graphviz_any(core, schema, state, path, options, graph):
+    if len(path) > 0:
+        node_spec = {
+            'name': path[-1],
+            'path': path,
+            'value': None,
+            'type': core.representation(schema)}
+
+        if not isinstance(state, dict):
+            node_spec['value'] = state
+
+        graph['state_nodes'].append(node_spec)
+
+    if len(path) > 1:
+        graph['place_edges'].append({
+            'parent': path[:-1],
+            'child': path})
+
+    if isinstance(state, dict):
+        for key, value in state.items():
+            if not is_schema_key(key):
+                subpath = path + (key,)                
+                graph = core.get_graph_dict(
+                    schema.get(key),
+                    value,
+                    subpath,
+                    options,
+                    graph)
+
     return graph
+        
+
+def graphviz_edge(core, schema, state, path, options, graph):
+
+    # add process node to graph
+    node_spec = {
+        'name': path[-1],
+        'path': path,
+        'value': None,
+        'type': core.representation(schema)}
+    graph['process_nodes'].append(node_spec)
+
+    # get the wires and ports
+    input_wires = state.get('inputs', {})
+    output_wires = state.get('outputs', {})
+    input_ports = state.get('_inputs', schema.get('_inputs', {}))
+    output_ports = state.get('_outputs', schema.get('_outputs', {}))
+
+    # bridge
+    bridge_wires = state.get('bridge', {})
+    bridge_inputs = bridge_wires.get('inputs', {})
+    bridge_outputs = bridge_wires.get('outputs', {})
+
+    # get the input wires
+    graph = get_graph_wires(
+        input_ports, input_wires, graph,
+        schema_key='inputs', edge_path=path,
+        bridge_wires=bridge_inputs)
+
+    # get the output wires
+    graph = get_graph_wires(
+        output_ports, output_wires, graph,
+        schema_key='outputs', edge_path=path,
+        bridge_wires=bridge_outputs)
+
+    # get the input and output bridge wires
+    if bridge_wires:
+        # check that the bridge wires connect to valid ports
+        assert set(bridge_wires.keys()).issubset({'inputs', 'outputs'})
+
+    # if composite, get the subgraph
+    if schema.get('_type') == 'composite':
+        for key, value in state.items():
+            if not is_schema_key(key) and key not in PROCESS_SCHEMA_KEYS:
+                subpath = path + (key,)
+                graph = core.get_graph_dict(
+                    schema.get(key),
+                    value,
+                    subpath,
+                    options,
+                    graph)
+
+    return graph
+
+
+# dict with different types and their graphviz functions
+visualize_types = {
+    'any': {
+        '_graphviz': graphviz_any
+    },
+    'edge': {
+        '_graphviz': graphviz_edge
+    },
+    'step': {
+        '_inherit': ['edge']
+    },
+    'process': {
+        '_inherit': ['edge']
+    },
+    'composite': {
+        '_inherit': ['process']
+    },
+}
+
+
+# TODO: we want to visualize things that are not yet complete
+
+class VisualizeTypes(TypeSystem):
+    def __init__(self):
+        super().__init__()
+
+        self.update_types(visualize_types)
+
+
+    def get_graph_dict(self, schema, state, path, options, graph=None):
+        path = path or ()
+        graph = graph or {
+            'state_nodes': [],
+            'process_nodes': [],
+            'place_edges': [],
+            'input_edges': [],
+            'output_edges': [],
+            'disconnected_input_edges': [],
+            'disconnected_output_edges': []}
+
+        graphviz_function = self.choose_method(
+            schema,
+            state,
+            'graphviz')
+
+        return graphviz_function(
+            self,
+            schema,
+            state,
+            path,
+            options,
+            graph)
+        
+
+    def generate_graph_dict(self, schema, state, path, options):
+        full_schema, full_state = self.generate(schema, state)
+        return self.get_graph_dict(full_schema, full_state, path, options)
+
+
+    def plot_graph(self,
+                   graph_dict,
+                   out_dir='out',
+                   filename=None,
+                   file_format='png',
+                   print_source=False,
+                   options=None
+                   ):
+        # make a figure
+        options = options or {}
+        graph = get_graphviz_fig(
+            graph_dict,
+            **options)
+
+        # display or save results
+        if print_source:
+            print(graph.source)
+
+        if filename is not None:
+            out_dir = out_dir or 'out'
+            os.makedirs(out_dir, exist_ok=True)
+            fig_path = os.path.join(out_dir, filename)
+            print(f"Writing {fig_path}")
+            graph.render(filename=fig_path, format=file_format)
+
+        return graph
+
 
 
 # Begin Tests
 ###############
 
-plot_settings = {'out_dir': 'out',
-                 'dpi': '150',}
+plot_settings = {
+    # 'out_dir': 'out',
+    'dpi': '150',
+}
+
+def test_simple_store():
+    simple_store_state = {
+        'store1': 1.0,
+    }
+    plot_bigraph(simple_store_state,
+                 **plot_settings,
+                 show_values=True,
+                 filename='simple_store')
+
+def test_forest():
+    forest = {
+        'v0': {
+            'v1': {},
+            'v2': {
+                'v3': {}
+            },
+        },
+        'v4': {
+            'v5': {},
+        },
+    }
+    plot_bigraph(forest, **plot_settings, filename='forest')
 
 
-def test_diagram_plot():
+def test_graphviz():
+    cell = {
+        'config': {
+            '_type': 'map[float]',
+            'a': 11.0,  #{'_type': 'float', '_value': 11.0},
+            'b': 3333.33},
+        'cell': {
+            '_type': 'process',  # TODO -- this should also accept process, step, but how in bigraph-schema?
+            # 'config': {},
+            # 'address': 'local:cell',   # TODO -- this is where the ports/inputs/outputs come from
+            'internal': 1.0,
+            '_inputs': {
+                'nutrients': 'float',
+            },
+            '_outputs': {
+                'secretions': 'float',
+                'biomass': 'float',
+            },
+            'inputs': {
+                'nutrients': ['down', 'nutrients_store'],
+            },
+            'outputs': {
+                # 'secretions': ['secretions_store'],
+                'biomass': ['biomass_store'],
+            }
+        }
+    }
+
+    core = VisualizeTypes()
+    graph_dict = core.generate_graph_dict(
+        {},
+        cell,
+        (),
+        options={'dpi': '150'})
+
+    core.plot_graph(
+        graph_dict,
+        out_dir='out',
+        filename='test_graphviz'
+    )
+
+def test_bigraph_cell():
     cell = {
         'config': {
             '_type': 'map[float]',
@@ -546,21 +612,16 @@ def test_diagram_plot():
             }
         }
     }
-    plot_bigraph(cell, filename='bigraph_cell',
+
+    plot_bigraph(cell,
+                 filename='bigraph_cell',
                  show_values=True,
-                 show_types=True,
+                 # show_types=True,
                  **plot_settings
-                 # port_labels=False,
-                 # rankdir='BT',
-                 # remove_nodes=[
-                 #     ('cell', 'address',),
-                 #     ('cell', 'config'),
-                 #     ('cell', 'interval'),
-                 # ]
                  )
 
 def test_bio_schema():
-    core = generate_types()
+    core = VisualizeTypes()
     b = {
         'environment': {
             'cells': {
@@ -598,7 +659,7 @@ def test_bio_schema():
             }
         }}
 
-    plot_bigraph(b, core=core, filename='bioschema', show_process_schema_keys=[],
+    plot_bigraph(b, core=core, filename='bio_schema', show_process_schema_keys=[],
                  **plot_settings)
 
 def test_flat_composite():
@@ -624,7 +685,8 @@ def test_flat_composite():
             }
         },
     }
-    plot_bigraph(flat_composite_spec, rankdir='RL',
+    plot_bigraph(flat_composite_spec,
+                 rankdir='RL',
                  filename='flat_composite',
                  **plot_settings)
 
@@ -644,7 +706,9 @@ def test_multi_processes():
         'process2': process_schema,
         'process3': process_schema,
     }
-    plot_bigraph(processes_spec, rankdir='BT', filename='multiple_processes',
+    plot_bigraph(processes_spec,
+                 rankdir='BT',
+                 filename='multiple_processes',
                  **plot_settings)
 
 def test_nested_processes():
@@ -678,31 +742,8 @@ def test_nested_processes():
                  **plot_settings,
                  filename='nested_processes')
 
-
-def test_multi_input_output():
-    process_schema = {
-        '_type': 'process',
-        '_inputs': {
-            'port1': 'Any',
-        },
-        '_outputs': {
-            'port2': 'Any'
-        },
-    }
-
-    processes_spec = {
-        'process1': process_schema,
-        'process2': process_schema,
-        'process3': process_schema,
-    }
-    plot_bigraph(
-        processes_spec, show_process_schema_keys=None,
-        rankdir='BT', filename='multiple_processes',
-        **plot_settings)
-
-
 def test_cell_hierarchy():
-    core = generate_types()
+    core = VisualizeTypes()
 
     core.register('concentrations', 'float')
     core.register('sequences', 'float')
@@ -759,12 +800,11 @@ def test_cell_hierarchy():
         schema={'cell': 'cell'},
         core=core,
         remove_process_place_edges=True,
-        filename='cell',
+        filename='cell_hierarchy',
         **plot_settings)
 
-
 def test_multiple_disconnected_ports():
-    core = generate_types()
+    core = VisualizeTypes()
 
     spec = {
         'process': {
@@ -788,7 +828,7 @@ def test_multiple_disconnected_ports():
         **plot_settings)
 
 def test_composite_process():
-    core = generate_types()
+    core = VisualizeTypes()
 
     spec = {
         'composite': {
@@ -838,7 +878,8 @@ def test_composite_process():
 
 
 if __name__ == '__main__':
-    test_diagram_plot()
+    test_graphviz()
+    test_bigraph_cell()
     test_bio_schema()
     test_flat_composite()
     test_multi_processes()
