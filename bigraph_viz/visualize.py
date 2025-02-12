@@ -2,6 +2,7 @@ import os
 
 from bigraph_schema import TypeSystem, is_schema_key
 from bigraph_viz.dict_utils import absolute_path
+from bigraph_viz.diagram import generate_types, get_graph_dict
 
 import graphviz
 

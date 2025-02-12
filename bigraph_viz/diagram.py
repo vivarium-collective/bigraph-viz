@@ -51,10 +51,10 @@ composite_type = {
 
 def generate_types():
     core = TypeSystem()
-    core.register('path', updated_path_type)
-    core.register('step', step_type)
-    core.register('process', process_type)
-    core.register('composite', composite_type)
+    core.register('path', updated_path_type, strict=False)
+    core.register('step', step_type, strict=False)
+    core.register('process', process_type, strict=False)
+    core.register('composite', composite_type, strict=False)
     return core
 
 
