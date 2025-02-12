@@ -91,6 +91,7 @@ def get_graph_wires(
 
     return graph_dict
 
+
 def plot_edges(
         graph,
         edge,
@@ -121,122 +122,6 @@ def plot_edges(
             label=label,
             labelloc="t",
             fontsize=port_label_size)
-
-def get_graph_dict(
-        schema,
-        state,
-        core,
-        graph_dict=None,
-        path=None,
-        retain_type_keys=False,
-        retain_process_keys=False,
-        remove_nodes=None,
-        show_process_schema_keys=None,
-):
-    path = path or ()
-    remove_nodes = remove_nodes or []
-    show_process_schema_keys = show_process_schema_keys or []
-    removed_process_keys = list(set(PROCESS_SCHEMA_KEYS) - set(show_process_schema_keys))
-
-    # initialize bigraph
-    graph_dict = graph_dict or {
-        'state_nodes': [],
-        'process_nodes': [],
-        'place_edges': [],
-        'input_edges': [],
-        'output_edges': [],
-        'disconnected_input_edges': [],
-        'disconnected_output_edges': [],
-    }
-
-    for key, value in state.items():
-        subschema = schema.get(key, {})
-
-        if key.startswith('_') and not retain_type_keys:
-            continue
-
-        subpath = path + (key,)
-        if check_if_path_in_removed_nodes(subpath, remove_nodes):
-            # skip node if path in removed_nodes
-            continue
-
-        node_spec = {
-            'name': key,
-            'path': subpath,
-            'value': None,
-            'type': None
-        }
-
-        is_edge = core.check('edge', value)
-        if is_edge:  # this is a process/edge node
-            if key in removed_process_keys and not retain_process_keys:
-                continue
-
-            graph_dict['process_nodes'].append(node_spec)
-
-            # this is an edge, get its inputs and outputs
-            input_wires = value.get('inputs', {})
-            output_wires = value.get('outputs', {})
-            input_schema = subschema.get('_inputs') or value.get('_inputs', {})
-            output_schema = subschema.get('_outputs') or value.get('_outputs', {})
-
-            # bridge
-            bridge_wires = value.pop('bridge', {})  # TODO -- does this pop alter the original data? that would be bad
-            bridge_inputs = bridge_wires.get('inputs', {})
-            bridge_outputs = bridge_wires.get('outputs', {})
-
-            # get the input and output wires
-            graph_dict = get_graph_wires(
-                input_schema, input_wires, graph_dict,
-                schema_key='inputs', edge_path=subpath, bridge_wires=bridge_inputs)
-            graph_dict = get_graph_wires(
-                output_schema, output_wires, graph_dict,
-                schema_key='outputs', edge_path=subpath, bridge_wires=bridge_outputs)
-
-            # get the input and output bridge wires
-            if bridge_wires:
-                # check that the bridge wires connect to valid ports
-                assert set(bridge_wires.keys()).issubset({'inputs', 'outputs'})
-
-        else:  # this is a state node
-            if key in REMOVE_KEYS:
-                continue
-            if not isinstance(value, dict):  # this is a leaf node
-                node_spec['value'] = value
-                node_spec['type'] = core.representation(schema) #schema.get(key, {}).get('_type')
-            else:
-                # node_spec['value'] = str(value)
-                node_spec['type'] = core.representation(schema) #schema.get(key, {}).get('_type')
-            graph_dict['state_nodes'].append(node_spec)
-
-        if isinstance(value, dict):  # get subgraph
-            if is_edge:
-                # remove process schema keys
-                removed_process_schema_keys = [subpath + (schema_key,) for schema_key in removed_process_keys]
-                remove_nodes.extend(removed_process_schema_keys)
-
-            graph_dict = get_graph_dict(
-                schema=schema.get(key, schema),
-                state=value,
-                core=core,
-                graph_dict=graph_dict,
-                path=subpath,
-                remove_nodes=remove_nodes
-            )
-
-            # get the place edge
-            for node in value.keys():
-                if node.startswith('_') and not retain_type_keys:
-                    continue
-
-                child_path = subpath + (node,)
-                if check_if_path_in_removed_nodes(child_path, remove_nodes):
-                    continue
-                graph_dict['place_edges'].append({
-                    'parent': subpath,
-                    'child': child_path})
-
-    return graph_dict
 
 
 def get_graphviz_fig(
@@ -386,6 +271,7 @@ def get_graphviz_fig(
             graph.node(str(node_name), color=color, style='filled')
     return graph
 
+
 def plot_bigraph(
         state,
         schema=None,
@@ -427,40 +313,27 @@ def plot_bigraph(
     remove_nodes = kwargs.pop('remove_nodes')
     show_process_schema_keys = kwargs.pop('show_process_schema_keys')
     remaining_kwargs = dict(kwargs)
+
     # set defaults if none provided
     core = core or VisualizeTypes()
     schema = schema or {}
     schema, state = core.generate(schema, state)
-    # parse out the network
-    graph_dict = get_graph_dict(
-        schema=schema,
-        state=state,
-        core=core,
-        remove_nodes=remove_nodes,
-        show_process_schema_keys=show_process_schema_keys,
+
+    graphviz = core.generate_graphviz(
+        schema,
+        state,
+        (),
+        options={}   # TODO
     )
-    # make a figure
-    graph = get_graphviz_fig(graph_dict, **remaining_kwargs)
-    # display or save results
-    if print_source:
-        print(graph.source)
-    if filename is not None:
-        out_dir = out_dir or 'out'
-        os.makedirs(out_dir, exist_ok=True)
-        fig_path = os.path.join(out_dir, filename)
-        print(f"Writing {fig_path}")
-        graph.render(filename=fig_path, format=file_format)
-    return graph
+
+    core.plot_graph(
+        graphviz,
+        filename=filename,
+        out_dir=out_dir,
+        options=remaining_kwargs)
 
 
-
-
-
-
-
-
-
-
+# Visualize Types
 def graphviz_any(core, schema, state, path, options, graph):
     if len(path) > 0:
         node_spec = {
@@ -528,6 +401,7 @@ def graphviz_edge(core, schema, state, path, options, graph):
     return graph
 
 
+# dict with different types and their graphviz functions
 visualize_types = {
     'any': {
         '_graphviz': graphviz_any},
