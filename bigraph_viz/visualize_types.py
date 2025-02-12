@@ -319,7 +319,7 @@ def plot_bigraph(
     schema = schema or {}
     schema, state = core.generate(schema, state)
 
-    graphviz = core.generate_graphviz(
+    graphviz = core.generate_graph_dict(
         schema,
         state,
         (),
@@ -346,6 +346,9 @@ def graphviz_any(core, schema, state, path, options, graph):
             node_spec['value'] = state
 
         graph['state_nodes'].append(node_spec)
+        graph['place_edges'].append({
+            'parent': path[:-1],
+            'child': path})
 
     if isinstance(state, dict):
         for key, value in state.items():
@@ -447,7 +450,7 @@ class VisualizeTypes(TypeSystem):
             graph)
         
 
-    def generate_graphviz(self, schema, state, path, options):
+    def generate_graph_dict(self, schema, state, path, options):
         full_schema, full_state = self.generate(schema, state)
         return self.get_graph_dict(full_schema, full_state, path, options)
 
@@ -513,14 +516,14 @@ def test_graphviz():
     }
 
     core = VisualizeTypes()
-    graphviz = core.generate_graphviz(
+    graph_dict = core.generate_graph_dict(
         {},
         cell,
         (),
         options={'dpi': '150'})
 
     core.plot_graph(
-        graphviz,
+        graph_dict,
         out_dir='out',
         filename='test_graphviz'
     )
