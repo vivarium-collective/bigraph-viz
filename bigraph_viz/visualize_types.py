@@ -312,7 +312,7 @@ def plot_bigraph(
     schema = kwargs.pop('schema')
     core = kwargs.pop('core')
     file_format = kwargs.pop('file_format')
-    out_dir = kwargs.pop('out_dir')
+    out_dir = kwargs.pop('out_dir', 'out')
     filename = kwargs.pop('filename')
     print_source = kwargs.pop('print_source')
     remove_nodes = kwargs.pop('remove_nodes')
@@ -331,7 +331,7 @@ def plot_bigraph(
         options={}   # TODO
     )
 
-    core.plot_graph(
+    return core.plot_graph(
         graph_dict,
         filename=filename,
         out_dir=out_dir,
@@ -502,18 +502,47 @@ class VisualizeTypes(TypeSystem):
             print(graph.source)
 
         if filename is not None:
+            out_dir = out_dir or 'out'
             os.makedirs(out_dir, exist_ok=True)
             fig_path = os.path.join(out_dir, filename)
             print(f"Writing {fig_path}")
             graph.render(filename=fig_path, format=file_format)
+
+        return graph
 
 
 
 # Begin Tests
 ###############
 
-plot_settings = {'out_dir': 'out',
-                 'dpi': '150',}
+plot_settings = {
+    # 'out_dir': 'out',
+    'dpi': '150',
+}
+
+def test_simple_store():
+    simple_store_state = {
+        'store1': 1.0,
+    }
+    plot_bigraph(simple_store_state,
+                 **plot_settings,
+                 show_values=True,
+                 filename='simple_store')
+
+def test_forest():
+    forest = {
+        'v0': {
+            'v1': {},
+            'v2': {
+                'v3': {}
+            },
+        },
+        'v4': {
+            'v5': {},
+        },
+    }
+    plot_bigraph(forest, **plot_settings, filename='forest')
+
 
 def test_graphviz():
     cell = {
