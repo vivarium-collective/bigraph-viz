@@ -1,11 +1,10 @@
 import os
+import inspect
 import graphviz
 
 from bigraph_schema import TypeSystem, is_schema_key
 from bigraph_viz.dict_utils import absolute_path
 
-
-REMOVE_KEYS = ['global_time']
 
 PROCESS_SCHEMA_KEYS = [
     'config',
@@ -24,12 +23,6 @@ def make_label(label):
     # lines = [label[i:i+max_length] for i in range(0, len(label), max_length)]
     # label = '<br/>'.join(lines)
     return f'<{label}>'
-
-
-def check_if_path_in_removed_nodes(path, remove_nodes):
-    if remove_nodes:
-        return any(remove_path == path[:len(remove_path)] for remove_path in remove_nodes)
-    return False
 
 
 def get_graph_wires(
@@ -141,7 +134,7 @@ def add_node_to_graph(graph, node, state_node_spec, show_values, show_types, sig
     if show_values:
         if node.get('value'):
             v = node['value']
-            if isinstance(v, (int, float)):
+            if isinstance(v, float):
                 v = round(v, significant_digits)
                 if v.is_integer():
                     v = int(v)
@@ -317,41 +310,20 @@ def plot_bigraph(
         core=None,
         out_dir=None,
         filename=None,
-        file_format='png',
-        size='16,10',
-        node_label_size='12pt',
-        show_values=False,
-        show_types=False,
-        port_labels=True,
-        port_label_size='10pt',
-        rankdir='TB',
-        print_source=False,
-        dpi='70',
-        label_margin='0.05',
-        # show_process_schema=False,
-        # collapse_processes=False,
-        node_border_colors=None,
-        node_fill_colors=None,
-        node_groups=False,
-        remove_nodes=None,
-        invisible_edges=False,
-        # mark_top=False,
-        remove_process_place_edges=False,
-        show_process_schema_keys=None,  # ['interval']
+        **kwargs
 ):
-    # get kwargs dict and remove plotting-specific kwargs
-    show_process_schema_keys = show_process_schema_keys or  []
-    kwargs = locals()
-    state = kwargs.pop('state')
-    schema = kwargs.pop('schema')
-    core = kwargs.pop('core')
-    file_format = kwargs.pop('file_format')
-    out_dir = kwargs.pop('out_dir', 'out')
-    filename = kwargs.pop('filename')
-    print_source = kwargs.pop('print_source')
-    remove_nodes = kwargs.pop('remove_nodes')
-    show_process_schema_keys = kwargs.pop('show_process_schema_keys')
-    remaining_kwargs = dict(kwargs)
+    # inspect the signature of plot_bigraph
+    get_graphviz_fig_signature = inspect.signature(get_graphviz_fig)
+
+    # Filter kwargs to only include those accepted by get_graphviz_fig
+    get_graphviz_kwargs = {
+        k: v for k, v in kwargs.items()
+        if k in get_graphviz_fig_signature.parameters}
+
+    # get the remaining kwargs
+    viztype_kwargs = {
+        k: v for k, v in kwargs.items()
+        if k not in get_graphviz_kwargs}
 
     # set defaults if none provided
     core = core or VisualizeTypes()
@@ -362,14 +334,14 @@ def plot_bigraph(
         schema,
         state,
         (),
-        options={}   # TODO
+        options=viztype_kwargs   # TODO
     )
 
     return core.plot_graph(
         graph_dict,
         filename=filename,
         out_dir=out_dir,
-        options=remaining_kwargs)
+        options=get_graphviz_kwargs)
 
 
 # Visualize Types
@@ -449,6 +421,12 @@ def graphviz_edge(core, schema, state, path, options, graph):
         # check that the bridge wires connect to valid ports
         assert set(bridge_wires.keys()).issubset({'inputs', 'outputs'})
 
+    # add the process node path
+    if len(path) > 1:
+        graph['place_edges'].append({
+            'parent': path[:-1],
+            'child': path})
+
     return graph
 
 def graphviz_none(core, schema, state, path, options, graph):
@@ -465,6 +443,12 @@ def graphviz_composite(core, schema, state, path, options, graph):
         inner_state = state
         inner_schema = schema
     inner_schema, inner_state = core.generate(inner_schema, inner_state)
+
+    # add the process node path
+    if len(path) > 1:
+        graph['place_edges'].append({
+            'parent': path[:-1],
+            'child': path})
 
     # add the inner nodes and edges
     for key, value in inner_state.items():
@@ -528,6 +512,9 @@ class VisualizeTypes(TypeSystem):
             state,
             'graphviz')
 
+        if options.get('remove_nodes') and path in options['remove_nodes']:
+            return graph
+
         return graphviz_function(
             self,
             schema,
@@ -535,7 +522,6 @@ class VisualizeTypes(TypeSystem):
             path,
             options,
             graph)
-
 
 
     def generate_graph_dict(self, schema, state, path, options):
@@ -903,7 +889,6 @@ def test_cell_hierarchy():
         cell_struct_state,
         schema={'cell': 'cell'},
         core=core,
-        remove_process_place_edges=True,
         filename='cell_hierarchy',
         **plot_settings)
 
