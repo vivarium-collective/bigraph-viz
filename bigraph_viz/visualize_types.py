@@ -19,7 +19,10 @@ PROCESS_SCHEMA_KEYS = [
 
 
 def make_label(label):
-    # label = label.replace(' ', '<br/>')  # replace spaces with new lines
+    # Insert line breaks after every max_length characters
+    # max_length = 25
+    # lines = [label[i:i+max_length] for i in range(0, len(label), max_length)]
+    # label = '<br/>'.join(lines)
     return f'<{label}>'
 
 
@@ -129,6 +132,39 @@ def plot_edges(
             fontsize=port_label_size)
 
 
+def add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits):
+    node_path = node['path']
+    node_name = str(node_path)
+    # make the label
+    label = node_path[-1]
+    schema_label = None
+    if show_values:
+        if node.get('value'):
+            v = node['value']
+            if isinstance(v, (int, float)):
+                v = round(v, significant_digits)
+                if v.is_integer():
+                    v = int(v)
+            if not schema_label:
+                schema_label = ''
+            schema_label += f":{v}"
+    if show_types:
+        if node.get('type'):
+            if not schema_label:
+                schema_label = '<br/>'
+            ntype = node['type']
+            if len(ntype) > 20:  # don't show the full type if it's too long
+                ntype = '...'
+            schema_label += f"[{ntype}]"
+    if schema_label:
+        label += schema_label
+    label = make_label(label)
+
+    graph.attr('node', **state_node_spec)
+    graph.node(str(node_name), label=label)
+    return node_name
+
+
 def get_graphviz_fig(
         graph_dict,
         label_margin='0.05',
@@ -136,6 +172,7 @@ def get_graphviz_fig(
         size='16,10',
         rankdir='TB',
         dpi='70',
+        significant_digits=2,
         show_values=False,
         show_types=False,
         port_labels=True,
@@ -169,25 +206,8 @@ def get_graphviz_fig(
     graph.attr('node', **state_node_spec)
     for node in graph_dict['state_nodes']:
         node_path = node['path']
-        node_name = str(node_path)
+        node_name = add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits)
         node_names.append(node_name)
-        # make the label
-        label = node_path[-1]
-        schema_label = None
-        if show_values:
-            if node.get('value'):
-                if not schema_label:
-                    schema_label = ''
-                schema_label += f": {node['value']}"
-        if show_types:
-            if node.get('type'):
-                if not schema_label:
-                    schema_label = '<br/>'
-                schema_label += f"[{node['type']}]"
-        if schema_label:
-            label += schema_label
-        label = make_label(label)
-        graph.node(str(node_name), label=label)
 
     # process nodes
     process_paths = []
@@ -236,6 +256,14 @@ def get_graphviz_fig(
             graph.attr('edge', **output_edge_spec)
             plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
 
+    # state nodes again
+    # TODO -- this is a hack to make sure the state nodes show up as circles
+    graph.attr('node', **state_node_spec)
+    for node in graph_dict['state_nodes']:
+        node_path = node['path']
+        node_name = add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits)
+        node_names.append(node_name)
+
     # disconnected input edges
     for edge in graph_dict['disconnected_input_edges']:
         process_path = edge['edge_path']
@@ -256,6 +284,7 @@ def get_graphviz_fig(
         edge['target_path'] = node_name2
         graph.attr('edge', **output_edge_spec)
         plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
+
     # grouped nodes
     for group in node_groups:
         group_name = str(group)
