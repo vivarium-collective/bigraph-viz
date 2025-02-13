@@ -6,8 +6,6 @@ from bigraph_schema import TypeSystem, is_schema_key
 from bigraph_viz.dict_utils import absolute_path
 
 
-REMOVE_KEYS = ['global_time']
-
 PROCESS_SCHEMA_KEYS = [
     'config',
     'address',
@@ -25,12 +23,6 @@ def make_label(label):
     # lines = [label[i:i+max_length] for i in range(0, len(label), max_length)]
     # label = '<br/>'.join(lines)
     return f'<{label}>'
-
-
-def check_if_path_in_removed_nodes(path, remove_nodes):
-    if remove_nodes:
-        return any(remove_path == path[:len(remove_path)] for remove_path in remove_nodes)
-    return False
 
 
 def get_graph_wires(
@@ -142,7 +134,7 @@ def add_node_to_graph(graph, node, state_node_spec, show_values, show_types, sig
     if show_values:
         if node.get('value'):
             v = node['value']
-            if isinstance(v, (int, float)):
+            if isinstance(v, float):
                 v = round(v, significant_digits)
                 if v.is_integer():
                     v = int(v)
@@ -429,6 +421,12 @@ def graphviz_edge(core, schema, state, path, options, graph):
         # check that the bridge wires connect to valid ports
         assert set(bridge_wires.keys()).issubset({'inputs', 'outputs'})
 
+    # add the process node path
+    if len(path) > 1:
+        graph['place_edges'].append({
+            'parent': path[:-1],
+            'child': path})
+
     return graph
 
 def graphviz_none(core, schema, state, path, options, graph):
@@ -445,6 +443,12 @@ def graphviz_composite(core, schema, state, path, options, graph):
         inner_state = state
         inner_schema = schema
     inner_schema, inner_state = core.generate(inner_schema, inner_state)
+
+    # add the process node path
+    if len(path) > 1:
+        graph['place_edges'].append({
+            'parent': path[:-1],
+            'child': path})
 
     # add the inner nodes and edges
     for key, value in inner_state.items():
@@ -508,6 +512,9 @@ class VisualizeTypes(TypeSystem):
             state,
             'graphviz')
 
+        if options.get('remove_nodes') and path in options['remove_nodes']:
+            return graph
+
         return graphviz_function(
             self,
             schema,
@@ -515,7 +522,6 @@ class VisualizeTypes(TypeSystem):
             path,
             options,
             graph)
-
 
 
     def generate_graph_dict(self, schema, state, path, options):
