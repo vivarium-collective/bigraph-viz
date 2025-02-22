@@ -14,7 +14,7 @@ with open("README.md", "r") as readme:
         description)
     long_description = re.sub(
         r']\(([\w/.-]+)\)',
-        r'](https://github.com/vivarium-collective/bigraph-viz/blob/main/\1)',
+        r'](https://github.com/vivarium-collective/bigraph-viz/blob /main/\1)',
         description2)
 
 setup(

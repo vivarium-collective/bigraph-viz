@@ -162,10 +162,13 @@ def get_graphviz_fig(
         graph_dict,
         label_margin='0.05',
         node_label_size='12pt',
+        process_label_size=None,
         size='16,10',
         rankdir='TB',
+        aspect_ratio='auto', # 'compress', 'expand', 'auto', 'fill'
         dpi='70',
         significant_digits=2,
+        undirected_edges=False,
         show_values=False,
         show_types=False,
         port_labels=True,
@@ -180,20 +183,27 @@ def get_graphviz_fig(
     node_groups = node_groups or []
     node_names = []
     invisible_edges = invisible_edges or []
+    process_label_size = process_label_size or node_label_size
 
     # node specs
     state_node_spec = {
         'shape': 'circle', 'penwidth': '2', 'margin': label_margin, 'fontsize': node_label_size}
     process_node_spec = {
-        'shape': 'box', 'penwidth': '2', 'constraint': 'false', 'margin': label_margin, 'fontsize': node_label_size}
+        'shape': 'box', 'penwidth': '2', 'constraint': 'false', 'margin': label_margin, 'fontsize': process_label_size}
     input_edge_spec = {
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'forward'}
     output_edge_spec = {
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'back'}
+    if undirected_edges:
+        input_edge_spec['dir'] = 'none'
+        output_edge_spec['dir'] = 'none'
 
     # initialize graph
     graph = graphviz.Digraph(name='bigraph', engine='dot')
-    graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi)
+    graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi,
+               ratio=aspect_ratio,  # "fill",
+               splines = 'true',
+               )
 
     # state nodes
     graph.attr('node', **state_node_spec)
@@ -280,6 +290,9 @@ def get_graphviz_fig(
 
     # grouped nodes
     for group in node_groups:
+        # convert lists to tuples
+        group = [tuple(item) for item in group]
+
         group_name = str(group)
         with graph.subgraph(name=group_name) as c:
             c.attr(rank='same')
@@ -310,6 +323,7 @@ def plot_bigraph(
         core=None,
         out_dir=None,
         filename=None,
+        file_format='png',
         **kwargs
 ):
     # inspect the signature of plot_bigraph
@@ -341,6 +355,7 @@ def plot_bigraph(
         graph_dict,
         filename=filename,
         out_dir=out_dir,
+        file_format=file_format,
         options=get_graphviz_kwargs)
 
 
