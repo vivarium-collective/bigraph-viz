@@ -187,7 +187,7 @@ def get_graphviz_fig(
 
     # node specs
     state_node_spec = {
-        'shape': 'circle', 'penwidth': '2', 'margin': label_margin, 'fontsize': node_label_size}
+        'shape': 'circle', 'penwidth': '2', 'constraint': 'false', 'margin': label_margin, 'fontsize': node_label_size}
     process_node_spec = {
         'shape': 'box', 'penwidth': '2', 'constraint': 'false', 'margin': label_margin, 'fontsize': process_label_size}
     input_edge_spec = {
@@ -351,6 +351,21 @@ def plot_bigraph(
         options=viztype_kwargs   # TODO
     )
 
+    # delete state nodes with path ('ecoli', 'EcoCyc'), ('ecoli', 'ecoli_model'), ('ecoli', 'predictions')
+    # TODO -- this is a hack to remove the ecoli nodes
+    for_removal = {('ecoli<br/>hybrid<br/>simulation', 'EcoCyc<br/>parameters'),
+                   ('ecoli<br/>hybrid<br/>simulation', 'model<br/>configuration<br/>file'),
+                   ('ecoli<br/>hybrid<br/>simulation', 'integrated<br/>predictions')}
+
+    # Use list comprehensions to filter the lists
+    graph_dict['state_nodes'] = [node for node in graph_dict['state_nodes'] if node['path'] not in for_removal]
+
+    # Filter place_edges separately
+    graph_dict['place_edges'] = [
+        edge for edge in graph_dict['place_edges']
+        if edge['parent'] not in for_removal and edge['child'] not in for_removal
+    ]
+
     return core.plot_graph(
         graph_dict,
         filename=filename,
@@ -475,6 +490,7 @@ def graphviz_composite(core, schema, state, path, options, graph):
                 subpath,
                 options,
                 graph)
+
     return graph
 
 
@@ -937,42 +953,20 @@ def test_composite_process():
     spec = {
         'composite': {
             '_type': 'composite',
-            '_inputs': {
-                'port1': 'any',
-            },
-            '_outputs': {
-                'port2': 'any',
-            },
-            'inputs': {
-                'port1': ['external store'],
-            },
+            '_inputs': {'port1': 'any'},
+            '_outputs': {'port2': 'any'},
+            'inputs': {'port1': ['external store']},
             'store1': 'any',
             'store2': 'any',
             'bridge': {
-                'inputs': {
-                    'port1': ['store1'],
-                },
-                'outputs': {
-                    'port2': ['store2'],
-                }
-            },
+                'inputs': {'port1': ['store1']},
+                'outputs': {'port2': ['store2']}},
             'process1': {
                 '_type': 'process',
-                '_inputs': {
-                    'port3': 'any',
-                },
-                '_outputs': {
-                    'port4': 'any',
-                },
-                'inputs': {
-                    'port3': ['store1'],
-                },
-                'outputs': {
-                    'port4': ['store2'],
-                }
-            },
-        },
-    }
+                '_inputs': {'port3': 'any'},
+                '_outputs': {'port4': 'any',},
+                'inputs': {'port3': ['store1']},
+                'outputs': {'port4': ['store2']}}}}
 
     plot_bigraph(
         spec,
