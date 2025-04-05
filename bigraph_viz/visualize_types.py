@@ -2,7 +2,7 @@ import os
 import inspect
 import graphviz
 
-from bigraph_schema import TypeSystem, is_schema_key
+from bigraph_schema import TypeSystem, is_schema_key, hierarchy_depth
 from bigraph_viz.dict_utils import absolute_path
 
 
@@ -57,21 +57,13 @@ def get_graph_wires(
                     'type': schema_key})
 
         elif isinstance(wire, (list, tuple, str)):
-            # the wire is defined, add it to edges
-            if isinstance(wire, str):
-                wire = [wire]
-            target_path = absolute_path(edge_path[:-1], tuple(wire))  # TODO -- make sure this resolves ".."
-            if schema_key == 'inputs':
-                edge_key = 'input_edges'
-            elif schema_key == 'outputs':
-                edge_key = 'output_edges'
-            else:
-                raise Exception(f'invalid schema key {schema_key}')
-            graph_dict[edge_key].append({
-                'edge_path': edge_path,
-                'target_path': target_path,
-                'port': port,
-                'type': schema_key})
+            graph_dict = get_single_wire(edge_path, graph_dict, port, schema_key, wire)
+        elif isinstance(wire, dict):
+            flat_wires = hierarchy_depth(wires)
+            for subpath, subwire in flat_wires.items():
+                subport = '/'.join(subpath)
+                graph_dict = get_single_wire(edge_path, graph_dict, subport, schema_key, subwire)
+
         else:
             raise ValueError(f"Unexpected wire type: {wires}")
 
@@ -90,6 +82,25 @@ def get_graph_wires(
                     'port': f'bridge_{port}',
                     'type': f'bridge_{schema_key}'})
 
+    return graph_dict
+
+
+def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
+    # the wire is defined, add it to edges
+    if isinstance(wire, str):
+        wire = [wire]
+    target_path = absolute_path(edge_path[:-1], tuple(wire))  # TODO -- make sure this resolves ".."
+    if schema_key == 'inputs':
+        edge_key = 'input_edges'
+    elif schema_key == 'outputs':
+        edge_key = 'output_edges'
+    else:
+        raise Exception(f'invalid schema key {schema_key}')
+    graph_dict[edge_key].append({
+        'edge_path': edge_path,
+        'target_path': target_path,
+        'port': port,
+        'type': schema_key})
     return graph_dict
 
 
