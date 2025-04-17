@@ -205,9 +205,13 @@ def get_graphviz_fig(
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'forward'}
     output_edge_spec = {
         'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'back'}
+    bidirectional_edge_spec = {
+        'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'both'}
+
     if undirected_edges:
         input_edge_spec['dir'] = 'none'
         output_edge_spec['dir'] = 'none'
+        bidirectional_edge_spec['dir'] = 'none'
 
     # initialize graph
     graph = graphviz.Digraph(name='bigraph', engine='dot')
@@ -269,6 +273,18 @@ def get_graphviz_fig(
         else:
             graph.attr('edge', **output_edge_spec)
             plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
+    # bidirectional edges
+    for edge in graph_dict['bidirectional_edges']:
+        if 'bridge_outputs' not in edge['type'] and 'bridge_inputs' not in edge['type']:
+            graph.attr('edge', **bidirectional_edge_spec)
+            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
+        else:
+            if 'bridge_outputs' in edge['type']:
+                graph.attr('edge', **input_edge_spec) # reverse arrow direction to go from store to composite
+                plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
+            if 'bridge_inputs' in edge['type']:
+                graph.attr('edge', **output_edge_spec) # reverse arrow direction to go from composite to store
+                plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
 
     # state nodes again
     # TODO -- this is a hack to make sure the state nodes show up as circles
@@ -362,21 +378,6 @@ def plot_bigraph(
         options=viztype_kwargs   # TODO
     )
 
-    # delete state nodes with path ('ecoli', 'EcoCyc'), ('ecoli', 'ecoli_model'), ('ecoli', 'predictions')
-    # TODO -- this is a hack to remove the ecoli nodes
-    for_removal = {('ecoli<br/>hybrid<br/>simulation', 'EcoCyc<br/>parameters'),
-                   ('ecoli<br/>hybrid<br/>simulation', 'model<br/>configuration<br/>file'),
-                   ('ecoli<br/>hybrid<br/>simulation', 'integrated<br/>predictions')}
-
-    # Use list comprehensions to filter the lists
-    graph_dict['state_nodes'] = [node for node in graph_dict['state_nodes'] if node['path'] not in for_removal]
-
-    # Filter place_edges separately
-    graph_dict['place_edges'] = [
-        edge for edge in graph_dict['place_edges']
-        if edge['parent'] not in for_removal and edge['child'] not in for_removal
-    ]
-
     return core.plot_graph(
         graph_dict,
         filename=filename,
@@ -456,6 +457,23 @@ def graphviz_edge(core, schema, state, path, options, graph):
         output_ports, output_wires, graph,
         schema_key='outputs', edge_path=path,
         bridge_wires=bridge_outputs)
+
+    # get bidirectional wires
+    for input_edge in graph['input_edges']:
+        for output_edge in graph['output_edges']:
+            if (input_edge['target_path'] == output_edge['target_path']) and \
+                    (input_edge['port'] == output_edge['port']) and \
+                    (input_edge['edge_path'] == output_edge['edge_path']):
+
+                graph['bidirectional_edges'].append({
+                    'edge_path': input_edge['edge_path'],
+                    'target_path': input_edge['target_path'],
+                    'port': input_edge['port'],
+                    'type': (input_edge['type'], output_edge['type']),
+                    # 'type': 'bidirectional'
+                })
+                graph['input_edges'].remove(input_edge)
+                graph['output_edges'].remove(output_edge)
 
     # get the input and output bridge wires
     if bridge_wires:
@@ -546,6 +564,7 @@ class VisualizeTypes(TypeSystem):
             'place_edges': [],
             'input_edges': [],
             'output_edges': [],
+            'bidirectional_edges': [],
             'disconnected_input_edges': [],
             'disconnected_output_edges': []}
 
@@ -985,6 +1004,31 @@ def test_composite_process():
         filename='composite_process',
         **plot_settings)
 
+def test_bidirectional_edges():
+    core = VisualizeTypes()
+
+    spec = {
+        'process1': {
+            '_type': 'process',
+            '_inputs': {'port1': 'any'},
+            '_outputs': {'port1': 'any'},
+            'inputs': {'port1': ['external store']},
+            'outputs': {'port1': ['external store']}},
+        'process2': {
+            '_type': 'process',
+            '_inputs': {'port3': 'any'},
+            '_outputs': {'port4': 'any'},
+            'inputs': {'port3': ['external store']},
+            'outputs': {'port4': ['external store']}
+        }
+    }
+
+    plot_bigraph(
+        spec,
+        core=core,
+        filename='bidirectional_edges',
+        **plot_settings)
+
 
 if __name__ == '__main__':
     test_simple_store()
@@ -999,3 +1043,4 @@ if __name__ == '__main__':
     test_cell_hierarchy()
     test_multiple_disconnected_ports()
     test_composite_process()
+    test_bidirectional_edges()
