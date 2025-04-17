@@ -1,6 +1,7 @@
 import os
 import inspect
 import graphviz
+import numpy as np
 
 from bigraph_schema import TypeSystem, is_schema_key, hierarchy_depth
 from bigraph_viz.dict_utils import absolute_path
@@ -1029,6 +1030,72 @@ def test_bidirectional_edges():
         filename='bidirectional_edges',
         **plot_settings)
 
+def test_array_paths():
+    core = VisualizeTypes()
+
+    spec = {
+        'dFBA[0,0]': {
+            '_type': 'process',
+            # 'address': 'local:DynamicFBA',
+            # 'config': {},
+            'inputs': {
+                'substrates': {
+                    'acetate': ['fields', 'acetate', 0, 0],
+                    'biomass': ['fields', 'biomass', 0, 0],
+                    'glucose': ['fields', 'glucose', 0, 0]}},
+            'outputs': {
+                'substrates': {
+                    'acetate': ['fields', 'acetate', 0, 0],
+                    'biomass': ['fields', 'biomass', 0, 0],
+                    'glucose': ['fields', 'glucose', 0, 0]}}},
+        'dFBA[1,0]': {
+            '_type': 'process',
+            # 'address': 'local:DynamicFBA',
+            # 'config': {},
+            'inputs': {
+                'substrates': {
+                    'acetate': ['fields', 'acetate', 1, 0],
+                    'biomass': ['fields', 'biomass', 1, 0],
+                    'glucose': ['fields', 'glucose', 1, 0]}},
+            'outputs': {
+                'substrates': {
+                    'acetate': ['fields', 'acetate', 1, 0],
+                    'biomass': ['fields', 'biomass', 1, 0],
+                    'glucose': ['fields', 'glucose', 1, 0]}}},
+        'fields': {
+            'acetate': np.array([[1.0], [2.0]]),
+            'biomass': np.array([[3.0],[4.0]]),
+            'glucose': np.array([[5.0],[6.0]])
+        }
+    }
+
+    schema = {
+        'fields': {
+            'acetate': {
+                '_type': 'array',
+                '_shape': (2, 1),
+                '_data': 'float'
+            },
+            'biomass': {
+                '_type': 'array',
+                '_shape': (2, 1),
+                '_data': 'float',
+            },
+            'glucose': {
+                '_type': 'array',
+                '_shape': (2, 1),
+                '_data': 'float',
+            }
+        }
+    }
+
+    plot_bigraph(
+        spec,
+        schema=schema,
+        core=core,
+        filename='array_paths',
+        **plot_settings)
+
 
 if __name__ == '__main__':
     test_simple_store()
@@ -1044,3 +1111,4 @@ if __name__ == '__main__':
     test_multiple_disconnected_ports()
     test_composite_process()
     test_bidirectional_edges()
+    test_array_paths()
