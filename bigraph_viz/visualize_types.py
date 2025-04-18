@@ -90,6 +90,11 @@ def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
     # the wire is defined, add it to edges
     if isinstance(wire, str):
         wire = [wire]
+    elif isinstance(wire, (list, tuple)):
+        # only use strings in the wire
+        # TODO -- make this more general so it only skips integers if they go into an array
+        wire = [item for item in wire if isinstance(item, str)]
+
     target_path = absolute_path(edge_path[:-1], tuple(wire))  # TODO -- make sure this resolves ".."
     if schema_key == 'inputs':
         edge_key = 'input_edges'
@@ -1036,32 +1041,58 @@ def test_array_paths():
     spec = {
         'dFBA[0,0]': {
             '_type': 'process',
-            # 'address': 'local:DynamicFBA',
+            'address': 'local:DynamicFBA',
             # 'config': {},
             'inputs': {
                 'substrates': {
-                    'acetate': ['fields', 'acetate', 0, 0],
-                    'biomass': ['fields', 'biomass', 0, 0],
-                    'glucose': ['fields', 'glucose', 0, 0]}},
+                    'acetate': ['fields', 'acetate',
+                                0, 0
+                                ],
+                    'biomass': ['fields', 'biomass',
+                                0, 0
+                                ],
+                    'glucose': ['fields', 'glucose',
+                                0, 0
+                                ]}},
             'outputs': {
                 'substrates': {
-                    'acetate': ['fields', 'acetate', 0, 0],
-                    'biomass': ['fields', 'biomass', 0, 0],
-                    'glucose': ['fields', 'glucose', 0, 0]}}},
+                    'acetate': ['fields', 'acetate',
+                                0, 0
+                                ],
+                    'biomass': ['fields', 'biomass',
+                                0, 0
+                                ],
+                    'glucose': ['fields', 'glucose',
+                                0, 0
+                                ]}},
+        },
         'dFBA[1,0]': {
             '_type': 'process',
-            # 'address': 'local:DynamicFBA',
+            'address': 'local:DynamicFBA',
             # 'config': {},
             'inputs': {
                 'substrates': {
-                    'acetate': ['fields', 'acetate', 1, 0],
-                    'biomass': ['fields', 'biomass', 1, 0],
-                    'glucose': ['fields', 'glucose', 1, 0]}},
+                    'acetate': ['fields', 'acetate',
+                                1, 0
+                                ],
+                    'biomass': ['fields', 'biomass',
+                                1, 0
+                                ],
+                    'glucose': ['fields', 'glucose',
+                                1, 0
+                                ]}},
             'outputs': {
                 'substrates': {
-                    'acetate': ['fields', 'acetate', 1, 0],
-                    'biomass': ['fields', 'biomass', 1, 0],
-                    'glucose': ['fields', 'glucose', 1, 0]}}},
+                    'acetate': ['fields', 'acetate',
+                                1, 0
+                                ],
+                    'biomass': ['fields', 'biomass',
+                                1, 0
+                                ],
+                    'glucose': ['fields', 'glucose',
+                                1, 0
+                                ]}},
+        },
         'fields': {
             'acetate': np.array([[1.0], [2.0]]),
             'biomass': np.array([[3.0],[4.0]]),
