@@ -465,6 +465,8 @@ def graphviz_edge(core, schema, state, path, options, graph):
         bridge_wires=bridge_outputs)
 
     # get bidirectional wires
+    input_edges_to_remove = []
+    output_edges_to_remove = []
     for input_edge in graph['input_edges']:
         for output_edge in graph['output_edges']:
             if (input_edge['target_path'] == output_edge['target_path']) and \
@@ -478,8 +480,16 @@ def graphviz_edge(core, schema, state, path, options, graph):
                     'type': (input_edge['type'], output_edge['type']),
                     # 'type': 'bidirectional'
                 })
-                graph['input_edges'].remove(input_edge)
-                graph['output_edges'].remove(output_edge)
+                input_edges_to_remove.append(input_edge)
+                output_edges_to_remove.append(output_edge)
+                break  # prevent matching the same input_edge with multiple output_edges
+
+    # Remove matched edges after iteration
+    for edge in input_edges_to_remove:
+        graph['input_edges'].remove(edge)
+
+    for edge in output_edges_to_remove:
+        graph['output_edges'].remove(edge)
 
     # get the input and output bridge wires
     if bridge_wires:
