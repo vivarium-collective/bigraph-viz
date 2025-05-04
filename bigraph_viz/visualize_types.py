@@ -38,6 +38,7 @@ def get_graph_wires(
     TODO -- support subwires with advanced wiring. This currently assumes each port has a simple wire.
     """
     wires = wires or {}
+    ports_schema = ports_schema or {}
     inferred_ports = set(list(ports_schema.keys()) + list(wires.keys()))
 
     for port in inferred_ports:
