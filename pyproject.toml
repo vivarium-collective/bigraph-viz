@@ -1,0 +1,18 @@
+[project]
+name = "bigraph-viz"
+version = "0.1.5"
+description = "a visualization method for displaying the structure of process bigraphs"
+readme = "README.md"
+requires-python = "==3.12.9"
+dependencies = [
+    "bigraph-schema",
+    "graphviz",
+]
+
+[tool.setuptools]
+packages = [
+    "bigraph_viz"
+]
+
+[tool.uv.sources]
+bigraph-schema = { path = "../bigraph-schema", editable = true }
