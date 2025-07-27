@@ -1,18 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "bigraph-viz"
-version = "0.1.5"
-description = "a visualization method for displaying the structure of process bigraphs"
+version = "0.1.6"
+description = "A visualization method for displaying the structure of process bigraphs"
 readme = "README.md"
 requires-python = "==3.12.9"
+license = { file = "LICENSE" }
+
+authors = [
+    { name = "Eran Agmon", email = "agmon.eran@gmail.com" }
+]
+maintainers = [
+    { name = "Eran Agmon", email = "agmon.eran@gmail.com" }
+]
+
+keywords = ["visualization", "systems biology", "bigraph", "graphviz", "vivarium"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Software Development :: Libraries"
+]
+
 dependencies = [
     "bigraph-schema",
-    "graphviz",
+    "graphviz"
 ]
 
 [tool.setuptools]
-packages = [
-    "bigraph_viz"
-]
+packages = ["bigraph_viz"]
 
 [tool.uv.sources]
 bigraph-schema = { path = "../bigraph-schema", editable = true }
