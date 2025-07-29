@@ -1,9 +1,11 @@
 import os
+import difflib
+import re
+from collections import defaultdict
 import inspect
 import graphviz
 import numpy as np
 
-from itertools import islice
 from bigraph_schema import TypeSystem, is_schema_key, hierarchy_depth
 from bigraph_viz.dict_utils import absolute_path
 
@@ -149,7 +151,6 @@ def add_node_to_graph(graph, node, state_node_spec, show_values, show_types, sig
     graph.node(node_name, label=full_label)
     return node_name
 
-
 # make the Graphviz figure
 def get_graphviz_fig(
     graph_dict,
@@ -171,10 +172,25 @@ def get_graphviz_fig(
     node_border_colors=None,
     node_fill_colors=None,
     node_groups=None,
+    collapse_redundant_processes=False,
 ):
     """
     Generate a Graphviz Digraph from a graph_dict describing a simulation architecture.
+
+    Parameters:
+        graph_dict: dict
+            Dictionary describing nodes and edges of a simulation bigraph.
+        collapse_redundant_processes: bool
+            Collapse processes with identical port wiring into a single node.
+        All other parameters configure visual style.
+
+    Returns:
+        graphviz.Digraph
+            Graphviz representation of the graph.
     """
+    import difflib
+    from collections import defaultdict
+
     invisible_edges = invisible_edges or []
     node_groups = node_groups or []
     process_label_size = process_label_size or node_label_size
@@ -182,7 +198,7 @@ def get_graphviz_fig(
     graph = graphviz.Digraph(name='bigraph', engine='dot')
     graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi, ratio=aspect_ratio, splines='true')
 
-    # === Style Specifications ===
+    # Define node styles
     state_node_spec = {
         'shape': 'circle', 'penwidth': '2', 'constraint': 'false',
         'margin': label_margin, 'fontsize': node_label_size
@@ -191,100 +207,150 @@ def get_graphviz_fig(
         'shape': 'box', 'penwidth': '2', 'constraint': 'false',
         'margin': label_margin, 'fontsize': process_label_size
     }
+
+    # Define edge styles
     edge_styles = {
         'input': {'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'forward'},
         'output': {'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'back'},
         'bidirectional': {'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'both'},
         'place': {'arrowhead': 'none', 'penwidth': '2'}
     }
-
     if undirected_edges:
         for spec in edge_styles.values():
             spec['dir'] = 'none'
 
     node_names = []
 
-    # === Add State Nodes ===
-    graph.attr('node', **state_node_spec)
-    for node in graph_dict['state_nodes']:
-        name = add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits)
-        node_names.append(name)
+    def get_name_template(names):
+        """Create a generalized name with wildcards for collapsed process names."""
+        if len(names) == 1:
+            return names[0]
 
-    # === Add Process Nodes ===
-    graph.attr('node', **process_node_spec)
-    process_paths = []
-    for node in graph_dict['process_nodes']:
-        node_path = node['path']
-        name = str(node_path)
-        label = make_label(node_path[-1])
-        graph.node(name, label=label)
-        process_paths.append(node_path)
-        node_names.append(name)
+        import re
+        prefix = os.path.commonprefix(names)
+        suffix = os.path.commonprefix([n[::-1] for n in names])[::-1]
 
-    # === Add Place Edges ===
-    for edge in graph_dict['place_edges']:
-        show_edge = not (
-            (remove_process_place_edges and edge['child'] in process_paths) or
-            (edge in invisible_edges)
-        )
-        style = 'filled' if show_edge else 'invis'
-        graph.attr('edge', style=style)
-        graph.edge(str(edge['parent']), str(edge['child']), **edge_styles['place'], constraint='true')
+        wildcard_middle = '*' if prefix != names[0] or suffix != names[0] else ''
+        return f"{prefix}{wildcard_middle}{suffix}"
 
-    # === Add Input/Output/Bidirectional Edges ===
-    for edge_group, style_key in [('input_edges', 'input'), ('output_edges', 'output'), ('bidirectional_edges', 'bidirectional')]:
-        for edge in graph_dict[edge_group]:
-            if 'bridge_outputs' in edge['type']:
-                style = 'input'
-                constraint = 'false'
-            elif 'bridge_inputs' in edge['type']:
-                style = 'output'
-                constraint = 'false'
-            else:
-                style = style_key
-                constraint = 'true'
-            graph.attr('edge', **edge_styles[style])
-            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint=constraint)
+    def add_state_nodes():
+        graph.attr('node', **state_node_spec)
+        for node in graph_dict['state_nodes']:
+            name = add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits)
+            node_names.append(name)
 
-    # === Re-Apply State Node Style (Hack for correct shape) ===
-    graph.attr('node', **state_node_spec)
-    for node in graph_dict['state_nodes']:
-        name = add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits)
-        node_names.append(name)
+    def add_process_nodes():
+        graph.attr('node', **process_node_spec)
+        process_paths = []
+        process_fingerprints = defaultdict(list)
 
-    # === Disconnected Port Edges ===
-    for direction, style_key in [('disconnected_input_edges', 'input'), ('disconnected_output_edges', 'output')]:
-        for edge in graph_dict[direction]:
-            process_path = edge['edge_path']
-            port = edge['port']
-            suffix = '_input' if 'input' in direction else '_output'
-            dummy_name = str(absolute_path(process_path, port)) + suffix
-            graph.node(dummy_name, label='', style='invis', width='0')
-            edge['target_path'] = dummy_name
-            graph.attr('edge', **edge_styles[style_key])
-            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
+        for node in graph_dict['process_nodes']:
+            node_path = node['path']
+            name = str(node_path)
 
-    # === Grouped Nodes ===
-    for group in node_groups:
-        group = [tuple(g) for g in group]
-        with graph.subgraph(name=str(group)) as sg:
-            sg.attr(rank='same')
-            prev = None
-            for path in group:
-                name = str(path)
-                if name in node_names:
-                    sg.node(name)
-                    if prev:
-                        sg.edge(prev, name, style='invis', ordering='out')
-                    prev = name
+            # Generate fingerprint from port wiring
+            fingerprint = []
+            for group, tag in [('input_edges', 'in'), ('output_edges', 'out'), ('bidirectional_edges', 'both')]:
+                for edge in graph_dict.get(group, []):
+                    if edge['edge_path'] == node_path:
+                        fingerprint.append((tag, edge['port'], str(edge.get('target_path'))))
+            fingerprint = tuple(sorted(fingerprint))
+            process_fingerprints[fingerprint].append((node_path, name))
 
-    # === Apply Node Colors ===
-    if node_border_colors:
-        for name, color in node_border_colors.items():
-            graph.node(str(name), color=color)
-    if node_fill_colors:
-        for name, color in node_fill_colors.items():
-            graph.node(str(name), color=color, style='filled')
+        collapse_map = {}
+        label_map = {}
+
+        for fingerprint, entries in process_fingerprints.items():
+            representative = entries[0][1]
+            all_labels = [entry[0][-1] for entry in entries]
+            template = get_name_template(all_labels)
+            count = len(entries)
+            label = f"{template} (x{count})"
+            graph.node(representative, label=label)
+            node_names.append(representative)
+            for path, name in entries:
+                if name != representative:
+                    collapse_map[name] = representative
+
+        return [entry[0] for entries in process_fingerprints.values() for entry in entries], collapse_map
+
+    def rewrite_collapsed_edges(collapse_map):
+        removed_keys = set(collapse_map.keys())
+        for group in ['input_edges', 'output_edges', 'bidirectional_edges', 'disconnected_input_edges', 'disconnected_output_edges']:
+            edges = graph_dict.get(group, [])
+            new_edges = []
+            for edge in edges:
+                key = str(edge['edge_path'])
+                if key in collapse_map:
+                    edge['edge_path'] = tuple(eval(collapse_map[key]))
+                    if edge not in new_edges:
+                        new_edges.append(edge)
+                elif key not in removed_keys:
+                    new_edges.append(edge)
+            graph_dict[group] = new_edges
+
+    def add_edges(edge_groups):
+        for group, style_key in edge_groups:
+            for edge in graph_dict.get(group, []):
+                if 'bridge_outputs' in edge['type']:
+                    style, constraint = 'input', 'false'
+                elif 'bridge_inputs' in edge['type']:
+                    style, constraint = 'output', 'false'
+                else:
+                    style, constraint = style_key, 'true'
+                graph.attr('edge', **edge_styles[style])
+                plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint=constraint)
+
+    def add_place_edges(process_paths):
+        for edge in graph_dict['place_edges']:
+            visible = not ((remove_process_place_edges and edge['child'] in process_paths) or (edge in invisible_edges))
+            graph.attr('edge', style='filled' if visible else 'invis')
+            graph.edge(str(edge['parent']), str(edge['child']), **edge_styles['place'], constraint='true')
+
+    def add_disconnected_edges():
+        for direction, style_key in [('disconnected_input_edges', 'input'), ('disconnected_output_edges', 'output')]:
+            for edge in graph_dict[direction]:
+                path = edge['edge_path']
+                port = edge['port']
+                suffix = '_input' if 'input' in direction else '_output'
+                dummy = str(absolute_path(path, port)) + suffix
+                graph.node(dummy, label='', style='invis', width='0')
+                edge['target_path'] = dummy
+                graph.attr('edge', **edge_styles[style_key])
+                plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
+
+    def rank_node_groups():
+        for group in node_groups:
+            group = [tuple(g) for g in group]
+            with graph.subgraph(name=str(group)) as sg:
+                sg.attr(rank='same')
+                prev = None
+                for path in group:
+                    name = str(path)
+                    if name in node_names:
+                        sg.node(name)
+                        if prev:
+                            sg.edge(prev, name, style='invis', ordering='out')
+                        prev = name
+
+    def apply_custom_colors():
+        if node_border_colors:
+            for name, color in node_border_colors.items():
+                graph.node(str(name), color=color)
+        if node_fill_colors:
+            for name, color in node_fill_colors.items():
+                graph.node(str(name), color=color, style='filled')
+
+    add_state_nodes()
+    process_paths, collapse_map = add_process_nodes()
+    if collapse_redundant_processes:
+        rewrite_collapsed_edges(collapse_map)
+    add_place_edges(process_paths)
+    add_edges([('input_edges', 'input'), ('output_edges', 'output'), ('bidirectional_edges', 'bidirectional')])
+    add_state_nodes()
+    add_disconnected_edges()
+    rank_node_groups()
+    apply_custom_colors()
 
     return graph
 
@@ -1009,15 +1075,17 @@ def test_array_paths():
 def test_complex_bigraph():
     core = VisualizeTypes()
 
-    n_rows, n_cols = 10, 10 # or any desired shape
+    n_rows, n_cols = 6, 6 # or any desired shape
     spec, schema = generate_spec_and_schema(n_rows, n_cols)
 
+    plot_settings['dpi'] = '500'
     plot_bigraph(
         spec,
         schema=schema,
         core=core,
         filename='complex_bigraph',
-        max_nodes_per_row=10,
+        collapse_redundant_processes=True,
+        # dpi='200',
         **plot_settings)
 
 
