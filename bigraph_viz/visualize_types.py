@@ -1,69 +1,38 @@
 import os
 import inspect
 import graphviz
-from itertools import islice
 import numpy as np
 
+from itertools import islice
 from bigraph_schema import TypeSystem, is_schema_key, hierarchy_depth
 from bigraph_viz.dict_utils import absolute_path
 
+# Constants
 PROCESS_SCHEMA_KEYS = [
-    'config',
-    'address',
-    'interval',
-    'inputs',
-    'outputs',
-    'instance',
-    'bridge',
-]
+    'config', 'address', 'interval', 'inputs', 'outputs', 'instance', 'bridge']
 
-
+# Utility: Chunk iterable
 def chunked(iterable, size):
-    """Yield successive chunks from iterable."""
     it = iter(iterable)
     return iter(lambda: tuple(islice(it, size)), ())
 
-
+# Utility: Label formatting
 def make_label(label):
-    # Insert line breaks after every max_length characters
-    # max_length = 25
-    # lines = [label[i:i+max_length] for i in range(0, len(label), max_length)]
-    # label = '<br/>'.join(lines)
     return f'<{label}>'
 
-
-def get_graph_wires(
-        ports_schema,  # the ports schema
-        wires,  # the wires, from port to path
-        graph_dict,  # the current graph dict that is being built
-        schema_key,  # inputs or outputs
-        edge_path,  # the path up to this process
-        bridge_wires=None,
-):
-    """
-    TODO -- support subwires with advanced wiring. This currently assumes each port has a simple wire.
-    """
+# Adds port wire edges to graph dict
+def get_graph_wires(ports_schema, wires, graph_dict, schema_key, edge_path, bridge_wires=None):
     wires = wires or {}
     ports_schema = ports_schema or {}
-    inferred_ports = set(list(ports_schema.keys()) + list(wires.keys()))
+    inferred_ports = set(ports_schema.keys()) | set(wires.keys())
 
     for port in inferred_ports:
         wire = wires.get(port)
         bridge = bridge_wires.get(port) if bridge_wires else None
 
         if not wire:
-            # there is no wire for this port, it is disconnected
-            if schema_key == 'inputs':
-                graph_dict['disconnected_input_edges'].append({
-                    'edge_path': edge_path,
-                    'port': port,
-                    'type': schema_key})
-            elif schema_key == 'outputs':
-                graph_dict['disconnected_output_edges'].append({
-                    'edge_path': edge_path,
-                    'port': port,
-                    'type': schema_key})
-
+            key = 'disconnected_input_edges' if schema_key == 'inputs' else 'disconnected_output_edges'
+            graph_dict[key].append({'edge_path': edge_path, 'port': port, 'type': schema_key})
         elif isinstance(wire, (list, tuple, str)):
             graph_dict = get_single_wire(edge_path, graph_dict, port, schema_key, wire)
         elif isinstance(wire, dict):
@@ -71,117 +40,72 @@ def get_graph_wires(
             for subpath, subwire in flat_wires.items():
                 subport = '/'.join(subpath)
                 graph_dict = get_single_wire(edge_path, graph_dict, subport, schema_key, subwire)
-
         else:
             raise ValueError(f"Unexpected wire type: {wires}")
 
         if bridge:
             target_path = absolute_path(edge_path, tuple(bridge))
-            if schema_key == 'inputs':
-                graph_dict['input_edges'].append({
-                    'edge_path': edge_path,
-                    'target_path': target_path,
-                    'port': f'bridge_{port}',
-                    'type': f'bridge_{schema_key}'})
-            elif schema_key == 'outputs':
-                graph_dict['output_edges'].append({
-                    'edge_path': edge_path,
-                    'target_path': target_path,
-                    'port': f'bridge_{port}',
-                    'type': f'bridge_{schema_key}'})
+            edge_type = f'bridge_{schema_key}'
+            edge_key = 'input_edges' if schema_key == 'inputs' else 'output_edges'
+            graph_dict[edge_key].append({
+                'edge_path': edge_path, 'target_path': target_path,
+                'port': f'bridge_{port}', 'type': edge_type})
 
     return graph_dict
 
-
+# Append a single port edge
 def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
-    # the wire is defined, add it to edges
     if isinstance(wire, str):
         wire = [wire]
-    elif isinstance(wire, (list, tuple)):
-        # only use strings in the wire
-        # TODO -- make this more general so it only skips integers if they go into an array
+    else:
         wire = [item for item in wire if isinstance(item, str)]
 
-    target_path = absolute_path(edge_path[:-1], tuple(wire))  # TODO -- make sure this resolves ".."
-    if schema_key == 'inputs':
-        edge_key = 'input_edges'
-    elif schema_key == 'outputs':
-        edge_key = 'output_edges'
-    else:
-        raise Exception(f'invalid schema key {schema_key}')
+    target_path = absolute_path(edge_path[:-1], tuple(wire))
+    edge_key = 'input_edges' if schema_key == 'inputs' else 'output_edges'
     graph_dict[edge_key].append({
         'edge_path': edge_path,
         'target_path': target_path,
         'port': port,
-        'type': schema_key})
+        'type': schema_key
+    })
     return graph_dict
 
+# Plot a labeled edge from a port to a process
+def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false'):
+    process_name = str(edge['edge_path'])
+    target_name = str(edge['target_path'])
+    label = make_label(edge['port']) if port_labels else ''
 
-def plot_edges(
-        graph,
-        edge,
-        port_labels,
-        port_label_size,
-        state_node_spec,
-        constraint='false',
-):
-    process_path = edge['edge_path']
-    process_name = str(process_path)
-    target_path = edge['target_path']
-    port = edge['port']
-    target_name = str(target_path)
+    if target_name not in graph.body:
+        label_text = make_label(edge['target_path'][-1])
+        graph.node(target_name, label=label_text, **state_node_spec)
 
-    # place it in the graph
-    if target_name not in graph.body:  # is the source node already in the graph?
-        label = make_label(target_path[-1])
-        graph.node(target_name, label=label, **state_node_spec)
-    # port label
-    label = ''
-    if port_labels:
-        label = make_label(port)
-    with graph.subgraph(name=process_name) as c:
-        c.edge(
-            target_name,
-            process_name,
-            constraint=constraint,
-            label=label,
-            labelloc="t",
-            fontsize=port_label_size)
+    with graph.subgraph(name=process_name) as sub:
+        sub.edge(target_name, process_name, constraint=constraint, label=label,
+                 labelloc="t", fontsize=port_label_size)
 
-
+# Add a node to the graph with optional value/type
 def add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits):
     node_path = node['path']
     node_name = str(node_path)
-    # make the label
     label = node_path[-1]
-    schema_label = None
-    if show_values:
-        if node.get('value'):
-            v = node['value']
-            if isinstance(v, float):
-                v = round(v, significant_digits)
-                if v.is_integer():
-                    v = int(v)
-            if not schema_label:
-                schema_label = ''
-            schema_label += f":{v}"
-    if show_types:
-        if node.get('type'):
-            if not schema_label:
-                schema_label = '<br/>'
-            ntype = node['type']
-            if len(ntype) > 20:  # don't show the full type if it's too long
-                ntype = '...'
-            schema_label += f"[{ntype}]"
-    if schema_label:
-        label += schema_label
-    label = make_label(label)
+    label_info = ''
 
+    if show_values and (val := node.get('value')) is not None:
+        val = round(val, significant_digits) if isinstance(val, float) else val
+        val = int(val) if isinstance(val, float) and val.is_integer() else val
+        label_info += f":{val}"
+
+    if show_types and (typ := node.get('type')):
+        type_str = typ if len(typ) <= 20 else '...'
+        label_info += f"<br/>[{type_str}]"
+
+    label = make_label(label + label_info) if label_info else make_label(label)
     graph.attr('node', **state_node_spec)
-    graph.node(str(node_name), label=label)
+    graph.node(node_name, label=label)
     return node_name
 
-
+# make the Graphviz figure
 def get_graphviz_fig(
     graph_dict,
     label_margin='0.05',
