@@ -489,6 +489,23 @@ def graphviz_none(core, schema, state, path, options, graph):
     return graph
 
 
+def graphviz_map(core, schema, state, path, options, graph):
+    """"""
+    value_type = core._find_parameter(schema, 'value')
+
+    if isinstance(state, dict):
+        for key, value in state.items():
+            if not is_schema_key(key):
+                graph = core.get_graph_dict(
+                    value_type,
+                    value,
+                    path + (key,),
+                    options,
+                    graph
+                )
+    return graph
+
+
 def graphviz_composite(core, schema, state, path, options, graph):
     """Visualize composite nodes by recursing into their internal structure."""
     graph = graphviz_edge(core, schema, state, path, options, graph)
@@ -523,6 +540,9 @@ visualize_types = {
     },
     'quote': {
         '_graphviz': graphviz_none,
+    },
+    'map':{
+        '_graphviz': graphviz_map,
     },
     'step': {
         '_inherit': ['edge']
@@ -1146,68 +1166,10 @@ def test_nested_particle_process():
                         "shared": {}
                     }
                 },
-                "oBf2OaKxQX2ksilOCXhCxg": {
-                    "id": "oBf2OaKxQX2ksilOCXhCxg",
-                    "position": ["0.6269250973797569", "5.311365209788002"],
-                    "size": "0.0",
-                    "mass": "0.30571717050270314",
-                    "local": {
-                        "glucose": "5.802540321285436",
-                        "acetate": "0.0"},
-                    "exchange": {
-                        "glucose": "0.0",
-                        "acetate": "0.0"},
-                    "dFBA": {
-                        "inputs": {
-                            "substrates": ["local"],
-                            "biomass": ["mass"]},
-                        "outputs": {
-                            "substrates": ["exchange"],
-                            "biomass": ["mass"]},
-                        "interval": 1.0,
-                        "address": "local:DynamicFBA",
-                        "config": {
-                            "model_file": "textbook",
-                            "kinetic_params": {
-                                "glucose": ["0.5","1.0"],
-                                "acetate": ["0.5","2.0"]},
-                            "substrate_update_reactions": {
-                                "glucose": "EX_glc__D_e",
-                                "acetate": "EX_ac_e"},
-                            "bounds": {
-                                "EX_o2_e": {
-                                    "lower": "-2.0",
-                                    "upper": "!nil"},
-                                "ATPM": {
-                                    "lower": "1.0",
-                                    "upper": "1.0"}}},
-                        "shared": {}
-                    }
-                }
             },
             "global_time": "0.0",
-            "diffusion": {
-                "inputs": {
-                    "fields": ["fields"]},
-                "outputs": {
-                    "fields": ["fields"]},
-                "interval": 1.0,
-                "address": "local:DiffusionAdvection",
-                "config": {
-                    "n_bins": ["5","10"],
-                    "bounds": ["5.0","10.0"],
-                    "default_diffusion_rate": "0.1",
-                    "default_diffusion_dt": "0.1",
-                    "diffusion_coeffs": {
-                        "glucose": "0.1",
-                        "acetate": "0.1"},
-                    "advection_coeffs": {
-                        "glucose": ["0.0","0.0"],
-                        "acetate": ["0.0","0.0"]}
-                },
-                "shared": None
-            },
             "particle_movement": {
+                '_type': 'process',
                 "inputs": {
                     "particles": ["particles"],
                     "fields": ["fields"]},
@@ -1216,15 +1178,7 @@ def test_nested_particle_process():
                     "fields": ["fields"]},
                 "interval": 1.0,
                 "address": "local:Particles",
-                "config": {
-                    "bounds": ["5.0","10.0"],
-                    "n_bins": ["5","10"],
-                    "diffusion_rate": "0.1",
-                    "advection_rate": ["0.0","-0.1"],
-                    "add_probability": "0.4",
-                    "boundary_to_add": ["top","left", "right"],
-                    "boundary_to_remove": ["top","left","right"]},
-                "shared": None
+                "config": {},
             },
             "fields": {
                 "glucose": {
