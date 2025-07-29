@@ -183,217 +183,140 @@ def add_node_to_graph(graph, node, state_node_spec, show_values, show_types, sig
 
 
 def get_graphviz_fig(
-        graph_dict,
-        label_margin='0.05',
-        node_label_size='12pt',
-        process_label_size=None,
-        size='16,10',
-        rankdir='TB',
-        aspect_ratio='auto',  # 'compress', 'expand', 'auto', 'fill'
-        dpi='70',
-        significant_digits=2,
-        undirected_edges=False,
-        show_values=False,
-        show_types=False,
-        port_labels=True,
-        port_label_size='10pt',
-        invisible_edges=False,
-        remove_process_place_edges=False,
-        node_border_colors=None,
-        node_fill_colors=None,
-        node_groups=False,
-        max_nodes_per_row=None,
+    graph_dict,
+    label_margin='0.05',
+    node_label_size='12pt',
+    process_label_size=None,
+    size='16,10',
+    rankdir='TB',
+    aspect_ratio='auto',
+    dpi='70',
+    significant_digits=2,
+    undirected_edges=False,
+    show_values=False,
+    show_types=False,
+    port_labels=True,
+    port_label_size='10pt',
+    invisible_edges=None,
+    remove_process_place_edges=False,
+    node_border_colors=None,
+    node_fill_colors=None,
+    node_groups=None,
 ):
-    """make a graphviz figure from a graph_dict"""
-    node_groups = node_groups or []
-    node_names = []
+    """
+    Generate a Graphviz Digraph from a graph_dict describing a simulation architecture.
+    """
     invisible_edges = invisible_edges or []
+    node_groups = node_groups or []
     process_label_size = process_label_size or node_label_size
 
-    # node specs
+    graph = graphviz.Digraph(name='bigraph', engine='dot')
+    graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi, ratio=aspect_ratio, splines='true')
+
+    # === Style Specifications ===
     state_node_spec = {
-        'shape': 'circle', 'penwidth': '2', 'constraint': 'false', 'margin': label_margin, 'fontsize': node_label_size}
+        'shape': 'circle', 'penwidth': '2', 'constraint': 'false',
+        'margin': label_margin, 'fontsize': node_label_size
+    }
     process_node_spec = {
-        'shape': 'box', 'penwidth': '2', 'constraint': 'false', 'margin': label_margin, 'fontsize': process_label_size}
-    input_edge_spec = {
-        'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'forward'}
-    output_edge_spec = {
-        'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'back'}
-    bidirectional_edge_spec = {
-        'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'both'}
+        'shape': 'box', 'penwidth': '2', 'constraint': 'false',
+        'margin': label_margin, 'fontsize': process_label_size
+    }
+    edge_styles = {
+        'input': {'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'forward'},
+        'output': {'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'back'},
+        'bidirectional': {'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'both'},
+        'place': {'arrowhead': 'none', 'penwidth': '2'}
+    }
 
     if undirected_edges:
-        input_edge_spec['dir'] = 'none'
-        output_edge_spec['dir'] = 'none'
-        bidirectional_edge_spec['dir'] = 'none'
+        for spec in edge_styles.values():
+            spec['dir'] = 'none'
 
-    # initialize graph
-    graph = graphviz.Digraph(name='bigraph', engine='dot')
-    graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi,
-               ratio=aspect_ratio,  # "fill",
-               splines='true',
-               )
+    node_names = []
 
-    # state nodes
-    graph.attr('node', **state_node_spec)
-    state_nodes = graph_dict['state_nodes']
-    if max_nodes_per_row:
-        previous_node = None
-        for i, chunk in enumerate(chunked(state_nodes, max_nodes_per_row)):
-            with graph.subgraph(name=f'state_row_{i}') as row:
-                row.attr(rank='same')
-                chunk_node_names = []
-                for node in chunk:
-                    node_name = add_node_to_graph(graph, node, state_node_spec, show_values, show_types,
-                                                  significant_digits)
-                    node_names.append(node_name)
-                    chunk_node_names.append(node_name)
-
-                # Add invisible edge to stack rows
-                if previous_node and chunk_node_names:
-                    graph.edge(previous_node, chunk_node_names[0], style='invis', weight='10')
-                if chunk_node_names:
-                    previous_node = chunk_node_names[-1]
-    else:
-        for node in state_nodes:
-            node_name = add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits)
-            node_names.append(node_name)
-
-    # process nodes
-    process_paths = []
-    graph.attr('node', **process_node_spec)
-    process_nodes = graph_dict['process_nodes']
-    if max_nodes_per_row:
-        previous_node = None
-        for i, chunk in enumerate(chunked(process_nodes, max_nodes_per_row)):
-            with graph.subgraph(name=f'process_row_{i}') as row:
-                row.attr(rank='same')
-                chunk_node_names = []
-                for node in chunk:
-                    node_path = node['path']
-                    process_paths.append(node_path)
-                    node_name = str(node_path)
-                    node_names.append(node_name)
-                    chunk_node_names.append(node_name)
-                    label = make_label(node_path[-1])
-                    row.node(node_name, label=label)
-
-                if previous_node and chunk_node_names:
-                    graph.edge(previous_node, chunk_node_names[0], style='invis', weight='10')
-                if chunk_node_names:
-                    previous_node = chunk_node_names[-1]
-    else:
-        for node in process_nodes:
-            node_path = node['path']
-            process_paths.append(node_path)
-            node_name = str(node_path)
-            node_names.append(node_name)
-            label = make_label(node_path[-1])
-            graph.node(node_name, label=label)
-
-    # place edges
-    graph.attr('edge', arrowhead='none', penwidth='2')
-    for edge in graph_dict['place_edges']:
-        # show edge or not
-        show_edge = True
-        if remove_process_place_edges and edge['child'] in process_paths:
-            show_edge = False
-        elif edge in invisible_edges:
-            show_edge = False
-        if show_edge:
-            graph.attr('edge', style='filled')
-        else:
-            graph.attr('edge', style='invis')
-        parent_node = str(edge['parent'])
-        child_node = str(edge['child'])
-        graph.edge(parent_node, child_node,
-                   dir='forward', constraint='true'
-                   )
-
-    # input edges
-    for edge in graph_dict['input_edges']:
-        if edge['type'] == 'bridge_inputs':
-            graph.attr('edge', **output_edge_spec)  # reverse arrow direction to go from composite to store
-            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
-        else:
-            graph.attr('edge', **input_edge_spec)
-            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
-    # output edges
-    for edge in graph_dict['output_edges']:
-        if edge['type'] == 'bridge_outputs':
-            graph.attr('edge', **input_edge_spec)  # reverse arrow direction to go from store to composite
-            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
-        else:
-            graph.attr('edge', **output_edge_spec)
-            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
-    # bidirectional edges
-    for edge in graph_dict['bidirectional_edges']:
-        if 'bridge_outputs' not in edge['type'] and 'bridge_inputs' not in edge['type']:
-            graph.attr('edge', **bidirectional_edge_spec)
-            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
-        else:
-            if 'bridge_outputs' in edge['type']:
-                graph.attr('edge', **input_edge_spec)  # reverse arrow direction to go from store to composite
-                plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
-            if 'bridge_inputs' in edge['type']:
-                graph.attr('edge', **output_edge_spec)  # reverse arrow direction to go from composite to store
-                plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false')
-
-    # state nodes again
-    # TODO -- this is a hack to make sure the state nodes show up as circles
+    # === Add State Nodes ===
     graph.attr('node', **state_node_spec)
     for node in graph_dict['state_nodes']:
+        name = add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits)
+        node_names.append(name)
+
+    # === Add Process Nodes ===
+    graph.attr('node', **process_node_spec)
+    process_paths = []
+    for node in graph_dict['process_nodes']:
         node_path = node['path']
-        node_name = add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits)
-        node_names.append(node_name)
+        name = str(node_path)
+        label = make_label(node_path[-1])
+        graph.node(name, label=label)
+        process_paths.append(node_path)
+        node_names.append(name)
 
-    # disconnected input edges
-    for edge in graph_dict['disconnected_input_edges']:
-        process_path = edge['edge_path']
-        port = edge['port']
-        # add invisible node for port
-        node_name2 = str(absolute_path(process_path, port)) + '_input'
-        graph.node(node_name2, label='', style='invis', width='0')
-        edge['target_path'] = node_name2
-        graph.attr('edge', **input_edge_spec)
-        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
-    # disconnected output edges
-    for edge in graph_dict['disconnected_output_edges']:
-        process_path = edge['edge_path']
-        port = edge['port']
-        # add invisible node for port
-        node_name2 = str(absolute_path(process_path, port)) + '_output'
-        graph.node(node_name2, label='', style='invis', width='0')
-        edge['target_path'] = node_name2
-        graph.attr('edge', **output_edge_spec)
-        plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
+    # === Add Place Edges ===
+    for edge in graph_dict['place_edges']:
+        show_edge = not (
+            (remove_process_place_edges and edge['child'] in process_paths) or
+            (edge in invisible_edges)
+        )
+        style = 'filled' if show_edge else 'invis'
+        graph.attr('edge', style=style)
+        graph.edge(str(edge['parent']), str(edge['child']), **edge_styles['place'], constraint='true')
 
-    # grouped nodes
+    # === Add Input/Output/Bidirectional Edges ===
+    for edge_group, style_key in [('input_edges', 'input'), ('output_edges', 'output'), ('bidirectional_edges', 'bidirectional')]:
+        for edge in graph_dict[edge_group]:
+            if 'bridge_outputs' in edge['type']:
+                style = 'input'
+                constraint = 'false'
+            elif 'bridge_inputs' in edge['type']:
+                style = 'output'
+                constraint = 'false'
+            else:
+                style = style_key
+                constraint = 'true'
+            graph.attr('edge', **edge_styles[style])
+            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint=constraint)
+
+    # === Re-Apply State Node Style (Hack for correct shape) ===
+    graph.attr('node', **state_node_spec)
+    for node in graph_dict['state_nodes']:
+        name = add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits)
+        node_names.append(name)
+
+    # === Disconnected Port Edges ===
+    for direction, style_key in [('disconnected_input_edges', 'input'), ('disconnected_output_edges', 'output')]:
+        for edge in graph_dict[direction]:
+            process_path = edge['edge_path']
+            port = edge['port']
+            suffix = '_input' if 'input' in direction else '_output'
+            dummy_name = str(absolute_path(process_path, port)) + suffix
+            graph.node(dummy_name, label='', style='invis', width='0')
+            edge['target_path'] = dummy_name
+            graph.attr('edge', **edge_styles[style_key])
+            plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
+
+    # === Grouped Nodes ===
     for group in node_groups:
-        # convert lists to tuples
-        group = [tuple(item) for item in group]
-
-        group_name = str(group)
-        with graph.subgraph(name=group_name) as c:
-            c.attr(rank='same')
-            previous_node = None
+        group = [tuple(g) for g in group]
+        with graph.subgraph(name=str(group)) as sg:
+            sg.attr(rank='same')
+            prev = None
             for path in group:
-                node_name = str(path)
-                if node_name in node_names:
-                    c.node(node_name)
-                    if previous_node:
-                        # out them in the order declared in the group
-                        c.edge(previous_node, node_name, style='invis', ordering='out')
-                    previous_node = node_name
-                else:
-                    print(f'node {node_name} not in graph')
-    # formatting
+                name = str(path)
+                if name in node_names:
+                    sg.node(name)
+                    if prev:
+                        sg.edge(prev, name, style='invis', ordering='out')
+                    prev = name
+
+    # === Apply Node Colors ===
     if node_border_colors:
-        for node_name, color in node_border_colors.items():
-            graph.node(str(node_name), color=color)
+        for name, color in node_border_colors.items():
+            graph.node(str(name), color=color)
     if node_fill_colors:
-        for node_name, color in node_fill_colors.items():
-            graph.node(str(node_name), color=color, style='filled')
+        for name, color in node_fill_colors.items():
+            graph.node(str(name), color=color, style='filled')
+
     return graph
 
 
@@ -1102,97 +1025,79 @@ def test_bidirectional_edges():
         filename='bidirectional_edges',
         **plot_settings)
 
+def generate_spec_and_schema(n_rows, n_cols):
+    spec = {}
+    fields = {
+        'acetate': np.zeros((n_rows, n_cols)),
+        'biomass': np.zeros((n_rows, n_cols)),
+        'glucose': np.zeros((n_rows, n_cols)),
+    }
+
+    for i in range(n_rows):
+        for j in range(n_cols):
+            name = f'dFBA[{i},{j}]'
+            cell_spec = {
+                '_type': 'process',
+                'address': 'local:DynamicFBA',
+                'inputs': {
+                    'substrates': {
+                        'acetate': ['fields', 'acetate', i, j],
+                        'biomass': ['fields', 'biomass', i, j],
+                        'glucose': ['fields', 'glucose', i, j],
+                    }
+                },
+                'outputs': {
+                    'substrates': {
+                        'acetate': ['fields', 'acetate', i, j],
+                        'biomass': ['fields', 'biomass', i, j],
+                        'glucose': ['fields', 'glucose', i, j],
+                    }
+                }
+            }
+            spec[name] = cell_spec
+
+    # Add fields to spec
+    spec['fields'] = fields
+
+    # Generate schema
+    schema = {
+        'fields': {
+            mol: {
+                '_type': 'array',
+                '_shape': (n_rows, n_cols),
+                '_data': 'float'
+            } for mol in ['acetate', 'biomass', 'glucose']
+        }
+    }
+
+    return spec, schema
 
 def test_array_paths():
     core = VisualizeTypes()
 
-    spec = {
-        'dFBA[0,0]': {
-            '_type': 'process',
-            'address': 'local:DynamicFBA',
-            # 'config': {},
-            'inputs': {
-                'substrates': {
-                    'acetate': ['fields', 'acetate',
-                                0, 0
-                                ],
-                    'biomass': ['fields', 'biomass',
-                                0, 0
-                                ],
-                    'glucose': ['fields', 'glucose',
-                                0, 0
-                                ]}},
-            'outputs': {
-                'substrates': {
-                    'acetate': ['fields', 'acetate',
-                                0, 0
-                                ],
-                    'biomass': ['fields', 'biomass',
-                                0, 0
-                                ],
-                    'glucose': ['fields', 'glucose',
-                                0, 0
-                                ]}},
-        },
-        'dFBA[1,0]': {
-            '_type': 'process',
-            'address': 'local:DynamicFBA',
-            # 'config': {},
-            'inputs': {
-                'substrates': {
-                    'acetate': ['fields', 'acetate',
-                                1, 0
-                                ],
-                    'biomass': ['fields', 'biomass',
-                                1, 0
-                                ],
-                    'glucose': ['fields', 'glucose',
-                                1, 0
-                                ]}},
-            'outputs': {
-                'substrates': {
-                    'acetate': ['fields', 'acetate',
-                                1, 0
-                                ],
-                    'biomass': ['fields', 'biomass',
-                                1, 0
-                                ],
-                    'glucose': ['fields', 'glucose',
-                                1, 0
-                                ]}},
-        },
-        'fields': {
-            'acetate': np.array([[1.0], [2.0]]),
-            'biomass': np.array([[3.0], [4.0]]),
-            'glucose': np.array([[5.0], [6.0]])
-        }
-    }
-
-    schema = {
-        'fields': {
-            'acetate': {
-                '_type': 'array',
-                '_shape': (2, 1),
-                '_data': 'float'
-            },
-            'biomass': {
-                '_type': 'array',
-                '_shape': (2, 1),
-                '_data': 'float',
-            },
-            'glucose': {
-                '_type': 'array',
-                '_shape': (2, 1),
-                '_data': 'float',
-            }
-        }
-    }
+    n_rows, n_cols = 2, 1  # or any desired shape
+    spec, schema = generate_spec_and_schema(n_rows, n_cols)
 
     plot_bigraph(
         spec,
         schema=schema,
         core=core,
         filename='array_paths',
+        **plot_settings)
+
+
+def test_complex_bigraph():
+    core = VisualizeTypes()
+
+    n_rows, n_cols = 10, 10 # or any desired shape
+    spec, schema = generate_spec_and_schema(n_rows, n_cols)
+
+    plot_bigraph(
+        spec,
+        schema=schema,
+        core=core,
+        filename='complex_bigraph',
+        max_nodes_per_row=10,
         **plot_settings)
 
 
@@ -1211,3 +1116,4 @@ if __name__ == '__main__':
     test_composite_process()
     test_bidirectional_edges()
     test_array_paths()
+    test_complex_bigraph()
