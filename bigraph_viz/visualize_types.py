@@ -243,193 +243,144 @@ def get_graphviz_fig(
 
     return graph
 
-
 def plot_bigraph(
-        state,
-        schema=None,
-        core=None,
-        out_dir=None,
-        filename=None,
-        file_format='png',
-        **kwargs
+    state,
+    schema=None,
+    core=None,
+    out_dir=None,
+    filename=None,
+    file_format='png',
+    **kwargs
 ):
-    # inspect the signature of plot_bigraph
-    get_graphviz_fig_signature = inspect.signature(get_graphviz_fig)
+    """
+    Create and render a bigraph visualization using Graphviz from a given state and optional schema.
 
-    # Filter kwargs to only include those accepted by get_graphviz_fig
-    get_graphviz_kwargs = {
-        k: v for k, v in kwargs.items()
-        if k in get_graphviz_fig_signature.parameters}
+    Parameters:
+        state (dict): The simulation state.
+        schema (dict): Optional schema defining the structure of the state.
+        core (VisualizeTypes): Visualization engine.
+        out_dir (str): Directory to write output.
+        filename (str): Name of the output file.
+        file_format (str): Output format (e.g., 'png', 'svg').
+        **kwargs: Additional arguments for styling or traversal.
 
-    # get the remaining kwargs
-    viztype_kwargs = {
-        k: v for k, v in kwargs.items()
-        if k not in get_graphviz_kwargs}
+    Returns:
+        graphviz.Digraph: Rendered graph object.
+    """
+    # Separate kwargs into rendering and traversal arguments
+    graphviz_sig = inspect.signature(get_graphviz_fig)
+    render_kwargs = {k: v for k, v in kwargs.items() if k in graphviz_sig.parameters}
+    traversal_kwargs = {k: v for k, v in kwargs.items() if k not in graphviz_sig.parameters}
 
-    # set defaults if none provided
+    # Defaults
     core = core or VisualizeTypes()
     schema = schema or {}
     schema, state = core.generate(schema, state)
 
-    graph_dict = core.generate_graph_dict(
-        schema,
-        state,
-        (),
-        options=viztype_kwargs  # TODO
-    )
+    graph_dict = core.generate_graph_dict(schema, state, (), options=traversal_kwargs)
 
     return core.plot_graph(
         graph_dict,
         filename=filename,
         out_dir=out_dir,
         file_format=file_format,
-        options=get_graphviz_kwargs)
+        options=render_kwargs
+    )
 
 
 # Visualize Types
 def graphviz_any(core, schema, state, path, options, graph):
+    """Visualize any type (generic node)."""
     schema = schema or {}
-    if len(path) > 0:
+
+    if path:
         node_spec = {
             'name': path[-1],
             'path': path,
-            'value': None,
-            'type': core.representation(schema)}
-
-        if not isinstance(state, dict):
-            node_spec['value'] = state
-
+            'value': state if not isinstance(state, dict) else None,
+            'type': core.representation(schema)
+        }
         graph['state_nodes'].append(node_spec)
 
     if len(path) > 1:
-        graph['place_edges'].append({
-            'parent': path[:-1],
-            'child': path})
+        graph['place_edges'].append({'parent': path[:-1], 'child': path})
 
     if isinstance(state, dict):
         for key, value in state.items():
             if not is_schema_key(key):
-                subpath = path + (key,)
                 graph = core.get_graph_dict(
                     schema.get(key, {}),
                     value,
-                    subpath,
+                    path + (key,),
                     options,
-                    graph)
+                    graph
+                )
 
     return graph
 
-
 def graphviz_edge(core, schema, state, path, options, graph):
-    # add process node to graph
+    """Visualize a process node with input/output/bridge wiring."""
     node_spec = {
         'name': path[-1],
         'path': path,
         'value': None,
-        'type': core.representation(schema)}
+        'type': core.representation(schema)
+    }
 
-    # check if this is actually a composite node
     if state.get('address') == 'local:composite' and node_spec not in graph['process_nodes']:
         graph['process_nodes'].append(node_spec)
         return graphviz_composite(core, schema, state, path, options, graph)
 
     graph['process_nodes'].append(node_spec)
 
-    # get the wires and ports
-    input_wires = state.get('inputs', {})
-    output_wires = state.get('outputs', {})
-    input_ports = state.get('_inputs', schema.get('_inputs', {}))
-    output_ports = state.get('_outputs', schema.get('_outputs', {}))
+    # Wiring
+    graph = get_graph_wires(schema.get('_inputs', {}), state.get('inputs', {}), graph, 'inputs', path, state.get('bridge', {}).get('inputs', {}))
+    graph = get_graph_wires(schema.get('_outputs', {}), state.get('outputs', {}), graph, 'outputs', path, state.get('bridge', {}).get('outputs', {}))
 
-    # bridge
-    bridge_wires = state.get('bridge', {})
-    bridge_inputs = bridge_wires.get('inputs', {})
-    bridge_outputs = bridge_wires.get('outputs', {})
+    # Merge bidirectional edges
+    def key(edge): return (tuple(edge['edge_path']), tuple(edge['target_path']), edge['port'])
+    input_set = {key(e): e for e in graph['input_edges']}
+    output_set = {key(e): e for e in graph['output_edges']}
+    shared_keys = input_set.keys() & output_set.keys()
+    for k in shared_keys:
+        graph['bidirectional_edges'].append({
+            'edge_path': k[0], 'target_path': k[1], 'port': k[2],
+            'type': (input_set[k]['type'], output_set[k]['type'])
+        })
+    graph['input_edges'] = [e for k, e in input_set.items() if k not in shared_keys]
+    graph['output_edges'] = [e for k, e in output_set.items() if k not in shared_keys]
 
-    # get the input wires
-    graph = get_graph_wires(
-        input_ports, input_wires, graph,
-        schema_key='inputs', edge_path=path,
-        bridge_wires=bridge_inputs)
-
-    # get the output wires
-    graph = get_graph_wires(
-        output_ports, output_wires, graph,
-        schema_key='outputs', edge_path=path,
-        bridge_wires=bridge_outputs)
-
-    # get bidirectional wires
-    input_edges_to_remove = []
-    output_edges_to_remove = []
-    for input_edge in graph['input_edges']:
-        for output_edge in graph['output_edges']:
-            if (input_edge['target_path'] == output_edge['target_path']) and \
-                    (input_edge['port'] == output_edge['port']) and \
-                    (input_edge['edge_path'] == output_edge['edge_path']):
-                graph['bidirectional_edges'].append({
-                    'edge_path': input_edge['edge_path'],
-                    'target_path': input_edge['target_path'],
-                    'port': input_edge['port'],
-                    'type': (input_edge['type'], output_edge['type']),
-                    # 'type': 'bidirectional'
-                })
-                input_edges_to_remove.append(input_edge)
-                output_edges_to_remove.append(output_edge)
-                break  # prevent matching the same input_edge with multiple output_edges
-
-    # Remove matched edges after iteration
-    for edge in input_edges_to_remove:
-        graph['input_edges'].remove(edge)
-
-    for edge in output_edges_to_remove:
-        graph['output_edges'].remove(edge)
-
-    # get the input and output bridge wires
-    if bridge_wires:
-        # check that the bridge wires connect to valid ports
-        assert set(bridge_wires.keys()).issubset({'inputs', 'outputs'})
-
-    # add the process node path
     if len(path) > 1:
-        graph['place_edges'].append({
-            'parent': path[:-1],
-            'child': path})
+        graph['place_edges'].append({'parent': path[:-1], 'child': path})
 
     return graph
 
 
 def graphviz_none(core, schema, state, path, options, graph):
+    """No-op visualizer for nodes with no visualization."""
     return graph
 
 
 def graphviz_composite(core, schema, state, path, options, graph):
-    # add the composite edge
+    """Visualize composite nodes by recursing into their internal structure."""
     graph = graphviz_edge(core, schema, state, path, options, graph)
 
-    # get the inner state and schema
-    inner_state = state.get('config', {}).get('state')
-    inner_schema = state.get('config', {}).get('composition')
-    if inner_state is None:
-        inner_state = state
-        inner_schema = schema
+    inner_state = state.get('config', {}).get('state') or state
+    inner_schema = state.get('config', {}).get('composition') or schema
     inner_schema, inner_state = core.generate(inner_schema, inner_state)
 
-    # add the process node path
     if len(path) > 1:
-        graph['place_edges'].append({
-            'parent': path[:-1],
-            'child': path})
+        graph['place_edges'].append({'parent': path[:-1], 'child': path})
 
-    # add the inner nodes and edges
     for key, value in inner_state.items():
         if not is_schema_key(key) and key not in PROCESS_SCHEMA_KEYS:
-            subpath = path + (key,)
             graph = core.get_graph_dict(
                 inner_schema.get(key),
                 value,
-                subpath,
+                path + (key,),
                 options,
-                graph)
+                graph
+            )
 
     return graph
 
@@ -456,7 +407,6 @@ visualize_types = {
         '_graphviz': graphviz_composite,
     },
 }
-
 
 # TODO: we want to visualize things that are not yet complete
 
