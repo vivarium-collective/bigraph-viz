@@ -11,17 +11,26 @@ from bigraph_viz.dict_utils import absolute_path
 PROCESS_SCHEMA_KEYS = [
     'config', 'address', 'interval', 'inputs', 'outputs', 'instance', 'bridge']
 
-# Utility: Chunk iterable
-def chunked(iterable, size):
-    it = iter(iterable)
-    return iter(lambda: tuple(islice(it, size)), ())
-
 # Utility: Label formatting
 def make_label(label):
+    """Wrap a label in angle brackets for Graphviz HTML rendering."""
     return f'<{label}>'
 
-# Adds port wire edges to graph dict
 def get_graph_wires(ports_schema, wires, graph_dict, schema_key, edge_path, bridge_wires=None):
+    """
+    Traverse the port wiring and append wire edges or disconnected ports to graph_dict.
+
+    Parameters:
+        ports_schema (dict): Schema for ports (inputs or outputs)
+        wires (dict): Wiring structure from the process
+        graph_dict (dict): Accumulated graph
+        schema_key (str): Either 'inputs' or 'outputs'
+        edge_path (tuple): Path of the process node
+        bridge_wires (dict, optional): Optional rewiring via 'bridge' dict
+
+    Returns:
+        graph_dict (dict): Updated graph dict
+    """
     wires = wires or {}
     ports_schema = ports_schema or {}
     inferred_ports = set(ports_schema.keys()) | set(wires.keys())
@@ -31,30 +40,51 @@ def get_graph_wires(ports_schema, wires, graph_dict, schema_key, edge_path, brid
         bridge = bridge_wires.get(port) if bridge_wires else None
 
         if not wire:
-            key = 'disconnected_input_edges' if schema_key == 'inputs' else 'disconnected_output_edges'
-            graph_dict[key].append({'edge_path': edge_path, 'port': port, 'type': schema_key})
+            # If not connected, mark as disconnected
+            edge_type = 'disconnected_input_edges' if schema_key == 'inputs' else 'disconnected_output_edges'
+            graph_dict[edge_type].append({
+                'edge_path': edge_path,
+                'port': port,
+                'type': schema_key
+            })
         elif isinstance(wire, (list, tuple, str)):
             graph_dict = get_single_wire(edge_path, graph_dict, port, schema_key, wire)
         elif isinstance(wire, dict):
-            flat_wires = hierarchy_depth(wires)
-            for subpath, subwire in flat_wires.items():
+            for subpath, subwire in hierarchy_depth(wires).items():
                 subport = '/'.join(subpath)
                 graph_dict = get_single_wire(edge_path, graph_dict, subport, schema_key, subwire)
         else:
             raise ValueError(f"Unexpected wire type: {wires}")
 
+        # Handle optional bridge wiring
         if bridge:
             target_path = absolute_path(edge_path, tuple(bridge))
-            edge_type = f'bridge_{schema_key}'
             edge_key = 'input_edges' if schema_key == 'inputs' else 'output_edges'
             graph_dict[edge_key].append({
-                'edge_path': edge_path, 'target_path': target_path,
-                'port': f'bridge_{port}', 'type': edge_type})
+                'edge_path': edge_path,
+                'target_path': target_path,
+                'port': f'bridge_{port}',
+                'type': f'bridge_{schema_key}'
+            })
 
     return graph_dict
 
-# Append a single port edge
+# Append a single port wire connection to graph_dict
+
 def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
+    """
+    Add a connection from a port to its wire target.
+
+    Parameters:
+        edge_path (tuple): Path to the process
+        graph_dict (dict): Current graph dict
+        port (str): Name of the port
+        schema_key (str): Either 'inputs' or 'outputs'
+        wire (str|list): Wire connection(s)
+
+    Returns:
+        Updated graph_dict
+    """
     if isinstance(wire, str):
         wire = [wire]
     else:
@@ -72,6 +102,10 @@ def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
 
 # Plot a labeled edge from a port to a process
 def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false'):
+    """
+    Add an edge between a target (state node) and process node.
+    If target not already rendered, add it to the graph.
+    """
     process_name = str(edge['edge_path'])
     target_name = str(edge['target_path'])
     label = make_label(edge['port']) if port_labels else ''
@@ -86,24 +120,35 @@ def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, const
 
 # Add a node to the graph with optional value/type
 def add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits):
+    """
+    Add a state node to the Graphviz graph.
+
+    Parameters:
+        graph: The Graphviz object
+        node: Dict representing the node
+        state_node_spec: Style options
+        show_values (bool): Whether to show the node value
+        show_types (bool): Whether to show the node type
+        significant_digits (int): Digits to round values
+    """
     node_path = node['path']
     node_name = str(node_path)
     label = node_path[-1]
     label_info = ''
 
     if show_values and (val := node.get('value')) is not None:
-        val = round(val, significant_digits) if isinstance(val, float) else val
-        val = int(val) if isinstance(val, float) and val.is_integer() else val
+        if isinstance(val, float):
+            val = int(val) if val.is_integer() else round(val, significant_digits)
         label_info += f":{val}"
 
     if show_types and (typ := node.get('type')):
-        type_str = typ if len(typ) <= 20 else '...'
-        label_info += f"<br/>[{type_str}]"
+        label_info += f"<br/>[{typ if len(typ) <= 20 else '...'}]"
 
-    label = make_label(label + label_info) if label_info else make_label(label)
+    full_label = make_label(label + label_info) if label_info else make_label(label)
     graph.attr('node', **state_node_spec)
-    graph.node(node_name, label=label)
+    graph.node(node_name, label=full_label)
     return node_name
+
 
 # make the Graphviz figure
 def get_graphviz_fig(
@@ -242,6 +287,7 @@ def get_graphviz_fig(
             graph.node(str(name), color=color, style='filled')
 
     return graph
+
 
 def plot_bigraph(
     state,
