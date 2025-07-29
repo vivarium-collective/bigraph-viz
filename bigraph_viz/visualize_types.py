@@ -225,11 +225,9 @@ def get_graphviz_fig(
         """Create a generalized name with wildcards for collapsed process names."""
         if len(names) == 1:
             return names[0]
-
         import re
         prefix = os.path.commonprefix(names)
         suffix = os.path.commonprefix([n[::-1] for n in names])[::-1]
-
         wildcard_middle = '*' if prefix != names[0] or suffix != names[0] else ''
         return f"{prefix}{wildcard_middle}{suffix}"
 
@@ -241,40 +239,39 @@ def get_graphviz_fig(
 
     def add_process_nodes():
         graph.attr('node', **process_node_spec)
-        process_paths = []
         process_fingerprints = defaultdict(list)
 
-        # Group processes by a "fingerprint" based on port wiring
+        # Build wiring fingerprints and group processes
         for node in graph_dict['process_nodes']:
             node_path = node['path']
-            name = str(node_path)
+            path_str = str(node_path)
+            node_name = node_path[-1]  # Only consider final name in path
 
-            # Fingerprint = sorted list of port connections
             fingerprint = []
             for group, tag in [('input_edges', 'in'), ('output_edges', 'out'), ('bidirectional_edges', 'both')]:
                 for edge in graph_dict.get(group, []):
                     if edge['edge_path'] == node_path:
                         fingerprint.append((tag, edge['port'], str(edge.get('target_path'))))
             fingerprint = tuple(sorted(fingerprint))
-            process_fingerprints[fingerprint].append((node_path, name))
+            process_fingerprints[fingerprint].append((node_path, path_str, node_name))
 
         collapse_map = {}
-        label_map = {}
 
-        # For each group of processes with the same fingerprint, collapse into one node
+        # Collapse identical processes
         for fingerprint, entries in process_fingerprints.items():
-            representative = entries[0][1]
-            all_labels = [entry[0][-1] for entry in entries]
-            template = get_name_template(all_labels)
+            names = [entry[2] for entry in entries]
+            template = get_name_template(names)
             count = len(entries)
-            label = f"{template} (x{count})" if count > 1 else template  # Only show count if >1
+            label = template if count == 1 else f"{template} (x{count})"
+            representative = str(entries[0][0])
             graph.node(representative, label=label)
             node_names.append(representative)
-            for path, name in entries:
-                if name != representative:
-                    collapse_map[name] = representative
+            for path, path_str, _ in entries:
+                if str(path) != representative:
+                    collapse_map[str(path)] = representative
 
         return [entry[0] for entries in process_fingerprints.values() for entry in entries], collapse_map
+
     def rewrite_collapsed_edges(collapse_map):
         removed_keys = set(collapse_map.keys())
         for group in ['input_edges', 'output_edges', 'bidirectional_edges', 'disconnected_input_edges', 'disconnected_output_edges']:
@@ -283,12 +280,22 @@ def get_graphviz_fig(
             for edge in edges:
                 key = str(edge['edge_path'])
                 if key in collapse_map:
-                    edge['edge_path'] = tuple(eval(collapse_map[key]))
+                    edge['edge_path'] = collapse_map[key]
                     if edge not in new_edges:
                         new_edges.append(edge)
                 elif key not in removed_keys:
                     new_edges.append(edge)
             graph_dict[group] = new_edges
+
+        # Remove any place_edges associated with collapsed processes
+        new_place_edges = []
+        for edge in graph_dict.get('place_edges', []):
+            parent_str = str(edge['parent'])
+            child_str = str(edge['child'])
+            if parent_str in removed_keys or child_str in removed_keys:
+                continue
+            new_place_edges.append(edge)
+        graph_dict['place_edges'] = new_place_edges
 
     def add_edges(edge_groups):
         for group, style_key in edge_groups:
@@ -1013,7 +1020,7 @@ def test_bidirectional_edges():
         **plot_settings)
 
 def generate_spec_and_schema(n_rows, n_cols):
-    spec = {}
+    spec = {'cells': {}}
     fields = {
         'acetate': np.zeros((n_rows, n_cols)),
         'biomass': np.zeros((n_rows, n_cols)),
@@ -1028,20 +1035,20 @@ def generate_spec_and_schema(n_rows, n_cols):
                 'address': 'local:DynamicFBA',
                 'inputs': {
                     'substrates': {
-                        'acetate': ['fields', 'acetate', i, j],
-                        'biomass': ['fields', 'biomass', i, j],
-                        'glucose': ['fields', 'glucose', i, j],
+                        'acetate': ['..', 'fields', 'acetate', i, j],
+                        'biomass': ['..', 'fields', 'biomass', i, j],
+                        'glucose': ['..', 'fields', 'glucose', i, j],
                     }
                 },
                 'outputs': {
                     'substrates': {
-                        'acetate': ['fields', 'acetate', i, j],
-                        'biomass': ['fields', 'biomass', i, j],
-                        'glucose': ['fields', 'glucose', i, j],
+                        'acetate': ['..', 'fields', 'acetate', i, j],
+                        'biomass': ['..', 'fields', 'biomass', i, j],
+                        'glucose': ['..', 'fields', 'glucose', i, j],
                     }
                 }
             }
-            spec[name] = cell_spec
+            spec['cells'][name] = cell_spec
 
     # Add fields to spec
     spec['fields'] = fields
