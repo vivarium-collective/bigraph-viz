@@ -244,11 +244,12 @@ def get_graphviz_fig(
         process_paths = []
         process_fingerprints = defaultdict(list)
 
+        # Group processes by a "fingerprint" based on port wiring
         for node in graph_dict['process_nodes']:
             node_path = node['path']
             name = str(node_path)
 
-            # Generate fingerprint from port wiring
+            # Fingerprint = sorted list of port connections
             fingerprint = []
             for group, tag in [('input_edges', 'in'), ('output_edges', 'out'), ('bidirectional_edges', 'both')]:
                 for edge in graph_dict.get(group, []):
@@ -260,12 +261,13 @@ def get_graphviz_fig(
         collapse_map = {}
         label_map = {}
 
+        # For each group of processes with the same fingerprint, collapse into one node
         for fingerprint, entries in process_fingerprints.items():
             representative = entries[0][1]
             all_labels = [entry[0][-1] for entry in entries]
             template = get_name_template(all_labels)
             count = len(entries)
-            label = f"{template} (x{count})"
+            label = f"{template} (x{count})" if count > 1 else template  # Only show count if >1
             graph.node(representative, label=label)
             node_names.append(representative)
             for path, name in entries:
@@ -273,7 +275,6 @@ def get_graphviz_fig(
                     collapse_map[name] = representative
 
         return [entry[0] for entries in process_fingerprints.values() for entry in entries], collapse_map
-
     def rewrite_collapsed_edges(collapse_map):
         removed_keys = set(collapse_map.keys())
         for group in ['input_edges', 'output_edges', 'bidirectional_edges', 'disconnected_input_edges', 'disconnected_output_edges']:
