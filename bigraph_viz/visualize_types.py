@@ -238,14 +238,15 @@ def get_graphviz_fig(
             node_names.append(name)
 
     def add_process_nodes():
+        """Add process nodes to the graph, with optional collapse of redundant processes."""
         graph.attr('node', **process_node_spec)
         process_fingerprints = defaultdict(list)
 
-        # Build wiring fingerprints and group processes
+        # Build fingerprints for each process based on edge connectivity
         for node in graph_dict['process_nodes']:
             node_path = node['path']
             path_str = str(node_path)
-            node_name = node_path[-1]  # Only consider final name in path
+            node_name = node_path[-1]
 
             fingerprint = []
             for group, tag in [('input_edges', 'in'), ('output_edges', 'out'), ('bidirectional_edges', 'both')]:
@@ -257,18 +258,25 @@ def get_graphviz_fig(
 
         collapse_map = {}
 
-        # Collapse identical processes
-        for fingerprint, entries in process_fingerprints.items():
-            names = [entry[2] for entry in entries]
-            template = get_name_template(names)
-            count = len(entries)
-            label = template if count == 1 else f"{template} (x{count})"
-            representative = str(entries[0][0])
-            graph.node(representative, label=label)
-            node_names.append(representative)
-            for path, path_str, _ in entries:
-                if str(path) != representative:
-                    collapse_map[str(path)] = representative
+        # Only collapse if flag is enabled
+        if collapse_redundant_processes:
+            for fingerprint, entries in process_fingerprints.items():
+                names = [entry[2] for entry in entries]
+                template = get_name_template(names)
+                count = len(entries)
+                label = template if count == 1 else f"{template} (x{count})"
+                representative = str(entries[0][0])
+                graph.node(representative, label=label)
+                node_names.append(representative)
+                for path, path_str, _ in entries:
+                    if str(path) != representative:
+                        collapse_map[str(path)] = representative
+        else:
+            # Add all process nodes without collapsing
+            for entries in process_fingerprints.values():
+                for path, path_str, name in entries:
+                    graph.node(path_str, label=name)
+                    node_names.append(path_str)
 
         return [entry[0] for entries in process_fingerprints.values() for entry in entries], collapse_map
 
