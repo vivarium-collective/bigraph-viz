@@ -489,6 +489,23 @@ def graphviz_none(core, schema, state, path, options, graph):
     return graph
 
 
+def graphviz_map(core, schema, state, path, options, graph):
+    """"""
+    value_type = core._find_parameter(schema, 'value')
+
+    if isinstance(state, dict):
+        for key, value in state.items():
+            if not is_schema_key(key):
+                graph = core.get_graph_dict(
+                    value_type,
+                    value,
+                    path + (key,),
+                    options,
+                    graph
+                )
+    return graph
+
+
 def graphviz_composite(core, schema, state, path, options, graph):
     """Visualize composite nodes by recursing into their internal structure."""
     graph = graphviz_edge(core, schema, state, path, options, graph)
@@ -523,6 +540,9 @@ visualize_types = {
     },
     'quote': {
         '_graphviz': graphviz_none,
+    },
+    'map':{
+        '_graphviz': graphviz_map,
     },
     'step': {
         '_inherit': ['edge']
@@ -1105,19 +1125,243 @@ def test_complex_bigraph():
         **plot_settings)
 
 
+def test_nested_particle_process():
+    core = VisualizeTypes()
+
+    state =  {
+            "particles": {
+                "rddyhz3IRHaZIKnpyROvGw": {
+                    "id": "rddyhz3IRHaZIKnpyROvGw",
+                    "position": ["1.6170202476993778", "2.6965198046441277"],
+                    "size": "0.0",
+                    "mass": "0.7708618958003092",
+                    "local": {
+                        "glucose": "2.1129479416859507", "acetate": "0.0"},
+                    "exchange": {
+                        "glucose": "0.0", "acetate": "0.0"},
+                    "dFBA": {
+                        "inputs": {
+                            "substrates": ["local"],
+                            "biomass": ["mass"]},
+                        "outputs": {
+                            "substrates": ["exchange"],
+                            "biomass": ["mass"]},
+                        "interval": 1.0,
+                        "address": "local:DynamicFBA",
+                        "config": {
+                            "model_file": "textbook",
+                            "kinetic_params": {
+                                "glucose": ["0.5", "1.0"],
+                                "acetate": ["0.5", "2.0"]},
+                            "substrate_update_reactions": {
+                                "glucose": "EX_glc__D_e",
+                                "acetate": "EX_ac_e"},
+                            "bounds": {
+                                "EX_o2_e": {
+                                    "lower": "-2.0",
+                                    "upper": "!nil"},
+                                "ATPM": {
+                                    "lower": "1.0",
+                                    "upper": "1.0"}}},
+                        "shared": {}
+                    }
+                },
+            },
+            "global_time": "0.0",
+            "particle_movement": {
+                '_type': 'process',
+                "inputs": {
+                    "particles": ["particles"],
+                    "fields": ["fields"]},
+                "outputs": {
+                    "particles": ["particles"],
+                    "fields": ["fields"]},
+                "interval": 1.0,
+                "address": "local:Particles",
+                "config": {},
+            },
+            "fields": {
+                "glucose": {
+                    "list": [
+                        [
+                            6.682473038698228,
+                            6.138508047074471,
+                            5.932822055376635,
+                            1.2275655546440918,
+                            7.184289576021444,
+                            5.802540321285436,
+                            3.158370346023715,
+                            6.191878825605585,
+                            7.417057892118427,
+                            9.619194357104389
+                        ],
+                        [
+                            7.384059587748178,
+                            8.640811575012702,
+                            2.1129479416859507,
+                            3.1057148920618385,
+                            8.05289155553335,
+                            4.399086558257299,
+                            7.193948745260049,
+                            5.035688862165517,
+                            5.219923411699781,
+                            4.539653707209219
+                        ],
+                        [
+                            1.9082739815105203,
+                            8.99864529956811,
+                            6.5195511089756675,
+                            1.957101992521509,
+                            3.1907575508941806,
+                            4.5623876367245195,
+                            9.68212403622312,
+                            4.419905700021853,
+                            8.71921956750521,
+                            8.163620432115913
+                        ],
+                        [
+                            9.478709499822921,
+                            8.675323729741326,
+                            4.226239950967384,
+                            1.6634413475982608,
+                            4.2399161776694365,
+                            1.8032704088212483,
+                            8.029077191030485,
+                            3.5987760418726706,
+                            1.0827071604629657,
+                            4.939077862941639
+                        ],
+                        [
+                            2.2055610319311745,
+                            8.052040372657313,
+                            5.325939740703682,
+                            5.915877670139153,
+                            9.335157497844655,
+                            5.8973761480277584,
+                            7.503363745465629,
+                            1.2530328598811558,
+                            7.58703729093062,
+                            2.4382507126877866
+                        ]
+                    ],
+                    "data": "float",
+                    "shape": [
+                        5,
+                        10
+                    ]
+                },
+                "acetate": {
+                    "list": [
+                        [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        [
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
+                        ]
+                    ],
+                    "data": "float",
+                    "shape": [
+                        5,
+                        10
+                    ]
+                }
+            }
+    }
+    composition = {
+        'particles': {
+            '_type': 'map',
+            '_value': {
+                'dFBA': {'_type': 'process',
+                         'address': {'_type': 'string', '_default': 'local:DynamicFBA'},
+                         'config': {'_type': 'quote', '_default': {
+                             'model_file': 'textbook',
+                             'kinetic_params': {'glucose': (0.5, 1), 'acetate': (0.5, 2)},
+                             'substrate_update_reactions': {
+                                 'glucose': 'EX_glc__D_e',
+                                 'acetate': 'EX_ac_e'},
+                             'bounds': {
+                                 'EX_o2_e': {'lower': -2, 'upper': None},
+                                 'ATPM': {'lower': 1, 'upper': 1}}}},
+                         'inputs': {'_type': 'tree[wires]', '_default': {
+                             'substrates': ['local'], 'biomass': ['mass']}},
+                         'outputs': {'_type': 'tree[wires]', '_default': {
+                             'substrates': ['exchange'],
+                             'biomass': ['mass']}}}}}}
+
+    plot_bigraph(state=state, schema=composition, core=core,
+                 filename='nested_particle_process',
+                 **plot_settings,
+                 )
+
+
 if __name__ == '__main__':
-    test_simple_store()
-    test_forest()
-    test_nested_composite()
-    test_graphviz()
-    test_bigraph_cell()
-    test_bio_schema()
-    test_flat_composite()
-    test_multi_processes()
-    test_nested_processes()
-    test_cell_hierarchy()
-    test_multiple_disconnected_ports()
-    test_composite_process()
-    test_bidirectional_edges()
-    test_array_paths()
-    test_complex_bigraph()
+    # test_simple_store()
+    # test_forest()
+    # test_nested_composite()
+    # test_graphviz()
+    # test_bigraph_cell()
+    # test_bio_schema()
+    # test_flat_composite()
+    # test_multi_processes()
+    # test_nested_processes()
+    # test_cell_hierarchy()
+    # test_multiple_disconnected_ports()
+    # test_composite_process()
+    # test_bidirectional_edges()
+    # test_array_paths()
+    # test_complex_bigraph()
+    test_nested_particle_process()
