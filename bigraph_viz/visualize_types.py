@@ -499,9 +499,21 @@ def graphviz_none(core, schema, state, path, options, graph):
 
 
 def graphviz_map(core, schema, state, path, options, graph):
-    """"""
+    """Visualize mappings by traversing key–value pairs."""
+
     value_type = core._find_parameter(schema, 'value')
 
+    # Add node for the map container itself
+    if path:
+        node_spec = {
+            'name': path[-1],
+            'path': path,
+            'value': None,
+            'type': core.representation(schema)
+        }
+        graph['state_nodes'].append(node_spec)
+
+    # Add place edge to parent
     if len(path) > 1:
         graph['place_edges'].append({'parent': path[:-1], 'child': path})
 
