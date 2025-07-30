@@ -493,6 +493,9 @@ def graphviz_map(core, schema, state, path, options, graph):
     """"""
     value_type = core._find_parameter(schema, 'value')
 
+    if len(path) > 1:
+        graph['place_edges'].append({'parent': path[:-1], 'child': path})
+        
     if isinstance(state, dict):
         for key, value in state.items():
             if not is_schema_key(key):
