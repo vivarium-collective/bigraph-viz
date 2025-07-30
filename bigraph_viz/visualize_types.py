@@ -282,17 +282,26 @@ def get_graphviz_fig(
 
     def rewrite_collapsed_edges(collapse_map):
         removed_keys = set(collapse_map.keys())
-        for group in ['input_edges', 'output_edges', 'bidirectional_edges', 'disconnected_input_edges', 'disconnected_output_edges']:
+        for group in ['input_edges', 'output_edges', 'bidirectional_edges', 'disconnected_input_edges',
+                      'disconnected_output_edges']:
             edges = graph_dict.get(group, [])
             new_edges = []
+            seen = set()
             for edge in edges:
                 key = str(edge['edge_path'])
                 if key in collapse_map:
                     edge['edge_path'] = collapse_map[key]
-                    if edge not in new_edges:
+                if key not in removed_keys:
+                    # Build a tuple that uniquely identifies this edge after collapse
+                    edge_key = (
+                        group,
+                        str(edge['edge_path']),
+                        edge.get('port'),
+                        str(edge.get('target_path'))
+                    )
+                    if edge_key not in seen:
+                        seen.add(edge_key)
                         new_edges.append(edge)
-                elif key not in removed_keys:
-                    new_edges.append(edge)
             graph_dict[group] = new_edges
 
         # Remove any place_edges associated with collapsed processes
@@ -495,7 +504,7 @@ def graphviz_map(core, schema, state, path, options, graph):
 
     if len(path) > 1:
         graph['place_edges'].append({'parent': path[:-1], 'child': path})
-        
+
     if isinstance(state, dict):
         for key, value in state.items():
             if not is_schema_key(key):
