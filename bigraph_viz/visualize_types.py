@@ -13,10 +13,12 @@ from bigraph_viz.dict_utils import absolute_path
 PROCESS_SCHEMA_KEYS = [
     'config', 'address', 'interval', 'inputs', 'outputs', 'instance', 'bridge']
 
+
 # Utility: Label formatting
 def make_label(label):
     """Wrap a label in angle brackets for Graphviz HTML rendering."""
     return f'<{label}>'
+
 
 def get_graph_wires(ports_schema, wires, graph_dict, schema_key, edge_path, bridge_wires=None):
     """
@@ -71,6 +73,7 @@ def get_graph_wires(ports_schema, wires, graph_dict, schema_key, edge_path, brid
 
     return graph_dict
 
+
 # Append a single port wire connection to graph_dict
 
 def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
@@ -102,6 +105,7 @@ def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
     })
     return graph_dict
 
+
 # Plot a labeled edge from a port to a process
 def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='false'):
     """
@@ -120,16 +124,17 @@ def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, const
         sub.edge(target_name, process_name, constraint=constraint, label=label,
                  labelloc="t", fontsize=port_label_size)
 
+
 # Add a node to the graph with optional value/type
 def add_node_to_graph(
-    graph,
-    node,
-    state_node_spec,
-    show_values,
-    show_types,
-    significant_digits,
-    value_char_limit,
-    type_char_limit,
+        graph,
+        node,
+        state_node_spec,
+        show_values,
+        show_types,
+        significant_digits,
+        value_char_limit,
+        type_char_limit,
 ):
     """
     Add a state node to the Graphviz graph.
@@ -177,6 +182,7 @@ def add_node_to_graph(
     graph.node(node_name, label=html_label)
     return node_name
 
+
 # make the Graphviz figure
 import os
 from collections import defaultdict
@@ -184,28 +190,28 @@ import graphviz
 
 
 def get_graphviz_fig(
-    graph_dict,
-    label_margin='0.05',
-    node_label_size='12pt',
-    process_label_size=None,
-    size='16,10',
-    rankdir='TB',
-    aspect_ratio='auto',
-    dpi='70',
-    significant_digits=2,
-    undirected_edges=False,
-    show_values=False,
-    show_types=False,
-    value_char_limit=20,
-    type_char_limit=50,
-    port_labels=True,
-    port_label_size='10pt',
-    invisible_edges=None,
-    remove_process_place_edges=False,
-    node_border_colors=None,
-    node_fill_colors=None,
-    node_groups=None,
-    collapse_redundant_processes=False,
+        graph_dict,
+        label_margin='0.05',
+        node_label_size='12pt',
+        process_label_size=None,
+        size='16,10',
+        rankdir='TB',
+        aspect_ratio='auto',
+        dpi='70',
+        significant_digits=2,
+        undirected_edges=False,
+        show_values=False,
+        show_types=False,
+        value_char_limit=20,
+        type_char_limit=50,
+        port_labels=True,
+        port_label_size='10pt',
+        invisible_edges=None,
+        remove_process_place_edges=False,
+        node_border_colors=None,
+        node_fill_colors=None,
+        node_groups=None,
+        collapse_redundant_processes=False,
 ):
     """
     Generate a Graphviz Digraph from a graph_dict describing a simulation bigraph.
@@ -484,8 +490,8 @@ def get_graphviz_fig(
     def add_place_edges(process_paths):
         for edge in graph_dict.get('place_edges', []):
             visible = not (
-                (remove_process_place_edges and edge['child'] in process_paths)
-                or (edge in invisible_edges)
+                    (remove_process_place_edges and edge['child'] in process_paths)
+                    or (edge in invisible_edges)
             )
             graph.attr('edge', style='filled' if visible else 'invis')
             graph.edge(
@@ -528,12 +534,17 @@ def get_graphviz_fig(
                         prev = name
 
     def apply_custom_colors():
+        state_paths = [entry['path'] for entry in graph_dict['state_nodes']]
+        process_paths = [entry['path'] for entry in graph_dict['process_nodes']]
+
         if node_border_colors:
             for name, color in node_border_colors.items():
-                graph.node(str(name), color=color)
+                if name in state_paths or name in process_paths:
+                    graph.node(str(name), color=color)
         if node_fill_colors:
             for name, color in node_fill_colors.items():
-                graph.node(str(name), color=color, style='filled')
+                if name in state_paths or name in process_paths:
+                    graph.node(str(name), color=color, style='filled')
 
     # -------- build graph ---------------------------------------------------
 
@@ -555,13 +566,13 @@ def get_graphviz_fig(
 
 
 def plot_bigraph(
-    state,
-    schema=None,
-    core=None,
-    out_dir=None,
-    filename=None,
-    file_format='png',
-    **kwargs
+        state,
+        schema=None,
+        core=None,
+        out_dir=None,
+        filename=None,
+        file_format='png',
+        **kwargs
 ):
     """
     Create and render a bigraph visualization using Graphviz from a given state and optional schema.
@@ -629,6 +640,7 @@ def graphviz_any(core, schema, state, path, options, graph):
 
     return graph
 
+
 def graphviz_edge(core, schema, state, path, options, graph):
     """Visualize a process node with input/output/bridge wiring."""
     schema = schema or {}
@@ -646,11 +658,15 @@ def graphviz_edge(core, schema, state, path, options, graph):
     graph['process_nodes'].append(node_spec)
 
     # Wiring
-    graph = get_graph_wires(schema.get('_inputs', {}), state.get('inputs', {}), graph, 'inputs', path, state.get('bridge', {}).get('inputs', {}))
-    graph = get_graph_wires(schema.get('_outputs', {}), state.get('outputs', {}), graph, 'outputs', path, state.get('bridge', {}).get('outputs', {}))
+    graph = get_graph_wires(schema.get('_inputs', {}), state.get('inputs', {}), graph, 'inputs', path,
+                            state.get('bridge', {}).get('inputs', {}))
+    graph = get_graph_wires(schema.get('_outputs', {}), state.get('outputs', {}), graph, 'outputs', path,
+                            state.get('bridge', {}).get('outputs', {}))
 
     # Merge bidirectional edges
-    def key(edge): return (tuple(edge['edge_path']), tuple(edge['target_path']), edge['port'])
+    def key(edge):
+        return (tuple(edge['edge_path']), tuple(edge['target_path']), edge['port'])
+
     input_set = {key(e): e for e in graph['input_edges']}
     output_set = {key(e): e for e in graph['output_edges']}
     shared_keys = input_set.keys() & output_set.keys()
@@ -704,6 +720,7 @@ def graphviz_map(core, schema, state, path, options, graph):
                 )
     return graph
 
+
 def graphviz_composite(core, schema, state, path, options, graph):
     """Visualize composite nodes by recursing into their internal structure."""
     graph = graphviz_edge(core, schema, state, path, options, graph)
@@ -739,7 +756,7 @@ visualize_types = {
     'quote': {
         '_graphviz': graphviz_none,
     },
-    'map':{
+    'map': {
         '_graphviz': graphviz_map,
     },
     'step': {
@@ -753,6 +770,7 @@ visualize_types = {
         '_graphviz': graphviz_composite,
     },
 }
+
 
 # TODO: we want to visualize things that are not yet complete
 
@@ -1245,6 +1263,7 @@ def test_bidirectional_edges():
         filename='bidirectional_edges',
         **plot_settings)
 
+
 def generate_spec_and_schema(n_rows, n_cols):
     spec = {'cells': {}}
     fields = {
@@ -1292,6 +1311,7 @@ def generate_spec_and_schema(n_rows, n_cols):
 
     return spec, schema
 
+
 def test_array_paths():
     core = VisualizeTypes()
 
@@ -1309,7 +1329,7 @@ def test_array_paths():
 def test_complex_bigraph():
     core = VisualizeTypes()
 
-    n_rows, n_cols = 6, 6 # or any desired shape
+    n_rows, n_cols = 6, 6  # or any desired shape
     spec, schema = generate_spec_and_schema(n_rows, n_cols)
 
     plot_settings['dpi'] = '500'
@@ -1326,198 +1346,198 @@ def test_complex_bigraph():
 def test_nested_particle_process():
     core = VisualizeTypes()
 
-    state =  {
-            "particles": {
-                "rddyhz3IRHaZIKnpyROvGw": {
-                    "id": "rddyhz3IRHaZIKnpyROvGw",
-                    "position": ["1.6170202476993778", "2.6965198046441277"],
-                    "size": "0.0",
-                    "mass": "0.7708618958003092",
-                    "local": {
-                        "glucose": "2.1129479416859507", "acetate": "0.0"},
-                    "exchange": {
-                        "glucose": "0.0", "acetate": "0.0"},
-                    "dFBA": {
-                        "inputs": {
-                            "substrates": ["local"],
-                            "biomass": ["mass"]},
-                        "outputs": {
-                            "substrates": ["exchange"],
-                            "biomass": ["mass"]},
-                        "interval": 1.0,
-                        "address": "local:DynamicFBA",
-                        "config": {
-                            "model_file": "textbook",
-                            "kinetic_params": {
-                                "glucose": ["0.5", "1.0"],
-                                "acetate": ["0.5", "2.0"]},
-                            "substrate_update_reactions": {
-                                "glucose": "EX_glc__D_e",
-                                "acetate": "EX_ac_e"},
-                            "bounds": {
-                                "EX_o2_e": {
-                                    "lower": "-2.0",
-                                    "upper": "!nil"},
-                                "ATPM": {
-                                    "lower": "1.0",
-                                    "upper": "1.0"}}},
-                        "shared": {}
-                    }
-                },
-            },
-            "global_time": "0.0",
-            "particle_movement": {
-                '_type': 'process',
-                "inputs": {
-                    "particles": ["particles"],
-                    "fields": ["fields"]},
-                "outputs": {
-                    "particles": ["particles"],
-                    "fields": ["fields"]},
-                "interval": 1.0,
-                "address": "local:Particles",
-                "config": {},
-            },
-            "fields": {
-                "glucose": {
-                    "list": [
-                        [
-                            6.682473038698228,
-                            6.138508047074471,
-                            5.932822055376635,
-                            1.2275655546440918,
-                            7.184289576021444,
-                            5.802540321285436,
-                            3.158370346023715,
-                            6.191878825605585,
-                            7.417057892118427,
-                            9.619194357104389
-                        ],
-                        [
-                            7.384059587748178,
-                            8.640811575012702,
-                            2.1129479416859507,
-                            3.1057148920618385,
-                            8.05289155553335,
-                            4.399086558257299,
-                            7.193948745260049,
-                            5.035688862165517,
-                            5.219923411699781,
-                            4.539653707209219
-                        ],
-                        [
-                            1.9082739815105203,
-                            8.99864529956811,
-                            6.5195511089756675,
-                            1.957101992521509,
-                            3.1907575508941806,
-                            4.5623876367245195,
-                            9.68212403622312,
-                            4.419905700021853,
-                            8.71921956750521,
-                            8.163620432115913
-                        ],
-                        [
-                            9.478709499822921,
-                            8.675323729741326,
-                            4.226239950967384,
-                            1.6634413475982608,
-                            4.2399161776694365,
-                            1.8032704088212483,
-                            8.029077191030485,
-                            3.5987760418726706,
-                            1.0827071604629657,
-                            4.939077862941639
-                        ],
-                        [
-                            2.2055610319311745,
-                            8.052040372657313,
-                            5.325939740703682,
-                            5.915877670139153,
-                            9.335157497844655,
-                            5.8973761480277584,
-                            7.503363745465629,
-                            1.2530328598811558,
-                            7.58703729093062,
-                            2.4382507126877866
-                        ]
-                    ],
-                    "data": "float",
-                    "shape": [
-                        5,
-                        10
-                    ]
-                },
-                "acetate": {
-                    "list": [
-                        [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        [
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ]
-                    ],
-                    "data": "float",
-                    "shape": [
-                        5,
-                        10
-                    ]
+    state = {
+        "particles": {
+            "rddyhz3IRHaZIKnpyROvGw": {
+                "id": "rddyhz3IRHaZIKnpyROvGw",
+                "position": ["1.6170202476993778", "2.6965198046441277"],
+                "size": "0.0",
+                "mass": "0.7708618958003092",
+                "local": {
+                    "glucose": "2.1129479416859507", "acetate": "0.0"},
+                "exchange": {
+                    "glucose": "0.0", "acetate": "0.0"},
+                "dFBA": {
+                    "inputs": {
+                        "substrates": ["local"],
+                        "biomass": ["mass"]},
+                    "outputs": {
+                        "substrates": ["exchange"],
+                        "biomass": ["mass"]},
+                    "interval": 1.0,
+                    "address": "local:DynamicFBA",
+                    "config": {
+                        "model_file": "textbook",
+                        "kinetic_params": {
+                            "glucose": ["0.5", "1.0"],
+                            "acetate": ["0.5", "2.0"]},
+                        "substrate_update_reactions": {
+                            "glucose": "EX_glc__D_e",
+                            "acetate": "EX_ac_e"},
+                        "bounds": {
+                            "EX_o2_e": {
+                                "lower": "-2.0",
+                                "upper": "!nil"},
+                            "ATPM": {
+                                "lower": "1.0",
+                                "upper": "1.0"}}},
+                    "shared": {}
                 }
+            },
+        },
+        "global_time": "0.0",
+        "particle_movement": {
+            '_type': 'process',
+            "inputs": {
+                "particles": ["particles"],
+                "fields": ["fields"]},
+            "outputs": {
+                "particles": ["particles"],
+                "fields": ["fields"]},
+            "interval": 1.0,
+            "address": "local:Particles",
+            "config": {},
+        },
+        "fields": {
+            "glucose": {
+                "list": [
+                    [
+                        6.682473038698228,
+                        6.138508047074471,
+                        5.932822055376635,
+                        1.2275655546440918,
+                        7.184289576021444,
+                        5.802540321285436,
+                        3.158370346023715,
+                        6.191878825605585,
+                        7.417057892118427,
+                        9.619194357104389
+                    ],
+                    [
+                        7.384059587748178,
+                        8.640811575012702,
+                        2.1129479416859507,
+                        3.1057148920618385,
+                        8.05289155553335,
+                        4.399086558257299,
+                        7.193948745260049,
+                        5.035688862165517,
+                        5.219923411699781,
+                        4.539653707209219
+                    ],
+                    [
+                        1.9082739815105203,
+                        8.99864529956811,
+                        6.5195511089756675,
+                        1.957101992521509,
+                        3.1907575508941806,
+                        4.5623876367245195,
+                        9.68212403622312,
+                        4.419905700021853,
+                        8.71921956750521,
+                        8.163620432115913
+                    ],
+                    [
+                        9.478709499822921,
+                        8.675323729741326,
+                        4.226239950967384,
+                        1.6634413475982608,
+                        4.2399161776694365,
+                        1.8032704088212483,
+                        8.029077191030485,
+                        3.5987760418726706,
+                        1.0827071604629657,
+                        4.939077862941639
+                    ],
+                    [
+                        2.2055610319311745,
+                        8.052040372657313,
+                        5.325939740703682,
+                        5.915877670139153,
+                        9.335157497844655,
+                        5.8973761480277584,
+                        7.503363745465629,
+                        1.2530328598811558,
+                        7.58703729093062,
+                        2.4382507126877866
+                    ]
+                ],
+                "data": "float",
+                "shape": [
+                    5,
+                    10
+                ]
+            },
+            "acetate": {
+                "list": [
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                ],
+                "data": "float",
+                "shape": [
+                    5,
+                    10
+                ]
             }
+        }
     }
     composition = {
         'particles': {
