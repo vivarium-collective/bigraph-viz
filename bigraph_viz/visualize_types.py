@@ -121,7 +121,15 @@ def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, const
                  labelloc="t", fontsize=port_label_size)
 
 # Add a node to the graph with optional value/type
-def add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits):
+def add_node_to_graph(
+    graph,
+    node,
+    state_node_spec,
+    show_values,
+    show_types,
+    significant_digits,
+    type_char_limit,
+):
     """
     Add a state node to the Graphviz graph.
 
@@ -137,6 +145,7 @@ def add_node_to_graph(graph, node, state_node_spec, show_values, show_types, sig
     node_name = str(node_path)
     label = node_path[-1]
     label_info = ''
+    type_char_limit = type_char_limit or 20
 
     if show_values and (val := node.get('value')) is not None:
         if isinstance(val, float):
@@ -144,7 +153,7 @@ def add_node_to_graph(graph, node, state_node_spec, show_values, show_types, sig
         label_info += f":{val}"
 
     if show_types and (typ := node.get('type')):
-        label_info += f"<br/>[{typ if len(typ) <= 20 else '...'}]"
+        label_info += f"<br/>[{typ if len(typ) <= type_char_limit else '...'}]"
 
     full_label = make_label(label + label_info) if label_info else make_label(label)
     graph.attr('node', **state_node_spec)
@@ -170,6 +179,7 @@ def get_graphviz_fig(
     undirected_edges=False,
     show_values=False,
     show_types=False,
+    type_char_limit=50,
     port_labels=True,
     port_label_size='10pt',
     invisible_edges=None,
@@ -318,6 +328,7 @@ def get_graphviz_fig(
             name = add_node_to_graph(
                 graph, node, state_node_spec,
                 show_values, show_types, significant_digits,
+                type_char_limit,
             )
             node_names.append(name)
 
