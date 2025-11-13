@@ -128,6 +128,7 @@ def add_node_to_graph(
     show_values,
     show_types,
     significant_digits,
+    value_char_limit,
     type_char_limit,
 ):
     """
@@ -145,19 +146,35 @@ def add_node_to_graph(
     node_name = str(node_path)
     label = node_path[-1]
     label_info = ''
+    value_char_limit = value_char_limit or 20
     type_char_limit = type_char_limit or 20
 
+    rows = [label]  # the node's name, already plain text
+
+    # Value row
     if show_values and (val := node.get('value')) is not None:
         if isinstance(val, float):
             val = int(val) if val.is_integer() else round(val, significant_digits)
-        label_info += f":{val}"
+        val_str = str(val)
+        if len(val_str) > value_char_limit:
+            val_str = val_str[:value_char_limit] + "…"
+        rows.append(f"<FONT POINT-SIZE='10' COLOR='gray30'>value: {val_str}</FONT>")
 
+    # Type row
     if show_types and (typ := node.get('type')):
-        label_info += f"<br/>[{typ if len(typ) <= type_char_limit else '...'}]"
+        typ_str = str(typ)
+        if len(typ_str) > type_char_limit:
+            typ_str = typ_str[:type_char_limit] + "…"
+        rows.append(f"<FONT POINT-SIZE='10' COLOR='gray40'>type: {typ_str}</FONT>")
 
-    full_label = make_label(label + label_info) if label_info else make_label(label)
+    html_label = "<<TABLE BORDER='0' CELLBORDER='0' CELLSPACING='0'>"
+    for r in rows:
+        html_label += f"<TR><TD>{r}</TD></TR>"
+    html_label += "</TABLE>>"
+
+    # full_label = make_label(label + label_info) if label_info else make_label(label)
     graph.attr('node', **state_node_spec)
-    graph.node(node_name, label=full_label)
+    graph.node(node_name, label=html_label)
     return node_name
 
 # make the Graphviz figure
@@ -179,6 +196,7 @@ def get_graphviz_fig(
     undirected_edges=False,
     show_values=False,
     show_types=False,
+    value_char_limit=20,
     type_char_limit=50,
     port_labels=True,
     port_label_size='10pt',
@@ -222,14 +240,25 @@ def get_graphviz_fig(
     graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi,
                ratio=aspect_ratio, splines='true')
 
+    # Use the same label_margin parameter, but circles get a smaller
+    # effective margin so they don't balloon visually.
+    state_margin = str(float(label_margin) * 0.1)
+    process_margin = label_margin
+
     # Node styles
     state_node_spec = {
-        'shape': 'circle', 'penwidth': '2', 'constraint': 'false',
-        'margin': label_margin, 'fontsize': node_label_size,
+        'shape': 'circle',
+        'penwidth': '2',
+        'constraint': 'false',
+        'margin': state_margin,
+        'fontsize': node_label_size,
     }
     process_node_spec = {
-        'shape': 'box', 'penwidth': '2', 'constraint': 'false',
-        'margin': label_margin, 'fontsize': process_label_size,
+        'shape': 'box',
+        'penwidth': '2',
+        'constraint': 'false',
+        'margin': process_margin,
+        'fontsize': process_label_size,
     }
 
     # Edge styles
@@ -328,7 +357,7 @@ def get_graphviz_fig(
             name = add_node_to_graph(
                 graph, node, state_node_spec,
                 show_values, show_types, significant_digits,
-                type_char_limit,
+                value_char_limit, type_char_limit,
             )
             node_names.append(name)
 
