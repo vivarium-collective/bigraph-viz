@@ -152,6 +152,11 @@ def add_node_to_graph(graph, node, state_node_spec, show_values, show_types, sig
     return node_name
 
 # make the Graphviz figure
+import os
+from collections import defaultdict
+import graphviz
+
+
 def get_graphviz_fig(
     graph_dict,
     label_margin='0.05',
@@ -175,45 +180,57 @@ def get_graphviz_fig(
     collapse_redundant_processes=False,
 ):
     """
-    Generate a Graphviz Digraph from a graph_dict describing a simulation architecture.
+    Generate a Graphviz Digraph from a graph_dict describing a simulation bigraph.
 
-    Parameters:
-        graph_dict: dict
-            Dictionary describing nodes and edges of a simulation bigraph.
-        collapse_redundant_processes: bool
-            Collapse processes with identical port wiring into a single node.
-        All other parameters configure visual style.
+    Parameters
+    ----------
+    graph_dict : dict
+        Dictionary describing nodes and edges of a simulation bigraph.
+    collapse_redundant_processes : bool | str | Iterable | dict
+        Controls collapsing of processes that share identical port wiring:
 
-    Returns:
-        graphviz.Digraph
-            Graphviz representation of the graph.
+        - False / None        : collapse no processes
+        - True or "all"       : collapse all redundant processes
+        - Iterable            : collapse only processes matching the selectors
+        - {"exclude": it}     : collapse all redundant processes except those
+                                matching selectors in `it`
+
+        A selector can be:
+          * str   : matches the leaf process name or str(path)
+          * tuple : matches the exact process path
+
+    Returns
+    -------
+    graphviz.Digraph
     """
-    import difflib
-    from collections import defaultdict
 
     invisible_edges = invisible_edges or []
     node_groups = node_groups or []
     process_label_size = process_label_size or node_label_size
 
     graph = graphviz.Digraph(name='bigraph', engine='dot')
-    graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi, ratio=aspect_ratio, splines='true')
+    graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi,
+               ratio=aspect_ratio, splines='true')
 
-    # Define node styles
+    # Node styles
     state_node_spec = {
         'shape': 'circle', 'penwidth': '2', 'constraint': 'false',
-        'margin': label_margin, 'fontsize': node_label_size
+        'margin': label_margin, 'fontsize': node_label_size,
     }
     process_node_spec = {
         'shape': 'box', 'penwidth': '2', 'constraint': 'false',
-        'margin': label_margin, 'fontsize': process_label_size
+        'margin': label_margin, 'fontsize': process_label_size,
     }
 
-    # Define edge styles
+    # Edge styles
     edge_styles = {
-        'input': {'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'forward'},
-        'output': {'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'back'},
-        'bidirectional': {'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal', 'arrowsize': '1.0', 'dir': 'both'},
-        'place': {'arrowhead': 'none', 'penwidth': '2'}
+        'input': {'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal',
+                  'arrowsize': '1.0', 'dir': 'forward'},
+        'output': {'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal',
+                   'arrowsize': '1.0', 'dir': 'back'},
+        'bidirectional': {'style': 'dashed', 'penwidth': '1', 'arrowhead': 'normal',
+                          'arrowsize': '1.0', 'dir': 'both'},
+        'place': {'arrowhead': 'none', 'penwidth': '2'},
     }
     if undirected_edges:
         for spec in edge_styles.values():
@@ -221,90 +238,185 @@ def get_graphviz_fig(
 
     node_names = []
 
+    # -------- collapse configuration ----------------------------------------
+
+    def normalize_collapse_arg(arg):
+        """
+        Return (mode, selectors) where mode is:
+          'none'       : collapse nothing
+          'all'        : collapse all redundant processes
+          'subset'     : collapse only selected processes
+          'all_except' : collapse all except selected processes
+        """
+        if arg is False or arg is None:
+            return 'none', set()
+
+        if arg is True or arg == 'all':
+            return 'all', set()
+
+        if isinstance(arg, dict) and 'exclude' in arg:
+            try:
+                selectors = set(arg['exclude'])
+            except TypeError:
+                selectors = {arg['exclude']}
+            return 'all_except', selectors
+
+        # Iterable or single selector ⇒ subset
+        try:
+            selectors = set(arg)
+        except TypeError:
+            selectors = {arg}
+        return 'subset', selectors
+
+    collapse_mode, collapse_selectors = normalize_collapse_arg(
+        collapse_redundant_processes
+    )
+
+    def process_matches_selector(entry, selector):
+        """Check if a process entry matches a single selector."""
+        path, path_str, name = entry
+
+        if isinstance(selector, (tuple, list)):
+            return tuple(selector) == tuple(path)
+
+        return selector == name or selector == path_str
+
+    def process_is_selected(entry):
+        """Return True if this process is eligible to be collapsed."""
+        if collapse_mode == 'all':
+            return True
+        if collapse_mode == 'none':
+            return False
+        if not collapse_selectors:
+            return collapse_mode == 'all'
+
+        matches = any(
+            process_matches_selector(entry, sel)
+            for sel in collapse_selectors
+        )
+
+        if collapse_mode == 'subset':
+            return matches
+        if collapse_mode == 'all_except':
+            return not matches
+        return False
+
+    # -------- core helpers --------------------------------------------------
+
     def get_name_template(names):
-        """Create a generalized name with wildcards for collapsed process names."""
+        """Create a generalized label for collapsed process names."""
         if len(names) == 1:
             return names[0]
-        import re
         prefix = os.path.commonprefix(names)
         suffix = os.path.commonprefix([n[::-1] for n in names])[::-1]
-        wildcard_middle = '*' if prefix != names[0] or suffix != names[0] else ''
-        return f"{prefix}{wildcard_middle}{suffix}"
+        middle = '*' if prefix != names[0] or suffix != names[0] else ''
+        return f"{prefix}{middle}{suffix}"
 
     def add_state_nodes():
         graph.attr('node', **state_node_spec)
         for node in graph_dict['state_nodes']:
-            name = add_node_to_graph(graph, node, state_node_spec, show_values, show_types, significant_digits)
+            name = add_node_to_graph(
+                graph, node, state_node_spec,
+                show_values, show_types, significant_digits,
+            )
             node_names.append(name)
 
     def add_process_nodes():
-        """Add process nodes to the graph, with optional collapse of redundant processes."""
+        """
+        Add process nodes, with optional collapse of redundant ones
+        according to collapse_mode and collapse_selectors.
+        """
         graph.attr('node', **process_node_spec)
         process_fingerprints = defaultdict(list)
 
-        # Build fingerprints for each process based on edge connectivity
+        # Group processes by connectivity "fingerprint"
         for node in graph_dict['process_nodes']:
             node_path = node['path']
             path_str = str(node_path)
             node_name = node_path[-1]
 
-            fingerprint = []
-            for group, tag in [('input_edges', 'in'), ('output_edges', 'out'), ('bidirectional_edges', 'both')]:
+            fp = []
+            for group, tag in [
+                ('input_edges', 'in'),
+                ('output_edges', 'out'),
+                ('bidirectional_edges', 'both'),
+            ]:
                 for edge in graph_dict.get(group, []):
                     if edge['edge_path'] == node_path:
-                        fingerprint.append((tag, edge['port'], str(edge.get('target_path'))))
-            fingerprint = tuple(sorted(fingerprint))
+                        fp.append((tag, edge['port'], str(edge.get('target_path'))))
+            fingerprint = tuple(sorted(fp))
             process_fingerprints[fingerprint].append((node_path, path_str, node_name))
 
         collapse_map = {}
 
-        # Only collapse if flag is enabled
-        if collapse_redundant_processes:
-            for fingerprint, entries in process_fingerprints.items():
-                names = [entry[2] for entry in entries]
-                template = get_name_template(names)
-                count = len(entries)
-                label = template if count == 1 else f"{template} (x{count})"
-                representative = str(entries[0][0])
-                graph.node(representative, label=label)
-                node_names.append(representative)
-                for path, path_str, _ in entries:
-                    if str(path) != representative:
-                        collapse_map[str(path)] = representative
-        else:
-            # Add all process nodes without collapsing
-            for entries in process_fingerprints.values():
+        # For each fingerprint group, possibly collapse some or all
+        for fingerprint, entries in process_fingerprints.items():
+            selected = [e for e in entries if process_is_selected(e)]
+
+            if len(selected) > 1:
+                # Create collapsed representative
+                names = [e[2] for e in selected]
+                label = f"{get_name_template(names)} (x{len(selected)})"
+                rep_path = selected[0][0]
+                rep_str = str(rep_path)
+
+                graph.node(rep_str, label=label)
+                node_names.append(rep_str)
+
+                # Map collapsed entries (except representative)
+                for path, path_str, _ in selected[1:]:
+                    collapse_map[str(path)] = rep_str
+
+                # Draw remaining (unselected) entries individually
+                remaining = [e for e in entries if e not in selected]
+                for path, path_str, name in remaining:
+                    graph.node(path_str, label=name)
+                    node_names.append(path_str)
+            else:
+                # No effective collapse here: draw all individually
                 for path, path_str, name in entries:
                     graph.node(path_str, label=name)
                     node_names.append(path_str)
 
-        return [entry[0] for entries in process_fingerprints.values() for entry in entries], collapse_map
+        # Return original process paths and collapse map
+        return [
+            entry[0]
+            for entries in process_fingerprints.values()
+            for entry in entries
+        ], collapse_map
 
     def rewrite_collapsed_edges(collapse_map):
+        """Update edge endpoints to point to collapsed representatives."""
         removed_keys = set(collapse_map.keys())
-        for group in ['input_edges', 'output_edges', 'bidirectional_edges', 'disconnected_input_edges',
-                      'disconnected_output_edges']:
+        if not removed_keys:
+            return
+
+        for group in [
+            'input_edges',
+            'output_edges',
+            'bidirectional_edges',
+            'disconnected_input_edges',
+            'disconnected_output_edges',
+        ]:
             edges = graph_dict.get(group, [])
-            new_edges = []
-            seen = set()
+            new_edges, seen = [], set()
             for edge in edges:
                 key = str(edge['edge_path'])
                 if key in collapse_map:
                     edge['edge_path'] = collapse_map[key]
                 if key not in removed_keys:
-                    # Build a tuple that uniquely identifies this edge after collapse
                     edge_key = (
                         group,
                         str(edge['edge_path']),
                         edge.get('port'),
-                        str(edge.get('target_path'))
+                        str(edge.get('target_path')),
                     )
                     if edge_key not in seen:
                         seen.add(edge_key)
                         new_edges.append(edge)
             graph_dict[group] = new_edges
 
-        # Remove any place_edges associated with collapsed processes
+        # Remove place edges involving removed processes
         new_place_edges = []
         for edge in graph_dict.get('place_edges', []):
             parent_str = str(edge['parent'])
@@ -324,17 +436,31 @@ def get_graphviz_fig(
                 else:
                     style, constraint = style_key, 'true'
                 graph.attr('edge', **edge_styles[style])
-                plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint=constraint)
+                plot_edges(
+                    graph, edge, port_labels, port_label_size,
+                    state_node_spec, constraint=constraint,
+                )
 
     def add_place_edges(process_paths):
-        for edge in graph_dict['place_edges']:
-            visible = not ((remove_process_place_edges and edge['child'] in process_paths) or (edge in invisible_edges))
+        for edge in graph_dict.get('place_edges', []):
+            visible = not (
+                (remove_process_place_edges and edge['child'] in process_paths)
+                or (edge in invisible_edges)
+            )
             graph.attr('edge', style='filled' if visible else 'invis')
-            graph.edge(str(edge['parent']), str(edge['child']), **edge_styles['place'], constraint='true')
+            graph.edge(
+                str(edge['parent']),
+                str(edge['child']),
+                **edge_styles['place'],
+                constraint='true',
+            )
 
     def add_disconnected_edges():
-        for direction, style_key in [('disconnected_input_edges', 'input'), ('disconnected_output_edges', 'output')]:
-            for edge in graph_dict[direction]:
+        for direction, style_key in [
+            ('disconnected_input_edges', 'input'),
+            ('disconnected_output_edges', 'output'),
+        ]:
+            for edge in graph_dict.get(direction, []):
                 path = edge['edge_path']
                 port = edge['port']
                 suffix = '_input' if 'input' in direction else '_output'
@@ -342,7 +468,10 @@ def get_graphviz_fig(
                 graph.node(dummy, label='', style='invis', width='0')
                 edge['target_path'] = dummy
                 graph.attr('edge', **edge_styles[style_key])
-                plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, constraint='true')
+                plot_edges(
+                    graph, edge, port_labels, port_label_size,
+                    state_node_spec, constraint='true',
+                )
 
     def rank_node_groups():
         for group in node_groups:
@@ -366,12 +495,17 @@ def get_graphviz_fig(
             for name, color in node_fill_colors.items():
                 graph.node(str(name), color=color, style='filled')
 
+    # -------- build graph ---------------------------------------------------
+
     add_state_nodes()
     process_paths, collapse_map = add_process_nodes()
-    if collapse_redundant_processes:
-        rewrite_collapsed_edges(collapse_map)
+    rewrite_collapsed_edges(collapse_map)
     add_place_edges(process_paths)
-    add_edges([('input_edges', 'input'), ('output_edges', 'output'), ('bidirectional_edges', 'bidirectional')])
+    add_edges([
+        ('input_edges', 'input'),
+        ('output_edges', 'output'),
+        ('bidirectional_edges', 'bidirectional'),
+    ])
     add_state_nodes()
     add_disconnected_edges()
     rank_node_groups()
@@ -457,6 +591,7 @@ def graphviz_any(core, schema, state, path, options, graph):
 
 def graphviz_edge(core, schema, state, path, options, graph):
     """Visualize a process node with input/output/bridge wiring."""
+    schema = schema or {}
     node_spec = {
         'name': path[-1],
         'path': path,
@@ -528,7 +663,6 @@ def graphviz_map(core, schema, state, path, options, graph):
                     graph
                 )
     return graph
-
 
 def graphviz_composite(core, schema, state, path, options, graph):
     """Visualize composite nodes by recursing into their internal structure."""
