@@ -23,3 +23,5 @@ out/
 .ipynb_checkpoints/
 devenv.lock
 .devenv*
+uv.lock
+
