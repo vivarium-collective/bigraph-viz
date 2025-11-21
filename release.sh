@@ -19,10 +19,15 @@ fi
 # Check version in pyproject.toml matches the requested version
 # ----------------------------------------------------------------------
 pyproject_version="$(python - <<'PY'
-import tomllib
+try:
+    import tomllib
+except ModuleNotFoundError:
+    import toml as tomllib  # fallback if tomllib is missing
+
+import sys
 from pathlib import Path
 
-data = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+data = tomllib.loads(Path("pyproject.toml").read_text())
 print(data["project"]["version"])
 PY
 )"
