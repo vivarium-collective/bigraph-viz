@@ -9,6 +9,7 @@ import numpy as np
 from bigraph_schema import TypeSystem, is_schema_key, hierarchy_depth
 from bigraph_viz.dict_utils import absolute_path
 
+
 # Constants
 PROCESS_SCHEMA_KEYS = [
     'config', 'address', 'interval', 'inputs', 'outputs', 'instance', 'bridge']
@@ -183,12 +184,6 @@ def add_node_to_graph(
     return node_name
 
 
-# make the Graphviz figure
-import os
-from collections import defaultdict
-import graphviz
-
-
 def get_graphviz_fig(
         graph_dict,
         label_margin='0.05',
@@ -212,6 +207,8 @@ def get_graphviz_fig(
         node_fill_colors=None,
         node_groups=None,
         collapse_redundant_processes=False,
+        collapse_paths=None,
+        remove_paths=None,
 ):
     """
     Generate a Graphviz Digraph from a graph_dict describing a simulation bigraph.
@@ -220,6 +217,7 @@ def get_graphviz_fig(
     ----------
     graph_dict : dict
         Dictionary describing nodes and edges of a simulation bigraph.
+
     collapse_redundant_processes : bool | str | Iterable | dict
         Controls collapsing of processes that share identical port wiring:
 
@@ -232,6 +230,24 @@ def get_graphviz_fig(
         A selector can be:
           * str   : matches the leaf process name or str(path)
           * tuple : matches the exact process path
+
+    collapse_paths : Iterable[Iterable[str]] | Iterable[str] | str | None
+        Hierarchical paths to collapse as subtrees. For each prefix path P,
+        all nodes whose path starts with P and is strictly deeper than P are
+        removed, while the node at P is kept.
+
+        Example:
+            collapse_paths=[['particles']]
+            keeps:   ['particles']
+            removes: ['particles', 'abc'], ['particles', 'abc', 'def'], ...
+
+    remove_paths : Iterable[Iterable[str]] | Iterable[str] | str | None
+        Hierarchical paths to fully remove. For each prefix path P,
+        nodes whose path starts with P (including P itself) are removed.
+
+        Example:
+            remove_paths=[['particles']]
+            removes: ['particles'], ['particles', 'abc'], ...
 
     Returns
     -------
@@ -283,7 +299,7 @@ def get_graphviz_fig(
 
     node_names = []
 
-    # -------- collapse configuration ----------------------------------------
+    # -------- collapse configuration: redundant processes -------------------
 
     def normalize_collapse_arg(arg):
         """
@@ -345,6 +361,130 @@ def get_graphviz_fig(
         if collapse_mode == 'all_except':
             return not matches
         return False
+
+    # -------- collapse/remove configuration: hierarchical subtrees ---------
+
+    def normalize_prefixes(arg):
+        """
+        Normalize a 'paths' argument into a list of tuple prefixes.
+
+        Examples:
+          None                 -> []
+          'particles'          -> [('particles',)]
+          ['particles']        -> [('particles',)]
+          [['particles']]      -> [('particles',)]
+          [['a'], ['b', 'c']]  -> [('a',), ('b', 'c')]
+        """
+        if not arg:
+            return []
+
+        # Strings are treated as single-segment paths
+        if isinstance(arg, (str, bytes)):
+            return [(arg,)]
+
+        # Try to interpret it as an iterable
+        try:
+            items = list(arg)
+        except TypeError:
+            return [(arg,)]
+
+        if not items:
+            return []
+
+        # If first element is not a list/tuple, treat whole thing as one path
+        if not isinstance(items[0], (list, tuple)):
+            return [tuple(items)]
+
+        # Otherwise each element is a path
+        prefixes = []
+        for p in items:
+            if isinstance(p, (list, tuple)):
+                prefixes.append(tuple(p))
+            else:
+                prefixes.append((p,))
+        return prefixes
+
+    collapsed_prefixes = normalize_prefixes(collapse_paths)
+    removed_prefixes = normalize_prefixes(remove_paths)
+
+    def path_is_hidden(path):
+        """
+        Return True if this path should be removed from the graph_dict
+        based on collapse/remove prefixes.
+
+        - remove_paths: hide root AND descendants
+        - collapse_paths: hide ONLY descendants, keep root
+        """
+        # If paths are always lists/tuples, you can assert here.
+        if isinstance(path, str):
+            # If you ever represent paths as strings, customize as needed.
+            # For now, treat them as non-hierarchical => never auto-hide.
+            return False
+
+        path_t = tuple(path)
+
+        # 1) Removal: root + subtree
+        for pref in removed_prefixes:
+            if path_t[:len(pref)] == pref:
+                return True
+
+        # 2) Collapse: only descendants
+        for pref in collapsed_prefixes:
+            if len(path_t) > len(pref) and path_t[:len(pref)] == pref:
+                return True
+
+        return False
+
+    def prune_subtrees():
+        """
+        Remove all nodes and edges that should be hidden according to
+        collapse_paths and remove_paths.
+
+        - For removed_prefixes: delete root and descendants.
+        - For collapsed_prefixes: delete descendants only (root kept).
+        """
+        if not collapsed_prefixes and not removed_prefixes:
+            return
+
+        # State and process nodes
+        graph_dict['state_nodes'] = [
+            n for n in graph_dict.get('state_nodes', [])
+            if not path_is_hidden(n['path'])
+        ]
+        graph_dict['process_nodes'] = [
+            n for n in graph_dict.get('process_nodes', [])
+            if not path_is_hidden(n['path'])
+        ]
+
+        def filter_edge_list(edges):
+            new_edges = []
+            for e in edges:
+                if path_is_hidden(e['edge_path']):
+                    continue
+                tpath = e.get('target_path')
+                if isinstance(tpath, (list, tuple)) and path_is_hidden(tpath):
+                    continue
+                new_edges.append(e)
+            return new_edges
+
+        for group in [
+            'input_edges',
+            'output_edges',
+            'bidirectional_edges',
+            'disconnected_input_edges',
+            'disconnected_output_edges',
+        ]:
+            if group in graph_dict:
+                graph_dict[group] = filter_edge_list(graph_dict[group])
+
+        # Place edges
+        if 'place_edges' in graph_dict:
+            new_place_edges = []
+            for e in graph_dict['place_edges']:
+                if path_is_hidden(e['parent']) or path_is_hidden(e['child']):
+                    continue
+                new_place_edges.append(e)
+            graph_dict['place_edges'] = new_place_edges
 
     # -------- core helpers --------------------------------------------------
 
@@ -411,7 +551,7 @@ def get_graphviz_fig(
 
                 # Map collapsed entries (except representative)
                 for path, path_str, _ in selected[1:]:
-                    collapse_map[str(path)] = rep_str
+                    collapse_map[str(path)] = rep_path
 
                 # Draw remaining (unselected) entries individually
                 remaining = [e for e in entries if e not in selected]
@@ -490,8 +630,8 @@ def get_graphviz_fig(
     def add_place_edges(process_paths):
         for edge in graph_dict.get('place_edges', []):
             visible = not (
-                    (remove_process_place_edges and edge['child'] in process_paths)
-                    or (edge in invisible_edges)
+                (remove_process_place_edges and edge['child'] in process_paths)
+                or (edge in invisible_edges)
             )
             graph.attr('edge', style='filled' if visible else 'invis')
             graph.edge(
@@ -548,6 +688,9 @@ def get_graphviz_fig(
 
     # -------- build graph ---------------------------------------------------
 
+    # First, apply hierarchical collapse/remove rules
+    prune_subtrees()
+
     add_state_nodes()
     process_paths, collapse_map = add_process_nodes()
     rewrite_collapsed_edges(collapse_map)
@@ -557,7 +700,8 @@ def get_graphviz_fig(
         ('output_edges', 'output'),
         ('bidirectional_edges', 'bidirectional'),
     ])
-    add_state_nodes()
+    # TODO: the second add_state_nodes() looks redundant
+    # add_state_nodes()
     add_disconnected_edges()
     rank_node_groups()
     apply_custom_colors()
@@ -1567,19 +1711,19 @@ def test_nested_particle_process():
 
 
 if __name__ == '__main__':
-    # test_simple_store()
-    # test_forest()
-    # test_nested_composite()
-    # test_graphviz()
-    # test_bigraph_cell()
-    # test_bio_schema()
-    # test_flat_composite()
-    # test_multi_processes()
-    # test_nested_processes()
-    # test_cell_hierarchy()
-    # test_multiple_disconnected_ports()
-    # test_composite_process()
-    # test_bidirectional_edges()
-    # test_array_paths()
-    # test_complex_bigraph()
+    test_simple_store()
+    test_forest()
+    test_nested_composite()
+    test_graphviz()
+    test_bigraph_cell()
+    test_bio_schema()
+    test_flat_composite()
+    test_multi_processes()
+    test_nested_processes()
+    test_cell_hierarchy()
+    test_multiple_disconnected_ports()
+    test_composite_process()
+    test_bidirectional_edges()
+    test_array_paths()
+    test_complex_bigraph()
     test_nested_particle_process()
