@@ -7,8 +7,9 @@ import graphviz
 import numpy as np
 
 from bigraph_schema import TypeSystem, is_schema_key, hierarchy_depth
+from bigraph_schema import Core, BASE_TYPES
 from bigraph_viz.dict_utils import absolute_path
-
+from process_bigraph import allocate_core
 
 # Constants
 PROCESS_SCHEMA_KEYS = [
@@ -739,11 +740,13 @@ def plot_bigraph(
     traversal_kwargs = {k: v for k, v in kwargs.items() if k not in graphviz_sig.parameters}
 
     # Defaults
-    core = core or VisualizeTypes()
+    core = core or allocate_core()
     schema = schema or {}
-    schema, state = core.generate(schema, state)
+    schema, state = core.deserialize(schema, state)
 
-    graph_dict = core.generate_graph_dict(schema, state, (), options=traversal_kwargs)
+    graph_dict = core.call_method(
+        'generate_graph_dict',
+        schema, state, (), options=traversal_kwargs)
 
     return core.plot_graph(
         graph_dict,
@@ -753,6 +756,7 @@ def plot_bigraph(
         options=render_kwargs
     )
 
+    # graph_dict = core.generate_graph_dict(schema, state, (), options=traversal_kwargs)
 
 # Visualize Types
 def graphviz_any(core, schema, state, path, options, graph):
@@ -1143,7 +1147,7 @@ def test_bigraph_cell():
 
 
 def test_bio_schema():
-    core = VisualizeTypes()
+    core = allocate_core()
     b = {
         'environment': {
             'cells': {
@@ -1269,7 +1273,7 @@ def test_nested_processes():
 
 
 def test_cell_hierarchy():
-    core = VisualizeTypes()
+    core = allocate_core()
 
     core.register('concentrations', 'float')
     core.register('sequences', 'float')
@@ -1330,7 +1334,7 @@ def test_cell_hierarchy():
 
 
 def test_multiple_disconnected_ports():
-    core = VisualizeTypes()
+    core = allocate_core()
 
     spec = {
         'process': {
@@ -1355,7 +1359,7 @@ def test_multiple_disconnected_ports():
 
 
 def test_composite_process():
-    core = VisualizeTypes()
+    core = allocate_core()
 
     spec = {
         'composite': {
@@ -1383,7 +1387,7 @@ def test_composite_process():
 
 
 def test_bidirectional_edges():
-    core = VisualizeTypes()
+    core = allocate_core()
 
     spec = {
         'process1': {
@@ -1457,7 +1461,7 @@ def generate_spec_and_schema(n_rows, n_cols):
 
 
 def test_array_paths():
-    core = VisualizeTypes()
+    core = allocate_core()
 
     n_rows, n_cols = 2, 1  # or any desired shape
     spec, schema = generate_spec_and_schema(n_rows, n_cols)
@@ -1471,7 +1475,7 @@ def test_array_paths():
 
 
 def test_complex_bigraph():
-    core = VisualizeTypes()
+    core = allocate_core()
 
     n_rows, n_cols = 6, 6  # or any desired shape
     spec, schema = generate_spec_and_schema(n_rows, n_cols)
@@ -1488,7 +1492,7 @@ def test_complex_bigraph():
 
 
 def test_nested_particle_process():
-    core = VisualizeTypes()
+    core = allocate_core()
 
     state = {
         "particles": {
