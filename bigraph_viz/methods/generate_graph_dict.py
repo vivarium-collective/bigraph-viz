@@ -37,6 +37,9 @@ from process_bigraph import CompositeLink
 from bigraph_viz.dict_utils import absolute_path
 
 
+PROCESS_SCHEMA_KEYS = [
+    'config', 'address', 'interval', 'inputs', 'outputs', 'instance', 'bridge']
+
 # Append a single port wire connection to graph_dict
 
 def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
@@ -167,7 +170,7 @@ def graphviz_link(core, schema: Link, state, path, options, graph):
         'type': core.render(schema)
     }
 
-    if state.get('address') == 'local:composite' and node_spec not in graph['process_nodes']:
+    if state.get('address') == 'local:Composite' and node_spec not in graph['process_nodes']:
         graph['process_nodes'].append(node_spec)
         return graphviz_composite(core, schema, state, path, options, graph)
 

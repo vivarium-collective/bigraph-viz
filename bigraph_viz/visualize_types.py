@@ -938,8 +938,6 @@ def test_forest(core):
 
 
 def test_nested_composite(core):
-    import ipdb; ipdb.set_trace()
-
     state = {
         'environment': {
             '0': {
@@ -980,6 +978,7 @@ def test_nested_composite(core):
                                            'emit': {}},
                                'global_time_precision': None}
                 }}}}
+
     plot_bigraph(
         state,
         core=core,
@@ -1103,7 +1102,8 @@ def test_bio_schema(core):
                 }
             },
             'fields': {},
-            'barriers': {},
+            'barriers': {
+                '_type': 'node'},
             'diffusion': {
                 '_type': 'process',
                 '_inputs': {'fields': 'node'},
@@ -1124,9 +1124,13 @@ def test_bio_schema(core):
 def test_flat_composite(core):
     flat_composite_spec = {
         'store1.1': 'float',
-        'store1.2': 'int',
+        'store1.2': 'integer',
         'process1': {
             '_type': 'process',
+            '_outputs': {
+                'port1': 'node',
+                'port2': 'node',
+            },
             'outputs': {
                 'port1': ['store1.1'],
                 'port2': ['store1.2'],
@@ -1180,9 +1184,13 @@ def test_nested_processes(core):
     nested_process_spec = {
         'store1': {
             'store1.1': 'float',
-            'store1.2': 'int',
+            'store1.2': 'integer',
             'process1': {
                 '_type': 'process',
+                '_inputs': {
+                    'port1': 'node',
+                    'port2': 'node',
+                },
                 'inputs': {
                     'port1': ['store1.1'],
                     'port2': ['store1.2'],
@@ -1190,6 +1198,10 @@ def test_nested_processes(core):
             },
             'process2': {
                 '_type': 'process',
+                '_outputs': {
+                    'port1': 'node',
+                    'port2': 'node',
+                },
                 'outputs': {
                     'port1': ['store1.1'],
                     'port2': ['store1.2'],
@@ -1198,6 +1210,9 @@ def test_nested_processes(core):
         },
         'process3': {
             '_type': 'process',
+            '_inputs': {
+                'port1': 'node',
+            },
             'inputs': {
                 'port1': ['store1'],
             }
@@ -1211,9 +1226,11 @@ def test_nested_processes(core):
 
 
 def test_cell_hierarchy(core):
-    core.register('concentrations', 'float')
-    core.register('sequences', 'float')
-    core.register('membrane', {
+    core.register_type('concentrations', 'float')
+    core.access('concentrations')
+
+    core.register_type('sequences', 'float')
+    core.register_type('membrane', {
         'transporters': 'concentrations',
         'lipids': 'concentrations',
         'transmembrane transport': {
@@ -1227,7 +1244,7 @@ def test_cell_hierarchy(core):
         }
     })
 
-    core.register('cytoplasm', {
+    core.register_type('cytoplasm', {
         'metabolites': 'concentrations',
         'ribosomal complexes': 'concentrations',
         'transcript regulation complex': {
@@ -1238,11 +1255,11 @@ def test_cell_hierarchy(core):
                 'p1': 'concentrations',
                 'p2': 'concentrations'}}})
 
-    core.register('nucleoid', {
+    core.register_type('nucleoid', {
         'chromosome': {
             'genes': 'sequences'}})
 
-    core.register('cell', {
+    core.register_type('cell', {
         'membrane': 'membrane',
         'cytoplasm': 'cytoplasm',
         'nucleoid': 'nucleoid'})
@@ -1307,7 +1324,7 @@ def test_composite_process(core):
             'process1': {
                 '_type': 'process',
                 '_inputs': {'port3': 'node'},
-                '_outputs': {'port4': 'node', },
+                '_outputs': {'port4': 'node'},
                 'inputs': {'port3': ['store1']},
                 'outputs': {'port4': ['store2']}}}}
 
@@ -1319,8 +1336,6 @@ def test_composite_process(core):
 
 
 def test_bidirectional_edges(core):
-    core = allocate_core()
-
     spec = {
         'process1': {
             '_type': 'process',
@@ -1342,6 +1357,20 @@ def test_bidirectional_edges(core):
         core=core,
         filename='bidirectional_edges',
         **plot_settings)
+
+
+class DynamicFBA(Edge):
+    def inputs(self):
+        return {
+            'substrates': 'map[float]',
+        }
+
+
+    def outputs(self):
+        return {
+            'biomass': 'float',
+            'substrates': 'map[float]',
+        }
 
 
 def generate_spec_and_schema(n_rows, n_cols):
@@ -1393,8 +1422,6 @@ def generate_spec_and_schema(n_rows, n_cols):
 
 
 def test_array_paths(core):
-    core = allocate_core()
-
     n_rows, n_cols = 2, 1  # or any desired shape
     spec, schema = generate_spec_and_schema(n_rows, n_cols)
 
@@ -1407,8 +1434,6 @@ def test_array_paths(core):
 
 
 def test_complex_bigraph(core):
-    core = allocate_core()
-
     n_rows, n_cols = 6, 6  # or any desired shape
     spec, schema = generate_spec_and_schema(n_rows, n_cols)
 
@@ -1423,8 +1448,30 @@ def test_complex_bigraph(core):
         **plot_settings)
 
 
+class Particles(Edge):
+    def inputs(self):
+        return {
+            'particles': 'map[particle]',
+            'fields': 'map[array]',
+        }
+
+
+    def outputs(self):
+        return {
+            'particles': 'map[particle]',
+            'fields': 'map[array]',
+        }
+
+
 def test_nested_particle_process(core):
-    core = allocate_core()
+    core.register_type('particle', {
+        'id': 'string',
+        'position': 'tuple[float,float]',
+        'size': 'float',
+        'mass': 'float',
+        'local': 'map[float]',
+        'exchange': 'map[float]'
+    })
 
     state = {
         "particles": {
