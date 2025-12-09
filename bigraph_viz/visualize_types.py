@@ -1393,7 +1393,6 @@ def generate_spec_and_schema(n_rows, n_cols):
                 'inputs': {
                     'substrates': {
                         'acetate': ['..', 'fields', 'acetate', i, j],
-                        # 'biomass': ['..', 'fields', 'biomass', i, j],
                         'glucose': ['..', 'fields', 'glucose', i, j],
                     },
                     'biomass': ['..', 'fields', 'biomass', i, j]
@@ -1401,7 +1400,6 @@ def generate_spec_and_schema(n_rows, n_cols):
                 'outputs': {
                     'substrates': {
                         'acetate': ['..', 'fields', 'acetate', i, j],
-                        # 'biomass': ['..', 'fields', 'biomass', i, j],
                         'glucose': ['..', 'fields', 'glucose', i, j],
                     },
                     'biomass': ['..', 'fields', 'biomass', i, j]
