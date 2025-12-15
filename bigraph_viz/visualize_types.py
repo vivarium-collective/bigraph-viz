@@ -937,7 +937,8 @@ def test_forest(core):
             'v5': {},
         },
     }
-    plot_bigraph(forest, **plot_settings, filename='forest')
+
+    plot_bigraph(forest, **plot_settings, filename='forest', core=core)
 
 
 def test_nested_composite(core):
@@ -1286,6 +1287,7 @@ def test_cell_hierarchy(core):
         schema={'cell': 'cell'},
         core=core,
         filename='cell_hierarchy',
+        show_compiled_state=True,
         **plot_settings)
 
 
@@ -1315,21 +1317,24 @@ def test_multiple_disconnected_ports(core):
 def test_composite_process(core):
     spec = {
         'composite': {
-            '_type': 'composite',
+            '_type': 'process',
             '_inputs': {'port1': 'node'},
             '_outputs': {'port2': 'node'},
+            'address': 'local:Composite',
             'inputs': {'port1': ['external store']},
-            'store1': 'node',
-            'store2': 'node',
-            'bridge': {
-                'inputs': {'port1': ['store1']},
-                'outputs': {'port2': ['store2']}},
-            'process1': {
-                '_type': 'process',
-                '_inputs': {'port3': 'node'},
-                '_outputs': {'port4': 'node'},
-                'inputs': {'port3': ['store1']},
-                'outputs': {'port4': ['store2']}}}}
+            'config': {
+                'state': {
+                    'store1': 'node',
+                    'store2': 'node',
+                    'process1': {
+                        '_type': 'process',
+                        '_inputs': {'port3': 'node'},
+                        '_outputs': {'port4': 'node'},
+                        'inputs': {'port3': ['store1']},
+                        'outputs': {'port4': ['store2']}}},
+                'bridge': {
+                    'inputs': {'port1': ['store1']},
+                    'outputs': {'port2': ['store2']}}}}}
 
     plot_bigraph(
         spec,

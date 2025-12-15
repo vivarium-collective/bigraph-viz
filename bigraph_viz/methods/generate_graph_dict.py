@@ -211,8 +211,8 @@ def graphviz_composite(core, schema, state, path, options, graph):
     """Visualize composite nodes by recursing into their internal structure."""
     graph = graphviz_link(core, schema, state, path, options, graph)
 
-    inner_state = state.get('config', {}).get('state') or state
-    inner_schema = state.get('config', {}).get('composition') or schema
+    inner_state = state.get('config', {}).get('state', {}) # or state
+    inner_schema = state.get('config', {}).get('composition', {}) # or schema
     inner_schema, inner_state = core.deserialize(inner_schema, inner_state)
     # inner_schema, inner_state = core.generate(inner_schema, inner_state)
 
@@ -285,7 +285,7 @@ def graphviz_dict(core, schema, state, path, options, graph):
         for key, value in state.items():
             if not is_schema_key(key):
                 graph = core.call_method('generate_graph_dict',
-                    schema.get(key, Empty()),
+                    schema.get(key, {}),
                     value,
                     path + (key,),
                     options,
@@ -332,7 +332,7 @@ def generate_graph_dict(core, schema, state, path=(), options=None, graph=None):
         'disconnected_input_edges': [],
         'disconnected_output_edges': []}
 
-    if not schema:
+    if schema is None:
         schema = Empty()
 
     return graphviz(
