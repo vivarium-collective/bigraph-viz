@@ -1,0 +1,32 @@
+{
+  "simulator1": {
+    "type": "KISAO:0000500",
+    "inputs": {
+      "model_file": "sed2.MODELFILE",
+      "simulation_settings": "sed2.METHODFILE"
+    },
+    "outputs": {
+      "results_file": "results1"
+    }
+  },
+  "simulator2": {
+    "type": "KISAO:0000500",
+    "inputs": {
+      "model_file": "sed2.MODELFILE",
+      "simulation_settings": "sed2.METHODFILE"
+    },
+    "outputs": {
+      "results_file": "results2"
+    }
+  },
+  "compare": {
+    "type": "KISAO:0000653",
+    "inputs": {
+      "results_file_1": "results1",
+      "results_file_2": "results2"
+    },
+    "outputs": {
+      "comparison_report": "sed2.RESULTSTYPE"
+    }
+  }
+}
