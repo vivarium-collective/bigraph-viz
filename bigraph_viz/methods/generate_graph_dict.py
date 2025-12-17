@@ -255,7 +255,7 @@ def graphviz_node(core, schema: Node, state, path, options, graph):
                     attr = getattr(schema, key)
 
                 graph = core.call_method('generate_graph_dict',
-                    schema.get(key, {}),
+                    attr,
                     value,
                     path + (key,),
                     options,
