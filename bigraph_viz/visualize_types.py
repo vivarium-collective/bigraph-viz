@@ -955,7 +955,7 @@ def test_nested_composite(core):
                         'environment': ['..']},
                     'interval': 1.0,
                     'address': 'local:Composite',
-                    'config': {'_type': 'quote',
+                    'config': {'_type': 'node',
                                'state': {'grow': {'_type': 'process',
                                                   'address': 'local:Grow',
                                                   'config': {'rate': 0.03},
@@ -1680,7 +1680,7 @@ def test_nested_particle_process(core):
             '_value': {
                 'dFBA': {'_type': 'process',
                          'address': {'_type': 'string', '_default': 'local:DynamicFBA'},
-                         'config': {'_type': 'quote', '_default': {
+                         'config': {'_type': 'node', '_default': {
                              'model_file': 'textbook',
                              'kinetic_params': {'glucose': (0.5, 1), 'acetate': (0.5, 2)},
                              'substrate_update_reactions': {
