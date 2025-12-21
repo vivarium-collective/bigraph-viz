@@ -248,13 +248,44 @@ def get_graphviz_fig(
     )
 
     def process_matches_selector(entry, selector):
-        """Check if a process entry matches a single selector."""
+        """
+        Match a process entry against a selector.
+
+        Entry is (path, path_str, name) where:
+          - path is a list/tuple like ('particles', 'id123', 'glucose eater')
+          - path_str is str(path)
+          - name is leaf node name
+
+        Selector forms:
+          - tuple/list: exact path match OR (if len==1) match any path segment OR (if len>1) match prefix
+          - str: match leaf name OR full path string OR any path segment
+        """
         path, path_str, name = entry
+        path_t = tuple(path)
 
+        # tuple/list selectors: exact, prefix, or "segment mark" if length 1
         if isinstance(selector, (tuple, list)):
-            return tuple(selector) == tuple(path)
+            sel_t = tuple(selector)
 
-        return selector == name or selector == path_str
+            # exact match
+            if sel_t == path_t:
+                return True
+
+            # single-element tuple means "mark": appears anywhere in the path
+            if len(sel_t) == 1:
+                return sel_t[0] in path_t
+
+            # multi-element tuple: treat as a prefix path selector
+            if len(sel_t) <= len(path_t) and path_t[:len(sel_t)] == sel_t:
+                return True
+
+            return False
+
+        # string selectors: leaf name, exact stringified path, or any segment match
+        if isinstance(selector, str):
+            return selector == name or selector == path_str or selector in path_t
+
+        return False
 
     def process_is_selected(entry):
         """Return True if this process is eligible to be collapsed."""
