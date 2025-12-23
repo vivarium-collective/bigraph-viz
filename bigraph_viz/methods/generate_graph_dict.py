@@ -40,6 +40,26 @@ from bigraph_viz.dict_utils import absolute_path
 PROCESS_SCHEMA_KEYS = [
     'config', 'address', 'interval', 'inputs', 'outputs', 'instance', 'bridge']
 
+
+def add_place_edge(graph, parent, child):
+    # 1) Add place edge
+    place_edges = graph.setdefault('place_edges', [])
+    if not any(e['parent'] == parent and e['child'] == child for e in place_edges):
+        place_edges.append({'parent': parent, 'child': child})
+
+    # 2) Ensure a state node exists for the child
+    state_nodes = graph.setdefault('state_nodes', [])
+    child_path = tuple(child)
+
+    if not any(tuple(n['path']) == child_path for n in state_nodes):
+        state_nodes.append({
+            'name': child_path[-1],
+            'path': child_path,
+            'value': None,     # or real value if you have it
+            'type': None,      # or a schema-derived type if known
+        })
+
+
 def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
     """
     Add a connection from a port to its wire target.
@@ -63,12 +83,7 @@ def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
 
     # if wire points to an internal attribute, add a place edge
     if len(target_path) > 1:
-        parent = target_path[:-1]
-        child = target_path
-
-        place_edges = graph_dict.setdefault('place_edges', [])
-        if not any(e['parent'] == parent and e['child'] == child for e in place_edges):
-            place_edges.append({'parent': parent, 'child': child})
+        add_place_edge(graph_dict, target_path[:-1], target_path)
 
     # add the edge
     edge_key = 'input_edges' if schema_key == 'inputs' else 'output_edges'
@@ -154,7 +169,7 @@ def graphviz_map(core, schema, state, path, options, graph):
 
     # Add place edge to parent
     if len(path) > 1:
-        graph['place_edges'].append({'parent': path[:-1], 'child': path})
+        add_place_edge(graph, path[:-1], path)
 
     if isinstance(state, dict):
         for key, value in state.items():
@@ -209,7 +224,7 @@ def graphviz_link(core, schema: Link, state, path, options, graph):
     graph['output_edges'] = [e for k, e in output_set.items() if k not in shared_keys]
 
     if len(path) > 1:
-        graph['place_edges'].append({'parent': path[:-1], 'child': path})
+        add_place_edge(graph, path[:-1], path)
 
     if show_process_config:
         config = state.get('config', {})
@@ -233,7 +248,7 @@ def graphviz_composite(core, schema, state, path, options, graph):
     # inner_schema, inner_state = core.generate(inner_schema, inner_state)
 
     if len(path) > 1:
-        graph['place_edges'].append({'parent': path[:-1], 'child': path})
+        add_place_edge(graph, path[:-1], path)
 
     for key, value in inner_state.items():
         if not is_schema_key(key) and key not in PROCESS_SCHEMA_KEYS:
@@ -261,7 +276,7 @@ def graphviz_node(core, schema: Node, state, path, options, graph):
         graph['state_nodes'].append(node_spec)
 
     if len(path) > 1:
-        graph['place_edges'].append({'parent': path[:-1], 'child': path})
+        add_place_edge(graph, path[:-1], path)
 
     if isinstance(state, dict):
         for key, value in state.items():
@@ -294,7 +309,7 @@ def graphviz_dict(core, schema, state, path, options, graph):
         graph['state_nodes'].append(node_spec)
 
     if len(path) > 1:
-        graph['place_edges'].append({'parent': path[:-1], 'child': path})
+        add_place_edge(graph, path[:-1], path)
 
     if isinstance(state, dict):
         for key, value in state.items():

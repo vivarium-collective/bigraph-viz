@@ -31,10 +31,6 @@ def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, const
     target_name = str(edge['target_path'])
     label = make_label(edge['port']) if port_labels else ''
 
-    if target_name not in graph.body:
-        label_text = make_label(edge['target_path'][-1])
-        graph.node(target_name, label=label_text, **state_node_spec)
-
     with graph.subgraph(name=process_name) as sub:
         sub.edge(target_name, process_name, constraint=constraint, label=label,
                  labelloc="t", fontsize=port_label_size)
@@ -80,8 +76,9 @@ def add_node_to_graph(
             val_str = val_str[:value_char_limit] + "…"
         rows.append(f"<FONT POINT-SIZE='10' COLOR='gray30'>value: {val_str}</FONT>")
 
-    # Type row
-    if show_types and (typ := node.get('type')):
+    # Type row (LEAF ONLY)
+    is_leaf = node.get('value') is not None
+    if show_types and is_leaf and (typ := node.get('type')):
         typ_str = str(typ)
         if len(typ_str) > type_char_limit:
             typ_str = typ_str[:type_char_limit] + "…"
@@ -688,7 +685,7 @@ def plot_bigraph(
         out_dir=None,
         filename=None,
         file_format='png',
-        show_compiled_state=False,
+        show_compiled_state=True,
         **kwargs
 ):
     """
@@ -875,11 +872,11 @@ def run_bigraph_cell(core):
     cell = {
         'config': {
             '_type': 'map[float]',
-            'a': 11.0,  # {'_type': 'float', '_value': 11.0},
+            'a': 11.0,
             'b': 3333.33},
         'cell': {
             '_type': 'process',  # TODO -- this should also accept process, step, but how in bigraph-schema?
-            'config': {},
+            'config': {'param1': 42},
             'address': 'local:Cell',  # TODO -- this is where the ports/inputs/outputs come from
             'internal': 1.0,
             '_inputs': {
@@ -896,14 +893,14 @@ def run_bigraph_cell(core):
                 # 'secretions': ['secretions_store'],
                 'biomass': ['biomass_store'],
             }
-        }
+        },
     }
 
     plot_bigraph(cell,
                  filename='bigraph_cell',
                  core=core,
                  show_values=True,
-                 # show_types=True,
+                 show_types=True,
                  **plot_settings
                  )
 
@@ -1568,6 +1565,50 @@ def run_process_config(core):
                  # show_process_config=True
                  )
 
+def run_leaf_types(core):
+    state = {
+        'store1': 42,
+        'store2': 3.14,
+        'store3': 'hello',
+        'process1': {
+            '_type': 'process',
+            '_inputs': {
+                'input1': 'integer',
+                'input2': 'float',
+                'input3': 'string',
+            },
+            '_outputs': {
+                'output1': 'integer',
+                'output2': 'float',
+                'output3': 'string',
+            },
+            'inputs': {
+                'input1': ['store1'],
+                'input2': ['store2'],
+                'input3': ['store3'],
+            },
+            'outputs': {
+                'output1': ['store1'],
+                'output2': ['store2'],
+                'output3': ['store3'],
+            }
+        }
+    }
+    composition = {
+        'store1': 'integer',
+        'store2': 'float',
+        'store3': 'string',
+        # process1 can be left unspecified if you don't need its internal typing
+    }
+    plot_bigraph(state=state, schema=composition, core=core,
+                 filename='leaf_types',
+                 **plot_settings,
+                 show_types=True,
+                 show_values=True,
+                 )
+
+
+
 if __name__ == '__main__':
     core = allocate_core()
 
@@ -1575,7 +1616,7 @@ if __name__ == '__main__':
     # run_forest(core)
     # run_nested_composite(core)
     # run_graphviz(core)
-    # run_bigraph_cell(core)
+    run_bigraph_cell(core)
     # run_bio_schema(core)
     # run_flat_composite(core)
     # run_multi_processes(core)
@@ -1588,3 +1629,4 @@ if __name__ == '__main__':
     # run_complex_bigraph(core)
     # run_nested_particle_process(core)
     run_process_config(core)
+    run_leaf_types(core)
