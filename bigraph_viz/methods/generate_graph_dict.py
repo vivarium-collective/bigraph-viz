@@ -42,21 +42,23 @@ PROCESS_SCHEMA_KEYS = [
 
 
 def add_place_edge(graph, parent, child):
-    # 1) Add place edge
     place_edges = graph.setdefault('place_edges', [])
     if not any(e['parent'] == parent and e['child'] == child for e in place_edges):
         place_edges.append({'parent': parent, 'child': child})
 
-    # 2) Ensure a state node exists for the child
-    state_nodes = graph.setdefault('state_nodes', [])
+    # Don't create a state_node for something that is already a process_node
     child_path = tuple(child)
+    process_paths = {tuple(n['path']) for n in graph.get('process_nodes', [])}
+    if child_path in process_paths:
+        return
 
+    state_nodes = graph.setdefault('state_nodes', [])
     if not any(tuple(n['path']) == child_path for n in state_nodes):
         state_nodes.append({
             'name': child_path[-1],
             'path': child_path,
-            'value': None,     # or real value if you have it
-            'type': None,      # or a schema-derived type if known
+            'value': None,
+            'type': None,
         })
 
 
