@@ -40,8 +40,6 @@ from bigraph_viz.dict_utils import absolute_path
 PROCESS_SCHEMA_KEYS = [
     'config', 'address', 'interval', 'inputs', 'outputs', 'instance', 'bridge']
 
-# Append a single port wire connection to graph_dict
-
 def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
     """
     Add a connection from a port to its wire target.
@@ -62,6 +60,17 @@ def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
         wire = [item for item in wire if isinstance(item, str)]
 
     target_path = absolute_path(edge_path[:-1], tuple(wire))
+
+    # if wire points to an internal attribute, add a place edge
+    if len(target_path) > 1:
+        parent = target_path[:-1]
+        child = target_path
+
+        place_edges = graph_dict.setdefault('place_edges', [])
+        if not any(e['parent'] == parent and e['child'] == child for e in place_edges):
+            place_edges.append({'parent': parent, 'child': child})
+
+    # add the edge
     edge_key = 'input_edges' if schema_key == 'inputs' else 'output_edges'
     graph_dict[edge_key].append({
         'edge_path': edge_path,
@@ -70,7 +79,6 @@ def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
         'type': schema_key
     })
     return graph_dict
-
 
 def get_graph_wires(ports_schema, wires, graph_dict, schema_key, edge_path, bridge_wires=None):
     """
@@ -126,6 +134,8 @@ def get_graph_wires(ports_schema, wires, graph_dict, schema_key, edge_path, brid
     return graph_dict
 
 
+# ---- Graphviz generation methods ----
+
 def graphviz_map(core, schema, state, path, options, graph):
     """Visualize mappings by traversing key–value pairs."""
 
@@ -159,9 +169,10 @@ def graphviz_map(core, schema, state, path, options, graph):
 
     return graph
 
-
 def graphviz_link(core, schema: Link, state, path, options, graph):
     """Visualize a process node with input/output/bridge wiring."""
+    show_process_config = options.get('show_process_config', False) if options else False
+
     schema = schema or {}
     node_spec = {
         'name': path[-1],
@@ -181,11 +192,6 @@ def graphviz_link(core, schema: Link, state, path, options, graph):
                             state.get('bridge', {}).get('inputs', {}))
     graph = get_graph_wires(schema._outputs, state.get('outputs', {}), graph, 'outputs', path,
                             state.get('bridge', {}).get('outputs', {}))
-    # # Wiring
-    # graph = get_graph_wires(schema.get('_inputs', {}), state.get('inputs', {}), graph, 'inputs', path,
-    #                         state.get('bridge', {}).get('inputs', {}))
-    # graph = get_graph_wires(schema.get('_outputs', {}), state.get('outputs', {}), graph, 'outputs', path,
-    #                         state.get('bridge', {}).get('outputs', {}))
 
     # Merge bidirectional edges
     def key(edge):
@@ -205,6 +211,16 @@ def graphviz_link(core, schema: Link, state, path, options, graph):
     if len(path) > 1:
         graph['place_edges'].append({'parent': path[:-1], 'child': path})
 
+    if show_process_config:
+        config = state.get('config', {})
+        graph = core.call_method('generate_graph_dict',
+            # schema.get(key),
+            {},
+            config,
+            path + ('config',),
+            options,
+            graph
+        )
     return graph
 
 def graphviz_composite(core, schema, state, path, options, graph):
@@ -264,7 +280,6 @@ def graphviz_node(core, schema: Node, state, path, options, graph):
 
     return graph
 
-
 def graphviz_dict(core, schema, state, path, options, graph):
     """Visualize any type (generic node)."""
     schema = schema or {}
@@ -295,6 +310,8 @@ def graphviz_dict(core, schema, state, path, options, graph):
     return graph
 
 
+# Dispatch graphviz method based on schema type
+
 @dispatch
 def graphviz(core, schema: Empty, state, path, options, graph):
     """No-op visualizer for nodes with no visualization."""
@@ -319,6 +336,9 @@ def graphviz(core, schema: Node, state, path, options, graph):
 @dispatch
 def graphviz(core, schema: dict, state, path, options, graph):
     return graphviz_dict(core, schema, state, path, options, graph)
+
+
+# Main method to generate graph dictionary
 
 def generate_graph_dict(core, schema, state, path=(), options=None, graph=None):
     path = path or ()

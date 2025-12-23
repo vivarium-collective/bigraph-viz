@@ -731,211 +731,6 @@ def plot_bigraph(
         options=render_kwargs
     )
 
-    # graph_dict = core.generate_graph_dict(schema, state, (), options=traversal_kwargs)
-
-# # Visualize Types
-# def graphviz_any(core, schema, state, path, options, graph):
-#     """Visualize any type (generic node)."""
-#     schema = schema or {}
-
-#     if path:
-#         node_spec = {
-#             'name': path[-1],
-#             'path': path,
-#             'value': state if not isinstance(state, dict) else None,
-#             'type': core.representation(schema)
-#         }
-#         graph['state_nodes'].append(node_spec)
-
-#     if len(path) > 1:
-#         graph['place_edges'].append({'parent': path[:-1], 'child': path})
-
-#     if isinstance(state, dict):
-#         for key, value in state.items():
-#             if not is_schema_key(key):
-#                 graph = core.get_graph_dict(
-#                     schema.get(key, {}),
-#                     value,
-#                     path + (key,),
-#                     options,
-#                     graph
-#                 )
-
-#     return graph
-
-
-# def graphviz_edge(core, schema, state, path, options, graph):
-#     """Visualize a process node with input/output/bridge wiring."""
-#     schema = schema or {}
-#     node_spec = {
-#         'name': path[-1],
-#         'path': path,
-#         'value': None,
-#         'type': core.representation(schema)
-#     }
-
-#     if state.get('address') == 'local:Composite' and node_spec not in graph['process_nodes']:
-#         graph['process_nodes'].append(node_spec)
-#         return graphviz_composite(core, schema, state, path, options, graph)
-
-#     graph['process_nodes'].append(node_spec)
-
-#     # Wiring
-#     graph = get_graph_wires(schema.get('_inputs', {}), state.get('inputs', {}), graph, 'inputs', path,
-#                             state.get('bridge', {}).get('inputs', {}))
-#     graph = get_graph_wires(schema.get('_outputs', {}), state.get('outputs', {}), graph, 'outputs', path,
-#                             state.get('bridge', {}).get('outputs', {}))
-
-#     # Merge bidirectional edges
-#     def key(edge):
-#         return (tuple(edge['edge_path']), tuple(edge['target_path']), edge['port'])
-
-#     input_set = {key(e): e for e in graph['input_edges']}
-#     output_set = {key(e): e for e in graph['output_edges']}
-#     shared_keys = input_set.keys() & output_set.keys()
-#     for k in shared_keys:
-#         graph['bidirectional_edges'].append({
-#             'edge_path': k[0], 'target_path': k[1], 'port': k[2],
-#             'type': (input_set[k]['type'], output_set[k]['type'])
-#         })
-#     graph['input_edges'] = [e for k, e in input_set.items() if k not in shared_keys]
-#     graph['output_edges'] = [e for k, e in output_set.items() if k not in shared_keys]
-
-#     if len(path) > 1:
-#         graph['place_edges'].append({'parent': path[:-1], 'child': path})
-
-#     return graph
-
-
-# def graphviz_none(core, schema, state, path, options, graph):
-#     """No-op visualizer for nodes with no visualization."""
-#     return graph
-
-
-# def graphviz_map(core, schema, state, path, options, graph):
-#     """Visualize mappings by traversing key–value pairs."""
-
-#     value_type = core._find_parameter(schema, 'value')
-
-#     # Add node for the map container itself
-#     if path:
-#         node_spec = {
-#             'name': path[-1],
-#             'path': path,
-#             'value': None,
-#             'type': core.representation(schema)
-#         }
-#         graph['state_nodes'].append(node_spec)
-
-#     # Add place edge to parent
-#     if len(path) > 1:
-#         graph['place_edges'].append({'parent': path[:-1], 'child': path})
-
-#     if isinstance(state, dict):
-#         for key, value in state.items():
-#             if not is_schema_key(key):
-#                 graph = core.get_graph_dict(
-#                     value_type,
-#                     value,
-#                     path + (key,),
-#                     options,
-#                     graph
-#                 )
-#     return graph
-
-
-# def graphviz_composite(core, schema, state, path, options, graph):
-#     """Visualize composite nodes by recursing into their internal structure."""
-#     graph = graphviz_edge(core, schema, state, path, options, graph)
-
-#     inner_state = state.get('config', {}).get('state') or state
-#     inner_schema = state.get('config', {}).get('composition') or schema
-#     inner_schema, inner_state = core.generate(inner_schema, inner_state)
-
-#     if len(path) > 1:
-#         graph['place_edges'].append({'parent': path[:-1], 'child': path})
-
-#     for key, value in inner_state.items():
-#         if not is_schema_key(key) and key not in PROCESS_SCHEMA_KEYS:
-#             graph = core.get_graph_dict(
-#                 inner_schema.get(key),
-#                 value,
-#                 path + (key,),
-#                 options,
-#                 graph
-#             )
-
-#     return graph
-
-
-# # dict with different types and their graphviz functions
-# visualize_types = {
-#     'any': {
-#         '_graphviz': graphviz_any
-#     },
-#     'edge': {
-#         '_graphviz': graphviz_edge
-#     },
-#     'quote': {
-#         '_graphviz': graphviz_none,
-#     },
-#     'map': {
-#         '_graphviz': graphviz_map,
-#     },
-#     'step': {
-#         '_inherit': ['edge']
-#     },
-#     'process': {
-#         '_inherit': ['edge']
-#     },
-#     'composite': {
-#         '_inherit': ['process'],
-#         '_graphviz': graphviz_composite,
-#     },
-# }
-
-
-# TODO: we want to visualize things that are not yet complete
-
-# class VisualizeTypes(TypeSystem):
-#     def __init__(self):
-#         super().__init__()
-
-#         self.update_types(visualize_types)
-
-#     def get_graph_dict(self, schema, state, path, options, graph=None):
-#         path = path or ()
-#         graph = graph or {
-#             'state_nodes': [],
-#             'process_nodes': [],
-#             'place_edges': [],
-#             'input_edges': [],
-#             'output_edges': [],
-#             'bidirectional_edges': [],
-#             'disconnected_input_edges': [],
-#             'disconnected_output_edges': []}
-
-#         graphviz_function = self.choose_method(
-#             schema,
-#             state,
-#             'graphviz')
-
-#         if options.get('remove_nodes') and path in options['remove_nodes']:
-#             return graph
-
-#         return graphviz_function(
-#             self,
-#             schema,
-#             state,
-#             path,
-#             options,
-#             graph)
-
-#     def generate_graph_dict(self, schema, state, path, options):
-#         full_schema, full_state = self.generate(schema, state)
-#         return self.get_graph_dict(full_schema, full_state, path, options)
-
-
 
 # Begin Tests
 ###############
@@ -946,7 +741,7 @@ plot_settings = {
 }
 
 
-def test_simple_store(core):
+def run_simple_store(core):
     simple_store_state = {
         'store1': 1.0,
     }
@@ -956,7 +751,7 @@ def test_simple_store(core):
                  filename='simple_store')
 
 
-def test_forest(core):
+def run_forest(core):
     forest = {
         'v0': {
             'v1': {},
@@ -972,7 +767,7 @@ def test_forest(core):
     plot_bigraph(forest, **plot_settings, filename='forest', core=core)
 
 
-def test_nested_composite(core):
+def run_nested_composite(core):
     state = {
         'environment': {
             '0': {
@@ -1021,7 +816,7 @@ def test_nested_composite(core):
         **plot_settings)
 
 
-def test_graphviz(core):
+def run_graphviz(core):
     cell = {
         'config': {
             '_type': 'map[float]',
@@ -1058,7 +853,7 @@ def test_graphviz(core):
     plot_graph(
         graph_dict,
         out_dir='out',
-        filename='test_graphviz'
+        filename='run_graphviz'
     )
 
 
@@ -1076,7 +871,7 @@ class Cell(Edge):
         }
 
 
-def test_bigraph_cell(core):
+def run_bigraph_cell(core):
     cell = {
         'config': {
             '_type': 'map[float]',
@@ -1113,7 +908,7 @@ def test_bigraph_cell(core):
                  )
 
 
-def test_bio_schema(core):
+def run_bio_schema(core):
     b = {
         'environment': {
             'cells': {
@@ -1156,7 +951,7 @@ def test_bio_schema(core):
                  **plot_settings)
 
 
-def test_flat_composite(core):
+def run_flat_composite(core):
     flat_composite_spec = {
         'store1.1': 'float',
         'store1.2': 'integer',
@@ -1191,7 +986,7 @@ def test_flat_composite(core):
                  **plot_settings)
 
 
-def test_multi_processes(core):
+def run_multi_processes(core):
     process_schema = {
         '_type': 'process',
         '_inputs': {
@@ -1215,7 +1010,7 @@ def test_multi_processes(core):
                  **plot_settings)
 
 
-def test_nested_processes(core):
+def run_nested_processes(core):
     nested_process_spec = {
         'store1': {
             'store1.1': 'float',
@@ -1260,7 +1055,7 @@ def test_nested_processes(core):
                  filename='nested_processes')
 
 
-def test_cell_hierarchy(core):
+def run_cell_hierarchy(core):
     core.register_type('concentrations', 'float')
     core.access('concentrations')
 
@@ -1322,7 +1117,7 @@ def test_cell_hierarchy(core):
         **plot_settings)
 
 
-def test_multiple_disconnected_ports(core):
+def run_multiple_disconnected_ports(core):
     spec = {
         'process': {
             '_type': 'process',
@@ -1345,7 +1140,7 @@ def test_multiple_disconnected_ports(core):
         **plot_settings)
 
 
-def test_composite_process(core):
+def run_composite_process(core):
     spec = {
         'composite': {
             '_type': 'process',
@@ -1374,7 +1169,7 @@ def test_composite_process(core):
         **plot_settings)
 
 
-def test_bidirectional_edges(core):
+def run_bidirectional_edges(core):
     spec = {
         'process1': {
             '_type': 'process',
@@ -1399,6 +1194,12 @@ def test_bidirectional_edges(core):
 
 
 class DynamicFBA(Edge):
+    config_schema = {
+        'model_file': 'string',
+        'kinetic_params': 'map[tuple[float,float]]',
+        'substrate_update_reactions': 'map[string]',
+        'bounds': 'map[map[float]]',
+    }
     def inputs(self):
         return {
             'substrates': 'map[float]',
@@ -1460,7 +1261,7 @@ def generate_spec_and_schema(n_rows, n_cols):
     return spec, schema
 
 
-def test_array_paths(core):
+def run_array_paths(core):
     n_rows, n_cols = 2, 1  # or any desired shape
     spec, schema = generate_spec_and_schema(n_rows, n_cols)
 
@@ -1472,7 +1273,7 @@ def test_array_paths(core):
         **plot_settings)
 
 
-def test_complex_bigraph(core):
+def run_complex_bigraph(core):
     n_rows, n_cols = 6, 6  # or any desired shape
     spec, schema = generate_spec_and_schema(n_rows, n_cols)
 
@@ -1502,7 +1303,7 @@ class Particles(Edge):
         }
 
 
-def test_nested_particle_process(core):
+def run_nested_particle_process(core):
     core.register_type('particle', {
         'id': 'string',
         'position': 'tuple[float,float]',
@@ -1543,7 +1344,7 @@ def test_nested_particle_process(core):
                         "bounds": {
                             "EX_o2_e": {
                                 "lower": "-2.0",
-                                "upper": "!nil"},
+                                "upper": None},
                             "ATPM": {
                                 "lower": "1.0",
                                 "upper": "1.0"}}},
@@ -1731,23 +1532,59 @@ def test_nested_particle_process(core):
                  **plot_settings,
                  )
 
+def run_process_config(core):
+    state = {
+        'process1': {
+            '_type': 'process',
+            'config': {'param1': 10, 'param2': 20},
+            '_inputs': {
+                'input1': 'node',
+            },
+            '_outputs': {
+                'output1': 'node',
+            },
+            'inputs': {
+                'input1': ['store1'],
+            },
+            'interval': 1.0,
+        },
+        'process2': {
+            '_type': 'step',
+            'config': {'a': 1, 'b': 2},
+            '_inputs': {
+                'interval': 'node',
+                'input1': 'node',
+            },
+            'inputs': {
+                'interval': ['process1', 'interval'],
+                'input1': ['store1'],
+            },
+        }
+    }
+    composition = {}
+    plot_bigraph(state=state, schema=composition, core=core,
+                 filename='show_process_config',
+                **plot_settings,
+                 # show_process_config=True
+                 )
 
 if __name__ == '__main__':
     core = allocate_core()
 
-    test_simple_store(core)
-    test_forest(core)
-    test_nested_composite(core)
-    test_graphviz(core)
-    test_bigraph_cell(core)
-    test_bio_schema(core)
-    test_flat_composite(core)
-    test_multi_processes(core)
-    test_nested_processes(core)
-    test_cell_hierarchy(core)
-    test_multiple_disconnected_ports(core)
-    test_composite_process(core)
-    test_bidirectional_edges(core)
-    test_array_paths(core)
-    test_complex_bigraph(core)
-    test_nested_particle_process(core)
+    # run_simple_store(core)
+    # run_forest(core)
+    # run_nested_composite(core)
+    # run_graphviz(core)
+    # run_bigraph_cell(core)
+    # run_bio_schema(core)
+    # run_flat_composite(core)
+    # run_multi_processes(core)
+    # run_nested_processes(core)
+    # run_cell_hierarchy(core)
+    # run_multiple_disconnected_ports(core)
+    # run_composite_process(core)
+    # run_bidirectional_edges(core)
+    # run_array_paths(core)
+    # run_complex_bigraph(core)
+    # run_nested_particle_process(core)
+    run_process_config(core)
