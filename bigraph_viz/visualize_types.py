@@ -6,7 +6,7 @@ import inspect
 import graphviz
 import numpy as np
 
-from bigraph_schema import TypeSystem, is_schema_key, hierarchy_depth, Edge
+from bigraph_schema import is_schema_key, hierarchy_depth, Edge
 from bigraph_viz.dict_utils import absolute_path
 from process_bigraph import allocate_core
 
