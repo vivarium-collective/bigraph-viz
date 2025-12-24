@@ -11,7 +11,7 @@ import copy
 
 # from bigraph_schema import type_schema_keys
 
-required_schema_keys = {'_default', '_apply', '_check', '_serialize', '_deserialize', '_fold'}
+required_schema_keys = {'_default', '_apply', '_check', '_serialize', '_realize', '_fold'}
 
 optional_schema_keys = {'_type', '_value', '_description', '_type_parameters', '_inherit', '_divide'}
 

@@ -712,7 +712,7 @@ def plot_bigraph(
     core = core or allocate_core()
 
     schema = schema or {}
-    compiled_schema, compiled_state = core.deserialize(schema, state)
+    compiled_schema, compiled_state = core.realize(schema, state)
 
     graph_dict = core.call_method(
         'generate_graph_dict',
