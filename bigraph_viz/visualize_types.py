@@ -796,7 +796,7 @@ def run_nested_composite(core):
                                'bridge': {'inputs': {'mass': ['mass']},
                                           'outputs': {'mass': ['mass'],
                                                       'environment': ['environment']}},
-                               'composition': {'global_time': 'float'},
+                               'schema': {'global_time': 'float'},
                                'interface': {'inputs': {}, 'outputs': {}},
                                'emitter': {'path': ['emitter'],
                                            'address': 'local:RAMEmitter',
@@ -1503,7 +1503,7 @@ def run_nested_particle_process(core):
             }
         }
     }
-    composition = {
+    schema = {
         'particles': {
             '_type': 'map',
             '_value': {
@@ -1524,7 +1524,7 @@ def run_nested_particle_process(core):
                              'substrates': ['exchange'],
                              'biomass': ['mass']}}}}}}
 
-    plot_bigraph(state=state, schema=composition, core=core,
+    plot_bigraph(state=state, schema=schema, core=core,
                  filename='nested_particle_process',
                  **plot_settings,
                  )
@@ -1558,8 +1558,8 @@ def run_process_config(core):
             },
         }
     }
-    composition = {}
-    plot_bigraph(state=state, schema=composition, core=core,
+    schema = {}
+    plot_bigraph(state=state, schema=schema, core=core,
                  filename='show_process_config',
                 **plot_settings,
                  # show_process_config=True
@@ -1594,13 +1594,13 @@ def run_leaf_types(core):
             }
         }
     }
-    composition = {
+    schema = {
         'store1': 'integer',
         'store2': 'float',
         'store3': 'string',
         # process1 can be left unspecified if you don't need its internal typing
     }
-    plot_bigraph(state=state, schema=composition, core=core,
+    plot_bigraph(state=state, schema=schema, core=core,
                  filename='leaf_types',
                  **plot_settings,
                  show_types=True,

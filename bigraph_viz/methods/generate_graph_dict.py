@@ -245,7 +245,7 @@ def graphviz_composite(core, schema, state, path, options, graph):
     graph = graphviz_link(core, schema, state, path, options, graph)
 
     inner_state = state.get('config', {}).get('state', {}) # or state
-    inner_schema = state.get('config', {}).get('composition', {}) # or schema
+    inner_schema = state.get('config', {}).get('schema', {}) # or schema
     inner_schema, inner_state = core.realize(inner_schema, inner_state)
     # inner_schema, inner_state = core.generate(inner_schema, inner_state)
 
