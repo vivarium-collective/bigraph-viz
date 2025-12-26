@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bigraph-viz"
-version = "0.1.15"
+version = "1.0.0"
 description = "A visualization method for displaying the structure of process bigraphs"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -43,5 +43,5 @@ dependencies = [
 packages = ["bigraph_viz"]
 
 [tool.uv.sources]
-bigraph-schema = { path = "../bigraph-schema", editable = true }
-process-bigraph = { path = "../process-bigraph", editable = true }
+# bigraph-schema = { path = "../bigraph-schema", editable = true }
+# process-bigraph = { path = "../process-bigraph", editable = true }
