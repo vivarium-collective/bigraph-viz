@@ -1139,12 +1139,13 @@ def run_multiple_disconnected_ports(core):
 
 def run_composite_process(core):
     spec = {
-        'composite': {
-            '_type': 'process',
+        'composite_process': {
+            '_type': 'composite',
             '_inputs': {'port1': 'node'},
             '_outputs': {'port2': 'node'},
+            'inputs': {'port1': ['ext1']},
+            'outputs': {'port2': ['ext2']},
             'address': 'local:Composite',
-            'inputs': {'port1': ['external store']},
             'config': {
                 'state': {
                     'store1': 'node',
@@ -1154,15 +1155,22 @@ def run_composite_process(core):
                         '_inputs': {'port3': 'node'},
                         '_outputs': {'port4': 'node'},
                         'inputs': {'port3': ['store1']},
-                        'outputs': {'port4': ['store2']}}},
+                        'outputs': {'port4': ['store2']}
+                    }
+                },
                 'bridge': {
                     'inputs': {'port1': ['store1']},
-                    'outputs': {'port2': ['store2']}}}}}
+                    'outputs': {'port2': ['store2']}
+                }
+            }
+        }
+    }
 
     plot_bigraph(
         spec,
         core=core,
         filename='composite_process',
+        file_format='pdf',
         **plot_settings)
 
 

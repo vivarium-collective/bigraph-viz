@@ -198,17 +198,18 @@ def graphviz_link(core, schema: Link, state, path, options, graph):
         'type': core.render(schema)
     }
 
-    if state.get('address') == 'local:Composite' and node_spec not in graph['process_nodes']:
-        graph['process_nodes'].append(node_spec)
-        return graphviz_composite(core, schema, state, path, options, graph)
+    # if state.get('address') == 'local:Composite' and node_spec not in graph['process_nodes']:
+    #     graph['process_nodes'].append(node_spec)
+    #     return graphviz_composite(core, schema, state, path, options, graph)
 
     graph['process_nodes'].append(node_spec)
 
     # Wiring
+    config = state.get('config', {})
     graph = get_graph_wires(schema._inputs, state.get('inputs', {}), graph, 'inputs', path,
-                            state.get('bridge', {}).get('inputs', {}))
+                            config.get('bridge', {}).get('inputs', {}))
     graph = get_graph_wires(schema._outputs, state.get('outputs', {}), graph, 'outputs', path,
-                            state.get('bridge', {}).get('outputs', {}))
+                            config.get('bridge', {}).get('outputs', {}))
 
     # Merge bidirectional edges
     def key(edge):
