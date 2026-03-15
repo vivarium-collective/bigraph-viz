@@ -216,10 +216,13 @@ def graphviz_link(core, schema: Link, state, path, options, graph):
 
     # Wiring
     config = state.get('config', {})
-    graph = get_graph_wires(schema._inputs, state.get('inputs', {}), graph, 'inputs', path,
-                            config.get('bridge', {}).get('inputs', {}))
-    graph = get_graph_wires(schema._outputs, state.get('outputs', {}), graph, 'outputs', path,
-                            config.get('bridge', {}).get('outputs', {}))
+    ports_inputs = getattr(schema, '_inputs', None) or state.get('_inputs', {})
+    ports_outputs = getattr(schema, '_outputs', None) or state.get('_outputs', {})
+    bridge_config = config.get('bridge', state.get('bridge', {})) or {}
+    graph = get_graph_wires(ports_inputs, state.get('inputs', {}), graph, 'inputs', path,
+                            bridge_config.get('inputs', {}))
+    graph = get_graph_wires(ports_outputs, state.get('outputs', {}), graph, 'outputs', path,
+                            bridge_config.get('outputs', {}))
 
     # Merge bidirectional edges
     def key(edge):
@@ -308,9 +311,28 @@ def graphviz_node(core, schema: Node, state, path, options, graph):
 
     return graph
 
+PROCESS_TYPES = {'process', 'edge', 'step', 'composite'}
+
+
 def graphviz_dict(core, schema, state, path, options, graph):
     """Visualize any type (generic node)."""
     schema = schema or {}
+
+    # If the state declares itself as a process/composite, treat it as a link
+    if isinstance(state, dict) and state.get('_type') in PROCESS_TYPES:
+        graph = graphviz_link(core, schema, state, path, options, graph)
+        # For composites, also recurse into children at the same level
+        if state.get('_type') == 'composite':
+            for key, value in state.items():
+                if not is_schema_key(key) and key not in PROCESS_SCHEMA_KEYS:
+                    graph = core.call_method('generate_graph_dict',
+                        schema.get(key, {}) if isinstance(schema, dict) else {},
+                        value,
+                        path + (key,),
+                        options,
+                        graph
+                    )
+        return graph
 
     if path:
         node_spec = {
