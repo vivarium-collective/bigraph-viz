@@ -184,7 +184,6 @@ def test_ecoli_bigraph():
     plot_bigraph(
         ecoli,
         remove_process_place_edges=True,
-        dpi='250',
         out_dir='out',
         filename='ecoli_bigraph',
     )

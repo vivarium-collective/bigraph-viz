@@ -114,10 +114,10 @@ def get_graphviz_fig(
         label_margin='0.05',
         node_label_size='12pt',
         process_label_size=None,
-        size='16,10',
+        size=None,
         rankdir='TB',
-        aspect_ratio='auto',
-        dpi='70',
+        aspect_ratio=None,
+        dpi='100',
         significant_digits=2,
         undirected_edges=False,
         show_values=False,
@@ -185,8 +185,13 @@ def get_graphviz_fig(
     process_label_size = process_label_size or node_label_size
 
     graph = graphviz.Digraph(name='bigraph', engine='dot')
-    graph.attr(size=size, overlap='false', rankdir=rankdir, dpi=dpi,
-               ratio=aspect_ratio, splines='true')
+    graph_attrs = {'overlap': 'false', 'rankdir': rankdir, 'dpi': dpi,
+                   'splines': 'true'}
+    if size is not None:
+        graph_attrs['size'] = size
+    if aspect_ratio is not None:
+        graph_attrs['ratio'] = aspect_ratio
+    graph.attr(**graph_attrs)
 
     # Use the same label_margin parameter, but circles get a smaller
     # effective margin so they don't balloon visually.
