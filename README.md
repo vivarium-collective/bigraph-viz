@@ -65,20 +65,13 @@ All notebooks are tested in CI and published as HTML to GitHub Pages: **[Browse 
 | [Basics Pres](https://vivarium-collective.github.io/bigraph-viz/notebooks/basics_pres.html) | Presentation-style examples |
 | [Bigraph Example](https://vivarium-collective.github.io/bigraph-viz/notebooks/bigraph_example.html) | Transcription/translation and multicellular models |
 | [Cell Atlas](https://vivarium-collective.github.io/bigraph-viz/notebooks/cell_atlas.html) | Kidney glomerulus model with OpenVT processes |
-| [Duke Nams](https://vivarium-collective.github.io/bigraph-viz/notebooks/duke_nams.html) | Alternative testing methods workshop |
 | [Ecoli](https://vivarium-collective.github.io/bigraph-viz/notebooks/ecoli.html) | Whole-cell E. coli wiring diagram |
 | [Ecoli2](https://vivarium-collective.github.io/bigraph-viz/notebooks/ecoli2.html) | E. coli with plasmid replication |
 | [Ecoli2026](https://vivarium-collective.github.io/bigraph-viz/notebooks/ecoli2026.html) | E. coli biomanufacturing model |
 | [Format](https://vivarium-collective.github.io/bigraph-viz/notebooks/format.html) | Styling options for bigraph figures |
 | [Gut Microbiome](https://vivarium-collective.github.io/bigraph-viz/notebooks/gut_microbiome.html) | Multi-region gut model with cdFBA-CRM |
-| [Metacomposite](https://vivarium-collective.github.io/bigraph-viz/notebooks/metacomposite.html) | Composite process examples |
-| [Show Herbert](https://vivarium-collective.github.io/bigraph-viz/notebooks/show_herbert.html) | Herbert cell mechanics visualization |
-| [Bats Fba](https://github.com/vivarium-collective/bigraph-viz/blob/main/notebooks/bats-fba.ipynb) | BATS FBA model *(source only)* |
 | [Ccb](https://github.com/vivarium-collective/bigraph-viz/blob/main/notebooks/ccb.ipynb) | CCB model *(source only)* |
-| [Celegans](https://github.com/vivarium-collective/bigraph-viz/blob/main/notebooks/celegans.ipynb) | C. elegans cell cycle simulation *(source only)* |
 | [Ecoli Biomanufacturing](https://github.com/vivarium-collective/bigraph-viz/blob/main/notebooks/ecoli_biomanufacturing.ipynb) | E. coli biomanufacturing with WCM *(source only)* |
-| [Test1](https://github.com/vivarium-collective/bigraph-viz/blob/main/notebooks/test1.ipynb) | Development test notebook *(source only)* |
-| [Converttogif](https://github.com/vivarium-collective/bigraph-viz/blob/main/notebooks/converttogif.ipynb) | GIF conversion utility *(source only)* |
 <!-- END NOTEBOOKS -->
 
 ## License
