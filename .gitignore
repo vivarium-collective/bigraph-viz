@@ -27,3 +27,6 @@ uv.lock
 
 unifyout/
 originalout/
+.DS_Store
+.idea/
+venv/
