@@ -37,6 +37,14 @@ def plot_edges(graph, edge, port_labels, port_label_size, state_node_spec, const
 
 
 # Add a node to the graph with optional value/type
+def apply_line_breaks(label, label_separator):
+    """Replace separator characters in a label with HTML line breaks."""
+    if label_separator and isinstance(label, str):
+        for char in label_separator:
+            label = label.replace(char, '<BR/>')
+    return label
+
+
 def add_node_to_graph(
         graph,
         node,
@@ -46,6 +54,7 @@ def add_node_to_graph(
         significant_digits,
         value_char_limit,
         type_char_limit,
+        label_separator=None,
 ):
     """
     Add a state node to the Graphviz graph.
@@ -65,6 +74,7 @@ def add_node_to_graph(
     value_char_limit = value_char_limit or 20
     type_char_limit = type_char_limit or 20
 
+    label = apply_line_breaks(label, label_separator)
     rows = [label]  # the node's name, already plain text
 
     # Value row
@@ -84,14 +94,18 @@ def add_node_to_graph(
             typ_str = typ_str[:type_char_limit] + "…"
         rows.append(f"<FONT POINT-SIZE='10' COLOR='gray40'>type: {typ_str}</FONT>")
 
-    html_label = "<<TABLE BORDER='0' CELLBORDER='0' CELLSPACING='0'>"
-    for r in rows:
-        html_label += f"<TR><TD>{r}</TD></TR>"
-    html_label += "</TABLE>>"
+    if len(rows) == 1:
+        # Simple HTML label preserves the circle shape
+        node_label = make_label(rows[0])
+    else:
+        # Multi-row HTML TABLE label (forces rectangular shape)
+        node_label = "<<TABLE BORDER='0' CELLBORDER='0' CELLSPACING='0'>"
+        for r in rows:
+            node_label += f"<TR><TD>{r}</TD></TR>"
+        node_label += "</TABLE>>"
 
-    # full_label = make_label(label + label_info) if label_info else make_label(label)
     graph.attr('node', **state_node_spec)
-    graph.node(node_name, label=html_label)
+    graph.node(node_name, label=node_label)
     return node_name
 
 
@@ -120,6 +134,7 @@ def get_graphviz_fig(
         collapse_redundant_processes=False,
         collapse_paths=None,
         remove_paths=None,
+        label_separator=' ',
 ):
     """
     Generate a Graphviz Digraph from a graph_dict describing a simulation bigraph.
@@ -446,6 +461,7 @@ def get_graphviz_fig(
                 graph, node, state_node_spec,
                 show_values, show_types, significant_digits,
                 value_char_limit, type_char_limit,
+                label_separator=label_separator,
             )
             node_names.append(name)
 
@@ -485,6 +501,7 @@ def get_graphviz_fig(
                 # Create collapsed representative
                 names = [e[2] for e in selected]
                 label = f"{get_name_template(names)} (x{len(selected)})"
+                label = make_label(apply_line_breaks(label, label_separator))
                 rep_path = selected[0][0]
                 rep_str = str(rep_path)
 
@@ -498,12 +515,12 @@ def get_graphviz_fig(
                 # Draw remaining (unselected) entries individually
                 remaining = [e for e in entries if e not in selected]
                 for path, path_str, name in remaining:
-                    graph.node(path_str, label=name)
+                    graph.node(path_str, label=make_label(apply_line_breaks(name, label_separator)))
                     node_names.append(path_str)
             else:
                 # No effective collapse here: draw all individually
                 for path, path_str, name in entries:
-                    graph.node(path_str, label=name)
+                    graph.node(path_str, label=make_label(apply_line_breaks(name, label_separator)))
                     node_names.append(path_str)
 
         # Return original process paths and collapse map
@@ -712,7 +729,10 @@ def plot_bigraph(
     core = core or allocate_core()
 
     schema = schema or {}
-    compiled_schema, compiled_state = core.realize(schema, state)
+    try:
+        compiled_schema, compiled_state = core.realize(schema, state)
+    except Exception:
+        compiled_schema, compiled_state = schema, state
 
     graph_dict = core.call_method(
         'generate_graph_dict',

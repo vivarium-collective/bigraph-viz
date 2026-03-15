@@ -86,6 +86,16 @@ def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
     # if wire points to an internal attribute, add a place edge
     if len(target_path) > 1:
         add_place_edge(graph_dict, target_path[:-1], target_path)
+    else:
+        # top-level wire target: ensure it exists as a state node
+        state_nodes = graph_dict.setdefault('state_nodes', [])
+        if not any(tuple(n['path']) == target_path for n in state_nodes):
+            state_nodes.append({
+                'name': target_path[-1],
+                'path': target_path,
+                'value': None,
+                'type': None,
+            })
 
     # add the edge
     edge_key = 'input_edges' if schema_key == 'inputs' else 'output_edges'

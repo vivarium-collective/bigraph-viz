@@ -1,0 +1,119 @@
+name: Test and Publish Notebooks
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'notebooks/**'
+      - 'bigraph_viz/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  notebooks:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.x
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install nbconvert nbclient ipykernel
+        pip install -e .
+
+    - name: Install Graphviz
+      run: sudo apt-get install -y graphviz
+
+    - name: Execute and convert notebooks to HTML
+      run: |
+        mkdir -p _build/notebooks
+        python -c "
+        import json, subprocess, sys
+
+        with open('notebooks/notebooks.json') as f:
+            registry = json.load(f)
+
+        failed = []
+        for entry in registry.get('notebooks', []):
+            name = entry['name']
+            if entry.get('skip'):
+                print(f'::notice::Skipping {name} (marked skip)')
+                continue
+            print(f'::group::{name}')
+            result = subprocess.run([
+                sys.executable, '-m', 'jupyter', 'nbconvert',
+                '--to', 'html',
+                '--execute',
+                '--ExecutePreprocessor.timeout=300',
+                '--output-dir=_build/notebooks',
+                f'notebooks/{name}.ipynb',
+            ])
+            print('::endgroup::')
+            if result.returncode != 0:
+                failed.append(name)
+
+        if failed:
+            print(f'::error::Failed notebooks: {failed}')
+            sys.exit(1)
+        "
+
+    - name: Build index page
+      run: |
+        python -c "
+        import json
+
+        with open('notebooks/notebooks.json') as f:
+            registry = json.load(f)
+
+        def pretty(name):
+            return name.replace('_', ' ').replace('-', ' ').title()
+
+        rows = []
+        for entry in registry.get('notebooks', []):
+            if entry.get('skip'):
+                continue
+            name = entry['name']
+            desc = entry.get('description', '')
+            rows.append(f'<li><a href=\"{name}.html\">{pretty(name)}</a> &mdash; {desc}</li>')
+
+        html = '''<!DOCTYPE html>
+        <html>
+        <head><meta charset=\"utf-8\"><title>bigraph-viz notebooks</title>
+        <style>
+          body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+          h1 { border-bottom: 2px solid #333; padding-bottom: .3rem; }
+          ul { list-style: none; padding: 0; }
+          li { padding: .4rem 0; }
+          a { color: #0366d6; text-decoration: none; }
+          a:hover { text-decoration: underline; }
+        </style>
+        </head>
+        <body>
+        <h1>bigraph-viz notebooks</h1>
+        <ul>
+        ''' + '\n'.join(rows) + '''
+        </ul>
+        </body>
+        </html>'''
+
+        with open('_build/notebooks/index.html', 'w') as f:
+            f.write(html)
+        "
+
+    - name: Deploy to GitHub Pages
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./_build/notebooks
+        destination_dir: notebooks
