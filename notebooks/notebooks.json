@@ -12,6 +12,6 @@
     {"name": "format", "description": "Styling options for bigraph figures"},
     {"name": "gut_microbiome", "description": "Multi-region gut model with cdFBA-CRM"},
     {"name": "ccb", "description": "CCB model", "skip": true},
-    {"name": "ecoli_biomanufacturing", "description": "E. coli biomanufacturing with WCM", "skip": true},
+    {"name": "ecoli_biomanufacturing", "description": "E. coli biomanufacturing with WCM", "skip": true}
   ]
 }
