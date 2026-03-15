@@ -6,19 +6,12 @@
     {"name": "basics_pres", "description": "Presentation-style examples"},
     {"name": "bigraph_example", "description": "Transcription/translation and multicellular models"},
     {"name": "cell_atlas", "description": "Kidney glomerulus model with OpenVT processes"},
-    {"name": "duke_nams", "description": "Alternative testing methods workshop"},
     {"name": "ecoli", "description": "Whole-cell E. coli wiring diagram"},
     {"name": "ecoli2", "description": "E. coli with plasmid replication"},
     {"name": "ecoli2026", "description": "E. coli biomanufacturing model"},
     {"name": "format", "description": "Styling options for bigraph figures"},
     {"name": "gut_microbiome", "description": "Multi-region gut model with cdFBA-CRM"},
-    {"name": "metacomposite", "description": "Composite process examples"},
-    {"name": "show_herbert", "description": "Herbert cell mechanics visualization"},
-    {"name": "bats-fba", "description": "BATS FBA model", "skip": true},
     {"name": "ccb", "description": "CCB model", "skip": true},
-    {"name": "celegans", "description": "C. elegans cell cycle simulation", "skip": true},
     {"name": "ecoli_biomanufacturing", "description": "E. coli biomanufacturing with WCM", "skip": true},
-    {"name": "test1", "description": "Development test notebook", "skip": true},
-    {"name": "converttogif", "description": "GIF conversion utility", "skip": true}
   ]
 }

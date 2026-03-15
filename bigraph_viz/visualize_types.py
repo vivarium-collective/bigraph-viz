@@ -15,6 +15,40 @@ PROCESS_SCHEMA_KEYS = [
     'config', 'address', 'interval', 'inputs', 'outputs', 'instance', 'bridge']
 
 
+class ResponsiveGraph:
+    """Wrapper around a graphviz.Digraph that renders responsively in notebooks.
+
+    Replaces the fixed-size SVG with one that scales to fill the available width,
+    making figures readable regardless of graph complexity.
+    """
+
+    def __init__(self, graph):
+        self._graph = graph
+
+    def __getattr__(self, name):
+        return getattr(self._graph, name)
+
+    def _make_responsive_svg(self):
+        svg = self._graph.pipe(format='svg').decode()
+        # Replace fixed width/height with 100% width and auto height
+        svg = re.sub(
+            r'<svg width="[^"]*" height="[^"]*"',
+            '<svg width="100%" height="auto"',
+            svg,
+            count=1,
+        )
+        return svg
+
+    def _repr_mimebundle_(self, **kwargs):
+        return {'image/svg+xml': self._make_responsive_svg()}
+
+    def _repr_image_svg_xml(self):
+        return self._make_responsive_svg()
+
+    def __repr__(self):
+        return repr(self._graph)
+
+
 # Utility: Label formatting
 def make_label(label):
     """Wrap a label in angle brackets for Graphviz HTML rendering."""
@@ -697,7 +731,7 @@ def plot_graph(graph_dict,
         print(f"Writing {fig_path}")
         graph.render(filename=fig_path, format=file_format)
 
-    return graph
+    return ResponsiveGraph(graph)
 
 
 def plot_bigraph(
