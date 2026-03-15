@@ -38,10 +38,11 @@ jobs:
       run: |
         mkdir -p _build/notebooks
         python -c "
-        import json, subprocess, sys
+        import json, re, subprocess, sys
 
-        with open('notebooks/notebooks.json') as f:
-            registry = json.load(f)
+        raw = open('notebooks/notebooks.json').read()
+        raw = re.sub(r',\s*([}\]])', r'\1', raw)
+        registry = json.loads(raw)
 
         failed = []
         for entry in registry.get('notebooks', []):
@@ -70,10 +71,11 @@ jobs:
     - name: Build index page
       run: |
         python -c "
-        import json
+        import json, re
 
-        with open('notebooks/notebooks.json') as f:
-            registry = json.load(f)
+        raw = open('notebooks/notebooks.json').read()
+        raw = re.sub(r',\s*([}\]])', r'\1', raw)
+        registry = json.loads(raw)
 
         def pretty(name):
             return name.replace('_', ' ').replace('-', ' ').title()

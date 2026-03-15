@@ -7,6 +7,7 @@ Usage:
 """
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -23,8 +24,10 @@ END_MARKER = '<!-- END NOTEBOOKS -->'
 
 
 def load_registry():
-    with open(REGISTRY_PATH) as f:
-        return json.load(f)
+    raw = REGISTRY_PATH.read_text()
+    # Strip trailing commas before ] or } to tolerate editor auto-formatting
+    raw = re.sub(r',\s*([}\]])', r'\1', raw)
+    return json.loads(raw)
 
 
 def discover_unlisted(registry):

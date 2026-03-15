@@ -58,20 +58,18 @@ pip install bigraph-viz
 
 All notebooks are tested in CI and published as HTML to GitHub Pages: **[Browse all notebooks](https://vivarium-collective.github.io/bigraph-viz/notebooks/)**
 
-| Notebook | Description |
-|----------|-------------|
-| [Basics](https://vivarium-collective.github.io/bigraph-viz/notebooks/basics.html) | Tutorial covering stores, processes, wires, and composites |
-| [Basics2](https://vivarium-collective.github.io/bigraph-viz/notebooks/basics2.html) | Extended basics with cell structure example |
-| [Basics Pres](https://vivarium-collective.github.io/bigraph-viz/notebooks/basics_pres.html) | Presentation-style examples |
-| [Bigraph Example](https://vivarium-collective.github.io/bigraph-viz/notebooks/bigraph_example.html) | Transcription/translation and multicellular models |
-| [Cell Atlas](https://vivarium-collective.github.io/bigraph-viz/notebooks/cell_atlas.html) | Kidney glomerulus model with OpenVT processes |
-| [Ecoli](https://vivarium-collective.github.io/bigraph-viz/notebooks/ecoli.html) | Whole-cell E. coli wiring diagram |
-| [Ecoli2](https://vivarium-collective.github.io/bigraph-viz/notebooks/ecoli2.html) | E. coli with plasmid replication |
-| [Ecoli2026](https://vivarium-collective.github.io/bigraph-viz/notebooks/ecoli2026.html) | E. coli biomanufacturing model |
-| [Format](https://vivarium-collective.github.io/bigraph-viz/notebooks/format.html) | Styling options for bigraph figures |
-| [Gut Microbiome](https://vivarium-collective.github.io/bigraph-viz/notebooks/gut_microbiome.html) | Multi-region gut model with cdFBA-CRM |
-| [Ccb](https://github.com/vivarium-collective/bigraph-viz/blob/main/notebooks/ccb.ipynb) | CCB model *(source only)* |
-| [Ecoli Biomanufacturing](https://github.com/vivarium-collective/bigraph-viz/blob/main/notebooks/ecoli_biomanufacturing.ipynb) | E. coli biomanufacturing with WCM *(source only)* |
+| Notebook                                                                                            | Description                                                |
+|-----------------------------------------------------------------------------------------------------|------------------------------------------------------------|
+| [Basics](https://vivarium-collective.github.io/bigraph-viz/notebooks/basics.html)                   | Tutorial covering stores, processes, wires, and composites |
+| [Basics2](https://vivarium-collective.github.io/bigraph-viz/notebooks/basics2.html)                 | Extended basics with cell structure example                |
+| [Basics Pres](https://vivarium-collective.github.io/bigraph-viz/notebooks/basics_pres.html)         | Presentation-style examples                                |
+| [Bigraph Example](https://vivarium-collective.github.io/bigraph-viz/notebooks/bigraph_example.html) | Transcription/translation and multicellular models         |
+| [Cell Atlas](https://vivarium-collective.github.io/bigraph-viz/notebooks/cell_atlas.html)           | Kidney glomerulus model                                    |
+| [Ecoli](https://vivarium-collective.github.io/bigraph-viz/notebooks/ecoli.html)                     | Whole-cell E. coli wiring diagram                          |
+| [Ecoli hybrid](https://vivarium-collective.github.io/bigraph-viz/notebooks/ecoli2.html)            | E. coli hybrid framework                                   |
+| [Format](https://vivarium-collective.github.io/bigraph-viz/notebooks/format.html)                   | Styling options for bigraph figures                        |
+| [Gut Microbiome](https://vivarium-collective.github.io/bigraph-viz/notebooks/gut_microbiome.html)   | Multi-region gut model with cdFBA-CRM                      |
+| [Ccb](https://github.com/vivarium-collective/bigraph-viz/blob/main/notebooks/ccb.ipynb)             | CCB model *(source only)*                                  |
 <!-- END NOTEBOOKS -->
 
 ## License

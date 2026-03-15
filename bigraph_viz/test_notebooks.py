@@ -1,4 +1,5 @@
 import json
+import re
 import subprocess
 import sys
 
@@ -18,20 +19,16 @@ def get_notebook_list():
     skip_names = set()
 
     if REGISTRY_PATH.exists():
-        with open(REGISTRY_PATH) as f:
-            registry = json.load(f)
+        raw = REGISTRY_PATH.read_text()
+        # Strip trailing commas before ] or } to tolerate editor auto-formatting
+        raw = re.sub(r',\s*([}\]])', r'\1', raw)
+        registry = json.loads(raw)
         for entry in registry.get('notebooks', []):
             name = entry['name']
             if entry.get('skip'):
                 skip_names.add(name)
             else:
                 registered.append(f'{name}.ipynb')
-
-    # Auto-discover notebooks not in the registry
-    registered_names = {Path(nb).stem for nb in registered} | skip_names
-    for path in sorted(NOTEBOOKS_DIR.glob('*.ipynb')):
-        if path.stem not in registered_names:
-            registered.append(path.name)
 
     return registered
 

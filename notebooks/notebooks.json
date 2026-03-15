@@ -5,13 +5,11 @@
     {"name": "basics2", "description": "Extended basics with cell structure example"},
     {"name": "basics_pres", "description": "Presentation-style examples"},
     {"name": "bigraph_example", "description": "Transcription/translation and multicellular models"},
-    {"name": "cell_atlas", "description": "Kidney glomerulus model with OpenVT processes"},
+    {"name": "cell_atlas", "description": "Kidney glomerulus model"},
     {"name": "ecoli", "description": "Whole-cell E. coli wiring diagram"},
     {"name": "ecoli2", "description": "E. coli with plasmid replication"},
-    {"name": "ecoli2026", "description": "E. coli biomanufacturing model"},
     {"name": "format", "description": "Styling options for bigraph figures"},
     {"name": "gut_microbiome", "description": "Multi-region gut model with cdFBA-CRM"},
-    {"name": "ccb", "description": "CCB model", "skip": true},
-    {"name": "ecoli_biomanufacturing", "description": "E. coli biomanufacturing with WCM", "skip": true}
+    {"name": "ccb", "description": "CCB model", "skip": true}
   ]
 }

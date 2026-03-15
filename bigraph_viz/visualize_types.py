@@ -18,8 +18,8 @@ PROCESS_SCHEMA_KEYS = [
 class ResponsiveGraph:
     """Wrapper around a graphviz.Digraph that renders responsively in notebooks.
 
-    Replaces the fixed-size SVG with one that scales to fill the available width,
-    making figures readable regardless of graph complexity.
+    Embeds the SVG inline with width="100%" so it scales to fill the available
+    container width in both live notebooks and nbconvert HTML exports.
     """
 
     def __init__(self, graph):
@@ -30,6 +30,9 @@ class ResponsiveGraph:
 
     def _make_responsive_svg(self):
         svg = self._graph.pipe(format='svg').decode()
+        # Strip XML declaration and DOCTYPE so it can be embedded inline
+        svg = re.sub(r'<\?xml[^?]*\?>\s*', '', svg)
+        svg = re.sub(r'<!DOCTYPE[^>]*>\s*', '', svg)
         # Replace fixed width/height with 100% width and auto height
         svg = re.sub(
             r'<svg width="[^"]*" height="[^"]*"',
@@ -40,9 +43,11 @@ class ResponsiveGraph:
         return svg
 
     def _repr_mimebundle_(self, **kwargs):
-        return {'image/svg+xml': self._make_responsive_svg()}
+        # Return as text/html so Jupyter embeds inline SVG (not as <img> data URI)
+        # This ensures width="100%" works in both notebooks and nbconvert HTML
+        return {'text/html': self._make_responsive_svg()}
 
-    def _repr_image_svg_xml(self):
+    def _repr_html_(self):
         return self._make_responsive_svg()
 
     def __repr__(self):
