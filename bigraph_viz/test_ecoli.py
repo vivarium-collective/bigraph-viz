@@ -148,19 +148,19 @@ ecoli = {
             'environment': ['environment'],
         }
     },
-    'plasmid replication': {
-        '_type': 'process',
-        'inputs': {
-            'replisome trimers': ['bulk molecules'],
-            'replisome monomers': ['bulk molecules'],
-            'dntps': ['bulk molecules'],
-            'plasmid active replisomes': ['unique molecules', 'plasmid active replisome'],
-            'oriVs': ['unique molecules', 'oriV'],
-            'plasmid domains': ['unique molecules', 'plasmid domain'],
-            'full plasmids': ['unique molecules', 'full plasmid'],
-            'environment': ['environment'],
-        }
-    },
+    # 'plasmid replication': {
+    #     '_type': 'process',
+    #     'inputs': {
+    #         'replisome trimers': ['bulk molecules'],
+    #         'replisome monomers': ['bulk molecules'],
+    #         'dntps': ['bulk molecules'],
+    #         'plasmid active replisomes': ['unique molecules', 'plasmid active replisome'],
+    #         'oriVs': ['unique molecules', 'oriV'],
+    #         'plasmid domains': ['unique molecules', 'plasmid domain'],
+    #         'full plasmids': ['unique molecules', 'full plasmid'],
+    #         'environment': ['environment'],
+    #     }
+    # },
     'unique molecules': {
         'chromosome domain': {},
         'full chromosome': {},
@@ -184,10 +184,52 @@ def test_ecoli_bigraph():
     plot_bigraph(
         ecoli,
         remove_process_place_edges=True,
+        rankdir='RL',
         out_dir='out',
         filename='ecoli_bigraph',
     )
 
 
+def test_ecoli_reduced():
+    ecoli_reduced = ecoli.copy()
+    ecoli_reduced['transciption translation'] = ecoli_reduced['polypeptide elongation'].copy()
+    del ecoli_reduced['transcript initiation']
+    del ecoli_reduced['transcript elongation']
+    del ecoli_reduced['rna degradation']
+    del ecoli_reduced['polypeptide initiation']
+    del ecoli_reduced['polypeptide elongation']
+    del ecoli_reduced['protein degradation']
+    del ecoli_reduced['complexation']
+
+    ecoli_reduced['replication initiation control'] = {
+        '_type': 'process',
+        'inputs': {
+            # 'fragmentBases': ['bulk molecules'],
+            'metabolites': ['bulk molecules'],
+            # 'active tfs': ['bulk molecules'],
+            # 'subunits': ['bulk molecules'],
+            # 'amino acids': ['bulk molecules'],
+            'active replisomes': ['unique molecules', 'active replisome'],
+            'oriCs': ['unique molecules', 'oriC'],
+            'chromosome domains': ['unique molecules', 'chromosome domain'],
+            'active RNAPs': ['unique molecules', 'active RNAP'],
+            # 'RNAs': ['unique molecules', 'RNA'],
+            # 'active ribosome': ['unique molecules', 'active ribosome'],
+            'full chromosomes': ['unique molecules', 'full chromosome'],
+            'promoters': ['unique molecules', 'promoter'],
+            'DnaA boxes': ['unique molecules', 'DnaA box']
+        }
+    }
+
+    plot_bigraph(
+        ecoli_reduced,
+        node_border_colors={('replication initiation control',): 'red'},
+        remove_process_place_edges=True,
+        rankdir='RL',
+        out_dir='out',
+        filename='ecoli_reduced',
+    )
+
 if __name__ == '__main__':
     test_ecoli_bigraph()
+    test_ecoli_reduced()
