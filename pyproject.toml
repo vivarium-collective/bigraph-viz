@@ -34,8 +34,8 @@ classifiers = [
 ]
 
 dependencies = [
-    "bigraph-schema",
-    "process-bigraph",
+    "bigraph-schema>=1.0.0",
+    "process-bigraph>=1.0.0",
     "graphviz"
 ]
 

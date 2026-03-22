@@ -187,19 +187,25 @@ def test_ecoli_bigraph():
         rankdir='RL',
         out_dir='out',
         filename='ecoli_bigraph',
+        node_label_size='18pt',
+        process_label_size='18pt',
+        port_label_size='14pt',
+        label_margin='0.2',
+        dpi='150',
     )
 
 
 def test_ecoli_reduced():
     ecoli_reduced = ecoli.copy()
-    ecoli_reduced['transciption translation'] = ecoli_reduced['polypeptide elongation'].copy()
-    del ecoli_reduced['transcript initiation']
-    del ecoli_reduced['transcript elongation']
-    del ecoli_reduced['rna degradation']
-    del ecoli_reduced['polypeptide initiation']
-    del ecoli_reduced['polypeptide elongation']
-    del ecoli_reduced['protein degradation']
-    del ecoli_reduced['complexation']
+    # ecoli_reduced['transciption translation'] = ecoli_reduced['polypeptide elongation'].copy()
+    # ecoli_reduced['degradation'] = ecoli_reduced['rna degradation'].copy().update(ecoli_reduced['protein degradation'].copy())
+    # del ecoli_reduced['transcript initiation']
+    # del ecoli_reduced['transcript elongation']
+    # del ecoli_reduced['rna degradation']
+    # del ecoli_reduced['polypeptide initiation']
+    # del ecoli_reduced['polypeptide elongation']
+    # del ecoli_reduced['protein degradation']
+    # del ecoli_reduced['complexation']
 
     ecoli_reduced['replication initiation control'] = {
         '_type': 'process',
@@ -224,10 +230,19 @@ def test_ecoli_reduced():
     plot_bigraph(
         ecoli_reduced,
         node_border_colors={('replication initiation control',): 'red'},
+        node_border_widths={('replication initiation control',): '8'},
+        node_label_sizes={('replication initiation control',): '40pt'},
         remove_process_place_edges=True,
         rankdir='RL',
+        node_label_size='32pt',
+        process_label_size='32pt',
+        port_label_size='22pt',
+        port_labels=False,
+        label_margin='0.1',
+        dpi='200',
         out_dir='out',
         filename='ecoli_reduced',
+        file_format='png',
     )
 
 if __name__ == '__main__':

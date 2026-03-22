@@ -168,7 +168,9 @@ def get_graphviz_fig(
         invisible_edges=None,
         remove_process_place_edges=False,
         node_border_colors=None,
+        node_border_widths=None,
         node_fill_colors=None,
+        node_label_sizes=None,
         node_groups=None,
         collapse_redundant_processes=False,
         collapse_paths=None,
@@ -684,10 +686,18 @@ def get_graphviz_fig(
             for name, color in node_border_colors.items():
                 if name in state_paths or name in process_paths:
                     graph.node(str(name), color=color)
+        if node_border_widths:
+            for name, width in node_border_widths.items():
+                if name in state_paths or name in process_paths:
+                    graph.node(str(name), penwidth=str(width))
         if node_fill_colors:
             for name, color in node_fill_colors.items():
                 if name in state_paths or name in process_paths:
                     graph.node(str(name), color=color, style='filled')
+        if node_label_sizes:
+            for name, size in node_label_sizes.items():
+                if name in state_paths or name in process_paths:
+                    graph.node(str(name), fontsize=str(size))
 
     # -------- build graph ---------------------------------------------------
 
