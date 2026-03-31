@@ -245,6 +245,21 @@ def test_ecoli_reduced():
         file_format='png',
     )
 
+def test_ecoli_separate_processes():
+    plot_bigraph(
+        ecoli,
+        separate_processes=True,
+        port_labels=False,
+        out_dir='out',
+        filename='ecoli_separate_processes',
+        node_label_size='18pt',
+        process_label_size='18pt',
+        label_margin='0.2',
+        dpi='150',
+    )
+
+
 if __name__ == '__main__':
     test_ecoli_bigraph()
     test_ecoli_reduced()
+    test_ecoli_separate_processes()

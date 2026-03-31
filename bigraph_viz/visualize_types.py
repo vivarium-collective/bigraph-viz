@@ -176,6 +176,7 @@ def get_graphviz_fig(
         collapse_paths=None,
         remove_paths=None,
         label_separator=' ',
+        separate_processes=False,
 ):
     """
     Generate a Graphviz Digraph from a graph_dict describing a simulation bigraph.
@@ -704,15 +705,97 @@ def get_graphviz_fig(
     # First, apply hierarchical collapse/remove rules
     prune_subtrees()
 
-    add_state_nodes()
-    process_paths, collapse_map = add_process_nodes()
-    rewrite_collapsed_edges(collapse_map)
-    add_place_edges(process_paths)
-    add_edges([
-        ('input_edges', 'input'),
-        ('output_edges', 'output'),
-        ('bidirectional_edges', 'bidirectional'),
-    ])
+    if separate_processes:
+        # Two-column layout using invisible anchor nodes.
+        # An invisible anchor at the top of each column, connected by
+        # an invisible edge (stores_anchor -> processes_anchor) to
+        # ensure stores are LEFT and processes are RIGHT.
+
+        stores_anchor = '__stores_anchor__'
+        procs_anchor = '__procs_anchor__'
+        graph.node(stores_anchor, label='', style='invis',
+                   width='0', height='0')
+        graph.node(procs_anchor, label='', style='invis',
+                   width='0', height='0')
+
+        # Force anchors to the same rank, with stores left of processes
+        with graph.subgraph(name='anchor_rank') as sg:
+            sg.attr(rank='same')
+            sg.node(stores_anchor)
+            sg.node(procs_anchor)
+        graph.edge(stores_anchor, procs_anchor,
+                   style='invis', constraint='false')
+
+        # Add all nodes to the main graph
+        add_state_nodes()
+        process_paths, collapse_map = add_process_nodes()
+        rewrite_collapsed_edges(collapse_map)
+
+        # Connect stores anchor to the root state nodes
+        root_state_names = []
+        child_paths = {
+            tuple(e['child']) for e in graph_dict.get('place_edges', [])
+        }
+        for node in graph_dict['state_nodes']:
+            if tuple(node['path']) not in child_paths:
+                root_state_names.append(str(node['path']))
+        for rn in root_state_names:
+            graph.edge(stores_anchor, rn,
+                       style='invis', constraint='true')
+
+        # Place edges (stores hierarchy only, skip process place edges)
+        for edge in graph_dict.get('place_edges', []):
+            if edge['child'] in process_paths:
+                continue
+            visible = edge not in invisible_edges
+            graph.attr('edge', style='filled' if visible else 'invis')
+            graph.edge(
+                str(edge['parent']),
+                str(edge['child']),
+                **edge_styles['place'],
+                constraint='true',
+            )
+
+        # Connect processes anchor to the first process, then chain
+        proc_names = [
+            str(n['path']) for n in graph_dict['process_nodes']
+            if str(n['path']) in node_names
+        ]
+        if proc_names:
+            graph.edge(procs_anchor, proc_names[0],
+                       style='invis', constraint='true')
+            for i in range(len(proc_names) - 1):
+                graph.edge(proc_names[i], proc_names[i + 1],
+                           style='invis', constraint='true')
+
+        # Wiring edges with constraint='false'
+        for group_key, style_key in [
+            ('input_edges', 'input'),
+            ('output_edges', 'output'),
+            ('bidirectional_edges', 'bidirectional'),
+        ]:
+            for edge in graph_dict.get(group_key, []):
+                if 'bridge_outputs' in edge['type']:
+                    style = 'input'
+                elif 'bridge_inputs' in edge['type']:
+                    style = 'output'
+                else:
+                    style = style_key
+                graph.attr('edge', **edge_styles[style])
+                plot_edges(
+                    graph, edge, port_labels, port_label_size,
+                    state_node_spec, constraint='false',
+                )
+    else:
+        add_state_nodes()
+        process_paths, collapse_map = add_process_nodes()
+        rewrite_collapsed_edges(collapse_map)
+        add_place_edges(process_paths)
+        add_edges([
+            ('input_edges', 'input'),
+            ('output_edges', 'output'),
+            ('bidirectional_edges', 'bidirectional'),
+        ])
     # TODO: the second add_state_nodes() looks redundant
     # add_state_nodes()
     add_disconnected_edges()
@@ -1690,6 +1773,132 @@ def run_leaf_types(core):
                  )
 
 
+def run_separate_processes_flat(core):
+    flat_composite_spec = {
+        'store1.1': 'float',
+        'store1.2': 'integer',
+        'process1': {
+            '_type': 'process',
+            '_outputs': {
+                'port1': 'node',
+                'port2': 'node',
+            },
+            'outputs': {
+                'port1': ['store1.1'],
+                'port2': ['store1.2'],
+            }
+        },
+        'process2': {
+            '_type': 'process',
+            '_inputs': {
+                'port1': 'node',
+                'port2': 'node',
+            },
+            'inputs': {
+                'port1': ['store1.1'],
+                'port2': ['store1.2'],
+            }
+        },
+    }
+
+    plot_bigraph(flat_composite_spec,
+                 core=core,
+                 separate_processes=True,
+                 filename='separate_processes_flat',
+                 **plot_settings)
+
+
+def run_separate_processes_nested(core):
+    nested_process_spec = {
+        'store1': {
+            'store1.1': 'float',
+            'store1.2': 'integer',
+            'process1': {
+                '_type': 'process',
+                '_inputs': {
+                    'port1': 'node',
+                    'port2': 'node',
+                },
+                'inputs': {
+                    'port1': ['store1.1'],
+                    'port2': ['store1.2'],
+                }
+            },
+            'process2': {
+                '_type': 'process',
+                '_outputs': {
+                    'port1': 'node',
+                    'port2': 'node',
+                },
+                'outputs': {
+                    'port1': ['store1.1'],
+                    'port2': ['store1.2'],
+                }
+            },
+        },
+        'process3': {
+            '_type': 'process',
+            '_inputs': {
+                'port1': 'node',
+            },
+            'inputs': {
+                'port1': ['store1'],
+            }
+        }
+    }
+
+    plot_bigraph(nested_process_spec,
+                 **plot_settings,
+                 core=core,
+                 separate_processes=True,
+                 filename='separate_processes_nested')
+
+
+def run_separate_processes_bio(core):
+    b = {
+        'environment': {
+            'cells': {
+                'cell1': {
+                    'cytoplasm': {},
+                    'nucleus': {
+                        'chromosome': {},
+                        'transcription': {
+                            '_type': 'process',
+                            '_inputs': {'DNA': 'node'},
+                            '_outputs': {'RNA': 'node'},
+                            'inputs': {
+                                'DNA': ['chromosome']
+                            },
+                            'outputs': {
+                                'RNA': ['..', 'cytoplasm']
+                            }
+                        }
+                    },
+                }
+            },
+            'fields': {},
+            'barriers': {
+                '_type': 'node'},
+            'diffusion': {
+                '_type': 'process',
+                '_inputs': {'fields': 'node'},
+                '_outputs': {'fields': 'node'},
+                'inputs': {
+                    'fields': ['fields', ]
+                },
+                'outputs': {
+                    'fields': ['fields', ]
+                }
+            }
+        }}
+
+    plot_bigraph(b, core=core,
+                 separate_processes=True,
+                 filename='separate_processes_bio',
+                 show_process_schema_keys=[],
+                 **plot_settings)
+
+
 if __name__ == '__main__':
     core = allocate_core()
 
@@ -1711,3 +1920,6 @@ if __name__ == '__main__':
     run_nested_particle_process(core)
     run_process_config(core)
     run_leaf_types(core)
+    run_separate_processes_flat(core)
+    run_separate_processes_nested(core)
+    run_separate_processes_bio(core)
