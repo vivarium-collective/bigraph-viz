@@ -928,21 +928,21 @@ def run_graphviz(core):
     )
 
 
-class Cell(Edge):
-    def inputs(self):
-        return {
-            'nutrients': 'float',
-        }
-
-
-    def outputs(self):
-        return {
-            'secretions': 'float',
-            'biomass': 'float',
-        }
-
-
 def run_bigraph_cell(core):
+    class Cell(Edge):
+        def inputs(self):
+            return {
+                'nutrients': 'float',
+            }
+
+        def outputs(self):
+            return {
+                'secretions': 'float',
+                'biomass': 'float',
+            }
+
+    core.register_link('Cell', Cell)
+
     cell = {
         'config': {
             '_type': 'map[float]',
@@ -1272,24 +1272,25 @@ def run_bidirectional_edges(core):
         **plot_settings)
 
 
-class DynamicFBA(Edge):
-    config_schema = {
-        'model_file': 'string',
-        'kinetic_params': 'map[tuple[float,float]]',
-        'substrate_update_reactions': 'map[string]',
-        'bounds': 'map[map[float]]',
-    }
-    def inputs(self):
-        return {
-            'substrates': 'map[float]',
+def _make_dynamic_fba_stub():
+    class DynamicFBA(Edge):
+        config_schema = {
+            'model_file': 'string',
+            'kinetic_params': 'map[tuple[float,float]]',
+            'substrate_update_reactions': 'map[string]',
+            'bounds': 'map[map[float]]',
         }
+        def inputs(self):
+            return {
+                'substrates': 'map[float]',
+            }
 
-
-    def outputs(self):
-        return {
-            'biomass': 'float',
-            'substrates': 'map[float]',
-        }
+        def outputs(self):
+            return {
+                'biomass': 'float',
+                'substrates': 'map[float]',
+            }
+    return DynamicFBA
 
 
 def generate_spec_and_schema(n_rows, n_cols):
@@ -1341,6 +1342,8 @@ def generate_spec_and_schema(n_rows, n_cols):
 
 
 def run_array_paths(core):
+    core.register_link('DynamicFBA', _make_dynamic_fba_stub())
+
     n_rows, n_cols = 2, 1  # or any desired shape
     spec, schema = generate_spec_and_schema(n_rows, n_cols)
 
@@ -1353,6 +1356,8 @@ def run_array_paths(core):
 
 
 def run_complex_bigraph(core):
+    core.register_link('DynamicFBA', _make_dynamic_fba_stub())
+
     n_rows, n_cols = 6, 6  # or any desired shape
     spec, schema = generate_spec_and_schema(n_rows, n_cols)
 
@@ -1367,22 +1372,26 @@ def run_complex_bigraph(core):
         **plot_settings)
 
 
-class Particles(Edge):
-    def inputs(self):
-        return {
-            'particles': 'map[particle]',
-            'fields': 'map[array]',
-        }
+def _make_particles_stub():
+    class Particles(Edge):
+        def inputs(self):
+            return {
+                'particles': 'map[particle]',
+                'fields': 'map[array]',
+            }
 
-
-    def outputs(self):
-        return {
-            'particles': 'map[particle]',
-            'fields': 'map[array]',
-        }
+        def outputs(self):
+            return {
+                'particles': 'map[particle]',
+                'fields': 'map[array]',
+            }
+    return Particles
 
 
 def run_nested_particle_process(core):
+    core.register_link('DynamicFBA', _make_dynamic_fba_stub())
+    core.register_link('Particles', _make_particles_stub())
+
     core.register_type('particle', {
         'id': 'string',
         'position': 'tuple[float,float]',
