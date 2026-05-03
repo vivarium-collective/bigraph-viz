@@ -34,16 +34,18 @@ classifiers = [
 ]
 
 dependencies = [
-    "bigraph-schema>=1.0.0",
-    "process-bigraph>=1.0.0",
-    "graphviz"
+    "bigraph-schema>=1.2.3",
+    "process-bigraph>=1.2.2",
+    "graphviz",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-cov",
 ]
 
 # Include bigraph_viz and ALL subpackages (e.g., bigraph_viz.methods)
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["bigraph_viz*"]
-
-[tool.uv.sources]
-# bigraph-schema = { path = "../bigraph-schema", editable = true }
-# process-bigraph = { path = "../process-bigraph", editable = true }
