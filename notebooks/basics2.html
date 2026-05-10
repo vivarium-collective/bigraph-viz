@@ -7843,7 +7843,7 @@ a.anchor-link {
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>bigraph-schema==1.3.2
--e git+https://github.com/vivarium-collective/bigraph-viz@286885b6dbe84694f5225ee5e92867f03a8fa0a7#egg=bigraph_viz
+-e git+https://github.com/vivarium-collective/bigraph-viz@1306999e52059b80ad7a263ec122dca6140e5f5f#egg=bigraph_viz
 process-bigraph==1.4.10
 </pre>
 </div>
@@ -7932,9 +7932,9 @@ process-bigraph==1.4.10
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>skipping `process_bigraph.processes.math_expression` (missing optional dep `pytest`)
+<pre>skipping `bigraph_viz.test_notebooks` (missing optional dep `pytest`)
+skipping `process_bigraph.processes.math_expression` (missing optional dep `pytest`)
 skipping `process_bigraph.server.rest` (missing optional dep `fastapi`)
-skipping `bigraph_viz.test_notebooks` (missing optional dep `pytest`)
 </pre>
 </div>
 </div>
@@ -8474,11 +8474,11 @@ skipping `bigraph_viz.test_notebooks` (missing optional dep `pytest`)
 <g class="graph" id="graph0" transform="scale(1.39 1.39) rotate(0) translate(4 126.68)">
 <title>bigraph</title>
 <polygon fill="white" points="-4,4 -4,-126.68 159.68,-126.68 159.68,4 -4,4" stroke="transparent"></polygon>
-<!-- (&#39;node2&#39;,) -->
+<!-- (&#39;node3&#39;,) -->
 <g class="node" id="node1">
-<title>('node2',)</title>
+<title>('node3',)</title>
 <ellipse cx="19.84" cy="-102.84" fill="none" rx="19.68" ry="19.68" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="1.34" y="-99.74">node2</text>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="1.34" y="-99.74">node3</text>
 </g>
 <!-- (&#39;process1&#39;,) -->
 <g class="node" id="node4">
@@ -8486,25 +8486,25 @@ skipping `bigraph_viz.test_notebooks` (missing optional dep `pytest`)
 <polygon fill="none" points="109.34,-36 46.34,-36 46.34,0 109.34,0 109.34,-36" stroke="black" stroke-width="2"></polygon>
 <text font-family="Times,serif" font-size="12.00" text-anchor="start" x="50.34" y="-14.9">process1</text>
 </g>
-<!-- (&#39;node2&#39;,)&#45;&gt;(&#39;process1&#39;,) -->
+<!-- (&#39;node3&#39;,)&#45;&gt;(&#39;process1&#39;,) -->
 <g class="edge" id="edge1">
-<title>('node2',)-&gt;('process1',)</title>
+<title>('node3',)-&gt;('process1',)</title>
 <path d="M28.02,-84.41C32.72,-75.07 39.04,-63.54 45.84,-54 48.31,-50.53 51.09,-47.03 53.96,-43.66" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="56.65,-45.89 60.68,-36.09 51.42,-41.24 56.65,-45.89" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="45.84" y="-57">port2</text>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="45.84" y="-57">port3</text>
 </g>
-<!-- (&#39;node3&#39;,) -->
+<!-- (&#39;node2&#39;,) -->
 <g class="node" id="node2">
-<title>('node3',)</title>
+<title>('node2',)</title>
 <ellipse cx="77.84" cy="-102.84" fill="none" rx="19.68" ry="19.68" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="59.34" y="-99.74">node3</text>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="59.34" y="-99.74">node2</text>
 </g>
-<!-- (&#39;node3&#39;,)&#45;&gt;(&#39;process1&#39;,) -->
+<!-- (&#39;node2&#39;,)&#45;&gt;(&#39;process1&#39;,) -->
 <g class="edge" id="edge2">
-<title>('node3',)-&gt;('process1',)</title>
+<title>('node2',)-&gt;('process1',)</title>
 <path d="M77.84,-82.63C77.84,-71.87 77.84,-58.27 77.84,-46.41" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="81.34,-46.14 77.84,-36.14 74.34,-46.14 81.34,-46.14" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="77.84" y="-57">port3</text>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="77.84" y="-57">port2</text>
 </g>
 <!-- (&#39;node1&#39;,) -->
 <g class="node" id="node3">
@@ -9718,7 +9718,7 @@ skipping `bigraph_viz.test_notebooks` (missing optional dep `pytest`)
 </g>
 <!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;translation&#39;) -->
 <!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;ribosomal complexes&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;translation&#39;) -->
-<g class="edge" id="edge16">
+<g class="edge" id="edge17">
 <title>('cell composite', 'cytoplasm', 'ribosomal complexes')-&gt;('cell composite', 'cytoplasm', 'translation')</title>
 <path d="M449.09,-162.43C452.32,-137.24 458.59,-107.57 470.73,-83.08 479.72,-64.93 495.36,-48.1 508.13,-36.25" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="445.59,-162.22 447.92,-172.56 452.54,-163.02 445.59,-162.22" stroke="black"></polygon>
@@ -9736,7 +9736,7 @@ skipping `bigraph_viz.test_notebooks` (missing optional dep `pytest`)
 <path d="M519.27,-281.52C521.48,-243.8 524.64,-189.89 526.69,-154.91" fill="none" stroke="black" stroke-width="2"></path>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;transcript regulation complex&#39;, &#39;transcripts&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;translation&#39;) -->
-<g class="edge" id="edge17">
+<g class="edge" id="edge16">
 <title>('cell composite', 'cytoplasm', 'transcript regulation complex', 'transcripts')-&gt;('cell composite', 'cytoplasm', 'translation')</title>
 <path d="M528.73,-72.54C528.73,-59.54 528.73,-46.16 528.73,-36.03" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="525.23,-72.82 528.73,-82.82 532.23,-72.82 525.23,-72.82" stroke="black"></polygon>
