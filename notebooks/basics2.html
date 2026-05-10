@@ -7842,9 +7842,9 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>bigraph-schema==1.0.14
--e git+https://github.com/vivarium-collective/bigraph-viz@b5ebc6d5d8eb8c9c86f38ef9572ae3c2c4e039d9#egg=bigraph_viz
-process-bigraph==1.0.6
+<pre>bigraph-schema==1.3.2
+-e git+https://github.com/vivarium-collective/bigraph-viz@286885b6dbe84694f5225ee5e92867f03a8fa0a7#egg=bigraph_viz
+process-bigraph==1.4.10
 </pre>
 </div>
 </div>
@@ -7929,6 +7929,15 @@ process-bigraph==1.0.6
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>skipping `process_bigraph.processes.math_expression` (missing optional dep `pytest`)
+skipping `process_bigraph.server.rest` (missing optional dep `fastapi`)
+skipping `bigraph_viz.test_notebooks` (missing optional dep `pytest`)
+</pre>
+</div>
+</div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
@@ -8241,21 +8250,21 @@ process-bigraph==1.0.6
 <polygon fill="none" points="55,-63 0,-63 0,-27 55,-27 55,-63" stroke="black" stroke-width="2"></polygon>
 <text font-family="Times,serif" font-size="12.00" text-anchor="start" x="4" y="-41.9">process</text>
 </g>
-<!-- (&#39;process&#39;, &#39;p&#39;, &#39;o&#39;, &#39;r&#39;, &#39;t&#39;, &#39;2&#39;)_input -->
-<!-- (&#39;process&#39;, &#39;p&#39;, &#39;o&#39;, &#39;r&#39;, &#39;t&#39;, &#39;2&#39;)_input&#45;&gt;(&#39;process&#39;,) -->
-<g class="edge" id="edge1">
-<title>('process', 'p', 'o', 'r', 't', '2')_input-&gt;('process',)</title>
-<path d="M118.93,-71.98C117.41,-71.53 89.61,-63.23 65.23,-55.96" fill="none" stroke="black" stroke-dasharray="5,2"></path>
-<polygon fill="black" points="66.01,-52.54 55.42,-53.03 64.01,-59.25 66.01,-52.54" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="73" y="-69">port2</text>
-</g>
 <!-- (&#39;process&#39;, &#39;p&#39;, &#39;o&#39;, &#39;r&#39;, &#39;t&#39;, &#39;1&#39;)_input -->
 <!-- (&#39;process&#39;, &#39;p&#39;, &#39;o&#39;, &#39;r&#39;, &#39;t&#39;, &#39;1&#39;)_input&#45;&gt;(&#39;process&#39;,) -->
-<g class="edge" id="edge2">
+<g class="edge" id="edge1">
 <title>('process', 'p', 'o', 'r', 't', '1')_input-&gt;('process',)</title>
+<path d="M118.93,-71.98C117.41,-71.53 89.61,-63.23 65.23,-55.96" fill="none" stroke="black" stroke-dasharray="5,2"></path>
+<polygon fill="black" points="66.01,-52.54 55.42,-53.03 64.01,-59.25 66.01,-52.54" stroke="black"></polygon>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="73" y="-69">port1</text>
+</g>
+<!-- (&#39;process&#39;, &#39;p&#39;, &#39;o&#39;, &#39;r&#39;, &#39;t&#39;, &#39;2&#39;)_input -->
+<!-- (&#39;process&#39;, &#39;p&#39;, &#39;o&#39;, &#39;r&#39;, &#39;t&#39;, &#39;2&#39;)_input&#45;&gt;(&#39;process&#39;,) -->
+<g class="edge" id="edge2">
+<title>('process', 'p', 'o', 'r', 't', '2')_input-&gt;('process',)</title>
 <path d="M118.93,-18.02C117.41,-18.47 89.61,-26.77 65.23,-34.04" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="64.01,-30.75 55.42,-36.97 66.01,-37.46 64.01,-30.75" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="73" y="-34">port1</text>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="73" y="-34">port2</text>
 </g>
 </g>
 </svg>
@@ -8465,11 +8474,11 @@ process-bigraph==1.0.6
 <g class="graph" id="graph0" transform="scale(1.39 1.39) rotate(0) translate(4 126.68)">
 <title>bigraph</title>
 <polygon fill="white" points="-4,4 -4,-126.68 159.68,-126.68 159.68,4 -4,4" stroke="transparent"></polygon>
-<!-- (&#39;node3&#39;,) -->
+<!-- (&#39;node2&#39;,) -->
 <g class="node" id="node1">
-<title>('node3',)</title>
+<title>('node2',)</title>
 <ellipse cx="19.84" cy="-102.84" fill="none" rx="19.68" ry="19.68" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="1.34" y="-99.74">node3</text>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="1.34" y="-99.74">node2</text>
 </g>
 <!-- (&#39;process1&#39;,) -->
 <g class="node" id="node4">
@@ -8477,25 +8486,25 @@ process-bigraph==1.0.6
 <polygon fill="none" points="109.34,-36 46.34,-36 46.34,0 109.34,0 109.34,-36" stroke="black" stroke-width="2"></polygon>
 <text font-family="Times,serif" font-size="12.00" text-anchor="start" x="50.34" y="-14.9">process1</text>
 </g>
-<!-- (&#39;node3&#39;,)&#45;&gt;(&#39;process1&#39;,) -->
-<g class="edge" id="edge3">
-<title>('node3',)-&gt;('process1',)</title>
-<path d="M28.02,-84.41C32.72,-75.07 39.04,-63.54 45.84,-54 48.31,-50.53 51.09,-47.03 53.96,-43.66" fill="none" stroke="black" stroke-dasharray="5,2"></path>
-<polygon fill="black" points="56.65,-45.89 60.68,-36.09 51.42,-41.24 56.65,-45.89" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="45.84" y="-57">port3</text>
-</g>
-<!-- (&#39;node2&#39;,) -->
-<g class="node" id="node2">
-<title>('node2',)</title>
-<ellipse cx="77.84" cy="-102.84" fill="none" rx="19.68" ry="19.68" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="59.34" y="-99.74">node2</text>
-</g>
 <!-- (&#39;node2&#39;,)&#45;&gt;(&#39;process1&#39;,) -->
 <g class="edge" id="edge1">
 <title>('node2',)-&gt;('process1',)</title>
+<path d="M28.02,-84.41C32.72,-75.07 39.04,-63.54 45.84,-54 48.31,-50.53 51.09,-47.03 53.96,-43.66" fill="none" stroke="black" stroke-dasharray="5,2"></path>
+<polygon fill="black" points="56.65,-45.89 60.68,-36.09 51.42,-41.24 56.65,-45.89" stroke="black"></polygon>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="45.84" y="-57">port2</text>
+</g>
+<!-- (&#39;node3&#39;,) -->
+<g class="node" id="node2">
+<title>('node3',)</title>
+<ellipse cx="77.84" cy="-102.84" fill="none" rx="19.68" ry="19.68" stroke="black" stroke-width="2"></ellipse>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="59.34" y="-99.74">node3</text>
+</g>
+<!-- (&#39;node3&#39;,)&#45;&gt;(&#39;process1&#39;,) -->
+<g class="edge" id="edge2">
+<title>('node3',)-&gt;('process1',)</title>
 <path d="M77.84,-82.63C77.84,-71.87 77.84,-58.27 77.84,-46.41" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="81.34,-46.14 77.84,-36.14 74.34,-46.14 81.34,-46.14" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="77.84" y="-57">port2</text>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="77.84" y="-57">port3</text>
 </g>
 <!-- (&#39;node1&#39;,) -->
 <g class="node" id="node3">
@@ -8504,7 +8513,7 @@ process-bigraph==1.0.6
 <text font-family="Times,serif" font-size="12.00" text-anchor="start" x="117.34" y="-99.74">node1</text>
 </g>
 <!-- (&#39;node1&#39;,)&#45;&gt;(&#39;process1&#39;,) -->
-<g class="edge" id="edge2">
+<g class="edge" id="edge3">
 <title>('node1',)-&gt;('process1',)</title>
 <path d="M127.66,-84.41C122.95,-75.07 116.64,-63.54 109.84,-54 107.37,-50.53 104.58,-47.03 101.72,-43.66" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="104.26,-41.24 95,-36.09 99.02,-45.89 104.26,-41.24" stroke="black"></polygon>
@@ -8613,11 +8622,11 @@ process-bigraph==1.0.6
 <g class="graph" id="graph0" transform="scale(1.39 1.39) rotate(0) translate(4 136.62)">
 <title>bigraph</title>
 <polygon fill="white" points="-4,4 -4,-136.62 184.62,-136.62 184.62,4 -4,4" stroke="transparent"></polygon>
-<!-- (&#39;store1.2&#39;,) -->
+<!-- (&#39;store1.1&#39;,) -->
 <g class="node" id="node1">
-<title>('store1.2',)</title>
+<title>('store1.1',)</title>
 <ellipse cx="153.81" cy="-105.81" fill="none" rx="26.62" ry="26.62" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="128.81" y="-102.71">store1.2</text>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="128.81" y="-102.71">store1.1</text>
 </g>
 <!-- (&#39;process1&#39;,) -->
 <g class="node" id="node3">
@@ -8625,12 +8634,12 @@ process-bigraph==1.0.6
 <polygon fill="none" points="63,-119.81 0,-119.81 0,-83.81 63,-83.81 63,-119.81" stroke="black" stroke-width="2"></polygon>
 <text font-family="Times,serif" font-size="12.00" text-anchor="start" x="4" y="-98.71">process1</text>
 </g>
-<!-- (&#39;store1.2&#39;,)&#45;&gt;(&#39;process1&#39;,) -->
+<!-- (&#39;store1.1&#39;,)&#45;&gt;(&#39;process1&#39;,) -->
 <g class="edge" id="edge3">
-<title>('store1.2',)-&gt;('process1',)</title>
+<title>('store1.1',)-&gt;('process1',)</title>
 <path d="M116.86,-104.61C99.84,-104.05 79.71,-103.38 63.38,-102.84" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="116.89,-108.12 127,-104.95 117.12,-101.12 116.89,-108.12" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="81" y="-106.81">port2</text>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="81" y="-106.81">port1</text>
 </g>
 <!-- (&#39;process2&#39;,) -->
 <g class="node" id="node4">
@@ -8638,32 +8647,32 @@ process-bigraph==1.0.6
 <polygon fill="none" points="63,-53.81 0,-53.81 0,-17.81 63,-17.81 63,-53.81" stroke="black" stroke-width="2"></polygon>
 <text font-family="Times,serif" font-size="12.00" text-anchor="start" x="4" y="-32.71">process2</text>
 </g>
-<!-- (&#39;store1.2&#39;,)&#45;&gt;(&#39;process2&#39;,) -->
+<!-- (&#39;store1.1&#39;,)&#45;&gt;(&#39;process2&#39;,) -->
 <g class="edge" id="edge1">
-<title>('store1.2',)-&gt;('process2',)</title>
+<title>('store1.1',)-&gt;('process2',)</title>
 <path d="M130.18,-92.64C113.84,-83.14 91.36,-70.06 72.08,-58.84" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="73.61,-55.68 63.2,-53.67 70.09,-61.73 73.61,-55.68" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="81" y="-81.81">port2</text>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="81" y="-81.81">port1</text>
 </g>
-<!-- (&#39;store1.1&#39;,) -->
+<!-- (&#39;store1.2&#39;,) -->
 <g class="node" id="node2">
-<title>('store1.1',)</title>
+<title>('store1.2',)</title>
 <ellipse cx="153.81" cy="-26.81" fill="none" rx="26.62" ry="26.62" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="128.81" y="-23.71">store1.1</text>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="128.81" y="-23.71">store1.2</text>
 </g>
-<!-- (&#39;store1.1&#39;,)&#45;&gt;(&#39;process1&#39;,) -->
+<!-- (&#39;store1.2&#39;,)&#45;&gt;(&#39;process1&#39;,) -->
 <g class="edge" id="edge4">
-<title>('store1.1',)-&gt;('process1',)</title>
+<title>('store1.2',)-&gt;('process1',)</title>
 <path d="M117.34,-34.3C105.22,-37.83 91.97,-42.85 81,-49.81 67.03,-58.67 54.4,-72.5 45.53,-83.67" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="118.43,-37.63 127.18,-31.66 116.61,-30.87 118.43,-37.63" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="81" y="-52.81">port1</text>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="81" y="-52.81">port2</text>
 </g>
-<!-- (&#39;store1.1&#39;,)&#45;&gt;(&#39;process2&#39;,) -->
+<!-- (&#39;store1.2&#39;,)&#45;&gt;(&#39;process2&#39;,) -->
 <g class="edge" id="edge2">
-<title>('store1.1',)-&gt;('process2',)</title>
+<title>('store1.2',)-&gt;('process2',)</title>
 <path d="M128.8,-17.13C114.81,-12.74 96.86,-9.24 81,-12.81 78.19,-13.44 75.35,-14.26 72.52,-15.2" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="71.15,-11.98 63.08,-18.84 73.67,-18.51 71.15,-11.98" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="81" y="-15.81">port1</text>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="81" y="-15.81">port2</text>
 </g>
 </g>
 </svg>
@@ -8784,42 +8793,42 @@ process-bigraph==1.0.6
 <title>('object1',)-&gt;('object1', 'object1.2')</title>
 <path d="M154.83,-194.53C142.03,-178.26 123.41,-154.6 109.68,-137.13" fill="none" stroke="black" stroke-width="2"></path>
 </g>
-<!-- (&#39;process3&#39;,) -->
-<g class="node" id="node4">
-<title>('process3',)</title>
-<polygon fill="none" points="319,-131.03 256,-131.03 256,-95.03 319,-95.03 319,-131.03" stroke="black" stroke-width="2"></polygon>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="260" y="-109.93">process3</text>
-</g>
-<!-- (&#39;object1&#39;,)&#45;&gt;(&#39;process3&#39;,) -->
-<g class="edge" id="edge5">
-<title>('object1',)-&gt;('process3',)</title>
-<path d="M191.36,-203.43C206.4,-196.1 226.32,-185.09 241.5,-172.05 252.43,-162.67 262.6,-150.38 270.59,-139.53" fill="none" stroke="black" stroke-dasharray="5,2"></path>
-<polygon fill="black" points="273.55,-141.4 276.5,-131.22 267.85,-137.34 273.55,-141.4" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="251.5" y="-164.05">port1</text>
-</g>
 <!-- (&#39;object1&#39;, &#39;process1&#39;) -->
-<g class="node" id="node5">
+<g class="node" id="node4">
 <title>('object1', 'process1')</title>
 <polygon fill="none" points="63,-36 0,-36 0,0 63,0 63,-36" stroke="black" stroke-width="2"></polygon>
 <text font-family="Times,serif" font-size="12.00" text-anchor="start" x="4" y="-14.9">process1</text>
 </g>
 <!-- (&#39;object1&#39;,)&#45;&gt;(&#39;object1&#39;, &#39;process1&#39;) -->
 <!-- (&#39;object1&#39;, &#39;process2&#39;) -->
-<g class="node" id="node6">
+<g class="node" id="node5">
 <title>('object1', 'process2')</title>
 <polygon fill="none" points="216,-36 153,-36 153,0 216,0 216,-36" stroke="black" stroke-width="2"></polygon>
 <text font-family="Times,serif" font-size="12.00" text-anchor="start" x="157" y="-14.9">process2</text>
 </g>
 <!-- (&#39;object1&#39;,)&#45;&gt;(&#39;object1&#39;, &#39;process2&#39;) -->
-<!-- (&#39;object1&#39;, &#39;object1.1&#39;)&#45;&gt;(&#39;object1&#39;, &#39;process1&#39;) -->
+<!-- (&#39;process3&#39;,) -->
+<g class="node" id="node6">
+<title>('process3',)</title>
+<polygon fill="none" points="319,-131.03 256,-131.03 256,-95.03 319,-95.03 319,-131.03" stroke="black" stroke-width="2"></polygon>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="260" y="-109.93">process3</text>
+</g>
+<!-- (&#39;object1&#39;,)&#45;&gt;(&#39;process3&#39;,) -->
 <g class="edge" id="edge7">
+<title>('object1',)-&gt;('process3',)</title>
+<path d="M191.36,-203.43C206.4,-196.1 226.32,-185.09 241.5,-172.05 252.43,-162.67 262.6,-150.38 270.59,-139.53" fill="none" stroke="black" stroke-dasharray="5,2"></path>
+<polygon fill="black" points="273.55,-141.4 276.5,-131.22 267.85,-137.34 273.55,-141.4" stroke="black"></polygon>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="251.5" y="-164.05">port1</text>
+</g>
+<!-- (&#39;object1&#39;, &#39;object1.1&#39;)&#45;&gt;(&#39;object1&#39;, &#39;process1&#39;) -->
+<g class="edge" id="edge5">
 <title>('object1', 'object1.1')-&gt;('object1', 'process1')</title>
 <path d="M145.76,-93.97C140.76,-90.28 135.49,-86.47 130.5,-83 118.8,-74.88 90.55,-56.66 67.2,-41.73" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="68.86,-38.63 58.54,-36.2 65.09,-44.53 68.86,-38.63" stroke="black"></polygon>
 <text font-family="Times,serif" font-size="10.00" text-anchor="start" x="102.5" y="-57">port1</text>
 </g>
 <!-- (&#39;object1&#39;, &#39;object1.1&#39;)&#45;&gt;(&#39;object1&#39;, &#39;process2&#39;) -->
-<g class="edge" id="edge9">
+<g class="edge" id="edge8">
 <title>('object1', 'object1.1')-&gt;('object1', 'process2')</title>
 <path d="M175.76,-73.22C177.85,-60.27 180.07,-46.5 181.75,-36.07" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="172.26,-72.93 174.12,-83.36 179.17,-74.04 172.26,-72.93" stroke="black"></polygon>
@@ -8833,7 +8842,7 @@ process-bigraph==1.0.6
 <text font-family="Times,serif" font-size="10.00" text-anchor="start" x="32.5" y="-57">port2</text>
 </g>
 <!-- (&#39;object1&#39;, &#39;object1.2&#39;)&#45;&gt;(&#39;object1&#39;, &#39;process2&#39;) -->
-<g class="edge" id="edge8">
+<g class="edge" id="edge9">
 <title>('object1', 'object1.2')-&gt;('object1', 'process2')</title>
 <path d="M117.99,-82.54C126.59,-73.24 136.3,-63.04 145.5,-54 151.6,-48.01 158.48,-41.7 164.74,-36.11" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="115.24,-80.36 111.05,-90.09 120.39,-85.09 115.24,-80.36" stroke="black"></polygon>
@@ -8917,12 +8926,7 @@ process-bigraph==1.0.6
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>&gt; <span class="ansi-green-fg">/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/bigraph_schema/core.py</span>(<span class="ansi-green-intense-fg">387</span>)<span class="ansi-cyan-fg">access</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-fg">    386</span>                     <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> ipdb; ipdb.set_trace()
-<span class="ansi-green-fg">--&gt; 387</span>                     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> Exception(<span class="ansi-yellow-fg">f'unable to parse type "{key}"\n\ndue to\n{e}'</span>)
-<span class="ansi-green-fg">    388</span>             <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-
-Writing out/composite_process
+<pre>Writing out/composite_process
 </pre>
 </div>
 </div>
@@ -8949,7 +8953,7 @@ Writing out/composite_process
 <text font-family="Times,serif" font-size="12.00" text-anchor="start" x="157" y="-14.9">process1</text>
 </g>
 <!-- (&#39;composite_process&#39;, &#39;store1.1&#39;)&#45;&gt;(&#39;composite_process&#39;, &#39;process1&#39;) -->
-<g class="edge" id="edge6">
+<g class="edge" id="edge5">
 <title>('composite_process', 'store1.1')-&gt;('composite_process', 'process1')</title>
 <path d="M158.58,-75.78C164.71,-62.35 171.54,-47.39 176.65,-36.2" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="155.24,-74.66 154.27,-85.21 161.61,-77.57 155.24,-74.66" stroke="black"></polygon>
@@ -8962,7 +8966,7 @@ Writing out/composite_process
 <text font-family="Times,serif" font-size="12.00" text-anchor="start" x="4" y="-14.9">process2</text>
 </g>
 <!-- (&#39;composite_process&#39;, &#39;store1.1&#39;)&#45;&gt;(&#39;composite_process&#39;, &#39;process2&#39;) -->
-<g class="edge" id="edge8">
+<g class="edge" id="edge7">
 <title>('composite_process', 'store1.1')-&gt;('composite_process', 'process2')</title>
 <path d="M128.74,-75.83C124.07,-67.95 118.32,-60.07 111.5,-54 97.8,-41.8 79.18,-33.32 63.35,-27.76" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="125.68,-77.53 133.55,-84.64 131.83,-74.18 125.68,-77.53" stroke="black"></polygon>
@@ -8975,14 +8979,14 @@ Writing out/composite_process
 <text font-family="Times,serif" font-size="12.00" text-anchor="start" x="46.5" y="-106.71">store1.2</text>
 </g>
 <!-- (&#39;composite_process&#39;, &#39;store1.2&#39;)&#45;&gt;(&#39;composite_process&#39;, &#39;process1&#39;) -->
-<g class="edge" id="edge5">
+<g class="edge" id="edge6">
 <title>('composite_process', 'store1.2')-&gt;('composite_process', 'process1')</title>
 <path d="M71.04,-72.96C72.44,-66.07 75.02,-59.35 79.5,-54 97.51,-32.49 129.13,-24.13 152.98,-20.92" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="67.55,-72.65 69.75,-83.02 74.49,-73.55 67.55,-72.65" stroke="black"></polygon>
 <text font-family="Times,serif" font-size="10.00" text-anchor="start" x="79.5" y="-57">port2</text>
 </g>
 <!-- (&#39;composite_process&#39;, &#39;store1.2&#39;)&#45;&gt;(&#39;composite_process&#39;, &#39;process2&#39;) -->
-<g class="edge" id="edge7">
+<g class="edge" id="edge8">
 <title>('composite_process', 'store1.2')-&gt;('composite_process', 'process2')</title>
 <path d="M44.35,-84.23C39.54,-78.43 35.22,-71.91 32.5,-65 28.93,-55.93 28.54,-45.06 29.1,-36.16" fill="none" stroke="black" stroke-dasharray="5,2"></path>
 <polygon fill="black" points="41.78,-86.61 51.09,-91.66 46.96,-81.9 41.78,-86.61" stroke="black"></polygon>
@@ -9582,191 +9586,191 @@ Writing out/composite_process
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: bigraph Pages: 1 -->
-<svg height="auto" viewbox="0.00 0.00 360.00 286.22" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g class="graph" id="graph0" transform="scale(6.52 6.52) rotate(0) translate(4 605.84)">
+<svg height="auto" viewbox="0.00 0.00 358.63 288.00" width="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g class="graph" id="graph0" transform="scale(6.56 6.56) rotate(0) translate(4 605.84)">
 <title>bigraph</title>
-<polygon fill="white" points="-4,4 -4,-605.84 763.04,-605.84 763.04,4 -4,4" stroke="transparent"></polygon>
+<polygon fill="white" points="-4,4 -4,-605.84 755.39,-605.84 755.39,4 -4,4" stroke="transparent"></polygon>
 <!-- (&#39;cell composite&#39;,) -->
 <g class="node" id="node1">
 <title>('cell composite',)</title>
-<ellipse cx="454.81" cy="-558" fill="none" rx="43.68" ry="43.68" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="443.81" y="-561.4">cell</text>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="423.81" y="-548.4">composite</text>
-</g>
-<!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;) -->
-<g class="node" id="node2">
-<title>('cell composite', 'cytoplasm')</title>
-<ellipse cx="171.81" cy="-442" fill="none" rx="33.49" ry="33.49" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="140.81" y="-438.9">cytoplasm</text>
-</g>
-<!-- (&#39;cell composite&#39;,)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;) -->
-<g class="edge" id="edge1">
-<title>('cell composite',)-&gt;('cell composite', 'cytoplasm')</title>
-<path d="M414.26,-540.67C356.95,-517.58 253.53,-475.92 202.28,-455.28" fill="none" stroke="black" stroke-width="2"></path>
-</g>
-<!-- (&#39;cell composite&#39;, &#39;nucleoid&#39;) -->
-<g class="node" id="node7">
-<title>('cell composite', 'nucleoid')</title>
-<ellipse cx="596.81" cy="-442" fill="none" rx="27.76" ry="27.76" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="570.81" y="-438.9">nucleoid</text>
-</g>
-<!-- (&#39;cell composite&#39;,)&#45;&gt;(&#39;cell composite&#39;, &#39;nucleoid&#39;) -->
-<g class="edge" id="edge7">
-<title>('cell composite',)-&gt;('cell composite', 'nucleoid')</title>
-<path d="M488.82,-529.69C515.73,-508.09 552.48,-478.59 575.42,-460.17" fill="none" stroke="black" stroke-width="2"></path>
+<ellipse cx="454.73" cy="-558" fill="none" rx="43.68" ry="43.68" stroke="black" stroke-width="2"></ellipse>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="443.73" y="-561.4">cell</text>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="423.73" y="-548.4">composite</text>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;membrane&#39;) -->
-<g class="node" id="node10">
+<g class="node" id="node2">
 <title>('cell composite', 'membrane')</title>
-<ellipse cx="454.81" cy="-442" fill="none" rx="34.7" ry="34.7" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="422.31" y="-438.9">membrane</text>
+<ellipse cx="177.73" cy="-442" fill="none" rx="34.7" ry="34.7" stroke="black" stroke-width="2"></ellipse>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="145.23" y="-438.9">membrane</text>
 </g>
 <!-- (&#39;cell composite&#39;,)&#45;&gt;(&#39;cell composite&#39;, &#39;membrane&#39;) -->
-<g class="edge" id="edge10">
+<g class="edge" id="edge1">
 <title>('cell composite',)-&gt;('cell composite', 'membrane')</title>
-<path d="M454.81,-513.9C454.81,-501.67 454.81,-488.53 454.81,-476.92" fill="none" stroke="black" stroke-width="2"></path>
+<path d="M414.45,-540.42C359.08,-517.64 260.57,-477.09 209.85,-456.22" fill="none" stroke="black" stroke-width="2"></path>
 </g>
-<!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;transcript regulation complex&#39;) -->
+<!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;) -->
+<g class="node" id="node6">
+<title>('cell composite', 'cytoplasm')</title>
+<ellipse cx="454.73" cy="-442" fill="none" rx="33.49" ry="33.49" stroke="black" stroke-width="2"></ellipse>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="423.73" y="-438.9">cytoplasm</text>
+</g>
+<!-- (&#39;cell composite&#39;,)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;) -->
+<g class="edge" id="edge6">
+<title>('cell composite',)-&gt;('cell composite', 'cytoplasm')</title>
+<path d="M454.73,-513.9C454.73,-501.16 454.73,-487.44 454.73,-475.49" fill="none" stroke="black" stroke-width="2"></path>
+</g>
+<!-- (&#39;cell composite&#39;, &#39;nucleoid&#39;) -->
+<g class="node" id="node10">
+<title>('cell composite', 'nucleoid')</title>
+<ellipse cx="612.73" cy="-442" fill="none" rx="27.76" ry="27.76" stroke="black" stroke-width="2"></ellipse>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="586.73" y="-438.9">nucleoid</text>
+</g>
+<!-- (&#39;cell composite&#39;,)&#45;&gt;(&#39;cell composite&#39;, &#39;nucleoid&#39;) -->
+<g class="edge" id="edge11">
+<title>('cell composite',)-&gt;('cell composite', 'nucleoid')</title>
+<path d="M490.19,-531.42C520.94,-509.23 564.49,-477.8 590.55,-459.01" fill="none" stroke="black" stroke-width="2"></path>
+</g>
+<!-- (&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transporters&#39;) -->
 <g class="node" id="node3">
-<title>('cell composite', 'cytoplasm', 'transcript regulation complex')</title>
-<ellipse cx="68.81" cy="-326" fill="none" rx="44.6" ry="44.6" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="38.31" y="-335.9">transcript</text>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="37.31" y="-322.9">regulation</text>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="43.31" y="-309.9">complex</text>
+<title>('cell composite', 'membrane', 'transporters')</title>
+<ellipse cx="51.73" cy="-326" fill="none" rx="41" ry="41" stroke="black" stroke-width="2"></ellipse>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="13.73" y="-322.9">transporters</text>
 </g>
-<!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;transcript regulation complex&#39;) -->
+<!-- (&#39;cell composite&#39;, &#39;membrane&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transporters&#39;) -->
 <g class="edge" id="edge2">
-<title>('cell composite', 'cytoplasm')-&gt;('cell composite', 'cytoplasm', 'transcript regulation complex')</title>
-<path d="M149.96,-416.82C134.96,-400.22 114.87,-377.99 98.43,-359.79" fill="none" stroke="black" stroke-width="2"></path>
+<title>('cell composite', 'membrane')-&gt;('cell composite', 'membrane', 'transporters')</title>
+<path d="M152.23,-417.93C131.81,-399.45 103.12,-373.5 81.62,-354.04" fill="none" stroke="black" stroke-width="2"></path>
+</g>
+<!-- (&#39;cell composite&#39;, &#39;membrane&#39;, &#39;lipids&#39;) -->
+<g class="node" id="node4">
+<title>('cell composite', 'membrane', 'lipids')</title>
+<ellipse cx="148.73" cy="-326" fill="none" rx="18" ry="18" stroke="black" stroke-width="2"></ellipse>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="132.23" y="-322.9">lipids</text>
+</g>
+<!-- (&#39;cell composite&#39;, &#39;membrane&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;membrane&#39;, &#39;lipids&#39;) -->
+<g class="edge" id="edge3">
+<title>('cell composite', 'membrane')-&gt;('cell composite', 'membrane', 'lipids')</title>
+<path d="M169.34,-408.03C163.99,-386.98 157.27,-360.59 152.99,-343.76" fill="none" stroke="black" stroke-width="2"></path>
+</g>
+<!-- (&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transmembrane transport&#39;) -->
+<g class="node" id="node13">
+<title>('cell composite', 'membrane', 'transmembrane transport')</title>
+<polygon fill="none" points="278.23,-137 179.23,-137 179.23,-101 278.23,-101 278.23,-137" stroke="black" stroke-width="2"></polygon>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="180.23" y="-122.4">transmembrane</text>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="199.73" y="-109.4">transport</text>
+</g>
+<!-- (&#39;cell composite&#39;, &#39;membrane&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transmembrane transport&#39;) -->
+<!-- (&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transporters&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transmembrane transport&#39;) -->
+<g class="edge" id="edge14">
+<title>('cell composite', 'membrane', 'transporters')-&gt;('cell composite', 'membrane', 'transmembrane transport')</title>
+<path d="M67.16,-277.14C79.61,-244.54 99.84,-202.13 128.73,-172.75 143.73,-157.49 164.08,-145.66 182.51,-137.11" fill="none" stroke="black" stroke-dasharray="5,2"></path>
+<polygon fill="black" points="63.73,-276.32 63.55,-286.92 70.3,-278.75 63.73,-276.32" stroke="black"></polygon>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="128.73" y="-215.5">transporters</text>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;metabolites&#39;) -->
 <g class="node" id="node5">
 <title>('cell composite', 'cytoplasm', 'metabolites')</title>
-<ellipse cx="264.81" cy="-326" fill="none" rx="37.57" ry="37.57" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="229.81" y="-322.9">metabolites</text>
+<ellipse cx="290.73" cy="-326" fill="none" rx="37.57" ry="37.57" stroke="black" stroke-width="2"></ellipse>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="255.73" y="-322.9">metabolites</text>
+</g>
+<!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;metabolites&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transmembrane transport&#39;) -->
+<g class="edge" id="edge15">
+<title>('cell composite', 'cytoplasm', 'metabolites')-&gt;('cell composite', 'membrane', 'transmembrane transport')</title>
+<path d="M273.13,-281.52C270.87,-275.43 268.67,-269.21 266.73,-263.25 252.14,-218.48 238.99,-164.52 232.68,-137.38" fill="none" stroke="black" stroke-dasharray="5,2"></path>
+<polygon fill="black" points="269.89,-282.85 276.71,-290.95 276.44,-280.36 269.89,-282.85" stroke="black"></polygon>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="266.73" y="-215.5">internal</text>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;metabolites&#39;) -->
 <g class="edge" id="edge4">
 <title>('cell composite', 'cytoplasm')-&gt;('cell composite', 'cytoplasm', 'metabolites')</title>
-<path d="M192.45,-415.7C206.89,-397.99 226.23,-374.29 241.27,-355.85" fill="none" stroke="black" stroke-width="2"></path>
+<path d="M427.52,-422.61C406.69,-408.48 377.3,-388.42 351.73,-370.55 341.6,-363.47 330.58,-355.64 320.74,-348.61" fill="none" stroke="black" stroke-width="2"></path>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;ribosomal complexes&#39;) -->
-<g class="node" id="node6">
+<g class="node" id="node7">
 <title>('cell composite', 'cytoplasm', 'ribosomal complexes')</title>
-<ellipse cx="170.81" cy="-218" fill="none" rx="45.01" ry="45.01" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="140.31" y="-221.4">ribosomal</text>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="138.81" y="-208.4">complexes</text>
+<ellipse cx="445.73" cy="-218" fill="none" rx="45.01" ry="45.01" stroke="black" stroke-width="2"></ellipse>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="415.23" y="-221.4">ribosomal</text>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="413.73" y="-208.4">complexes</text>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;ribosomal complexes&#39;) -->
-<g class="edge" id="edge5">
+<g class="edge" id="edge7">
 <title>('cell composite', 'cytoplasm')-&gt;('cell composite', 'cytoplasm', 'ribosomal complexes')</title>
-<path d="M171.66,-408.72C171.49,-370.48 171.2,-306.55 171.01,-263.6" fill="none" stroke="black" stroke-width="2"></path>
+<path d="M453.42,-408.72C451.87,-370.48 449.28,-306.55 447.54,-263.6" fill="none" stroke="black" stroke-width="2"></path>
+</g>
+<!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;transcript regulation complex&#39;) -->
+<g class="node" id="node8">
+<title>('cell composite', 'cytoplasm', 'transcript regulation complex')</title>
+<ellipse cx="516.73" cy="-326" fill="none" rx="44.6" ry="44.6" stroke="black" stroke-width="2"></ellipse>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="486.23" y="-335.9">transcript</text>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="485.23" y="-322.9">regulation</text>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="491.23" y="-309.9">complex</text>
+</g>
+<!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;transcript regulation complex&#39;) -->
+<g class="edge" id="edge8">
+<title>('cell composite', 'cytoplasm')-&gt;('cell composite', 'cytoplasm', 'transcript regulation complex')</title>
+<path d="M470.21,-412.53C477.96,-398.28 487.45,-380.83 495.83,-365.42" fill="none" stroke="black" stroke-width="2"></path>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;translation&#39;) -->
-<g class="node" id="node13">
+<g class="node" id="node14">
 <title>('cell composite', 'cytoplasm', 'translation')</title>
-<polygon fill="none" points="103.31,-36 34.31,-36 34.31,0 103.31,0 103.31,-36" stroke="black" stroke-width="2"></polygon>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="35.31" y="-14.9">translation</text>
+<polygon fill="none" points="563.23,-36 494.23,-36 494.23,0 563.23,0 563.23,-36" stroke="black" stroke-width="2"></polygon>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="495.23" y="-14.9">translation</text>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;translation&#39;) -->
+<!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;ribosomal complexes&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;translation&#39;) -->
+<g class="edge" id="edge16">
+<title>('cell composite', 'cytoplasm', 'ribosomal complexes')-&gt;('cell composite', 'cytoplasm', 'translation')</title>
+<path d="M449.09,-162.43C452.32,-137.24 458.59,-107.57 470.73,-83.08 479.72,-64.93 495.36,-48.1 508.13,-36.25" fill="none" stroke="black" stroke-dasharray="5,2"></path>
+<polygon fill="black" points="445.59,-162.22 447.92,-172.56 452.54,-163.02 445.59,-162.22" stroke="black"></polygon>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="470.73" y="-116.5">p1</text>
+</g>
 <!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;transcript regulation complex&#39;, &#39;transcripts&#39;) -->
-<g class="node" id="node4">
+<g class="node" id="node9">
 <title>('cell composite', 'cytoplasm', 'transcript regulation complex', 'transcripts')</title>
-<ellipse cx="68.81" cy="-119" fill="none" rx="35.85" ry="35.85" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="35.31" y="-115.9">transcripts</text>
+<ellipse cx="528.73" cy="-119" fill="none" rx="35.85" ry="35.85" stroke="black" stroke-width="2"></ellipse>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="495.23" y="-115.9">transcripts</text>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;transcript regulation complex&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;transcript regulation complex&#39;, &#39;transcripts&#39;) -->
-<g class="edge" id="edge3">
+<g class="edge" id="edge9">
 <title>('cell composite', 'cytoplasm', 'transcript regulation complex')-&gt;('cell composite', 'cytoplasm', 'transcript regulation complex', 'transcripts')</title>
-<path d="M68.81,-281.27C68.81,-243.64 68.81,-190.05 68.81,-155.15" fill="none" stroke="black" stroke-width="2"></path>
+<path d="M519.27,-281.52C521.48,-243.8 524.64,-189.89 526.69,-154.91" fill="none" stroke="black" stroke-width="2"></path>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;transcript regulation complex&#39;, &#39;transcripts&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;translation&#39;) -->
-<g class="edge" id="edge15">
-<title>('cell composite', 'cytoplasm', 'transcript regulation complex', 'transcripts')-&gt;('cell composite', 'cytoplasm', 'translation')</title>
-<path d="M68.81,-72.54C68.81,-59.54 68.81,-46.16 68.81,-36.03" fill="none" stroke="black" stroke-dasharray="5,2"></path>
-<polygon fill="black" points="65.31,-72.82 68.81,-82.82 72.31,-72.82 65.31,-72.82" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="68.81" y="-57.5">p2</text>
-</g>
-<!-- (&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transmembrane transport&#39;) -->
-<g class="node" id="node14">
-<title>('cell composite', 'membrane', 'transmembrane transport')</title>
-<polygon fill="none" points="431.31,-137 332.31,-137 332.31,-101 431.31,-101 431.31,-137" stroke="black" stroke-width="2"></polygon>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="333.31" y="-122.4">transmembrane</text>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="352.81" y="-109.4">transport</text>
-</g>
-<!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;metabolites&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transmembrane transport&#39;) -->
 <g class="edge" id="edge17">
-<title>('cell composite', 'cytoplasm', 'metabolites')-&gt;('cell composite', 'membrane', 'transmembrane transport')</title>
-<path d="M268.08,-278.38C272.29,-246.23 281.91,-203.85 303.81,-172.75 314.35,-157.77 330.59,-145.81 345.54,-137.08" fill="none" stroke="black" stroke-dasharray="5,2"></path>
-<polygon fill="black" points="264.59,-278.09 266.89,-288.43 271.54,-278.91 264.59,-278.09" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="303.81" y="-215.5">internal</text>
-</g>
-<!-- (&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;ribosomal complexes&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;cytoplasm&#39;, &#39;translation&#39;) -->
-<g class="edge" id="edge14">
-<title>('cell composite', 'cytoplasm', 'ribosomal complexes')-&gt;('cell composite', 'cytoplasm', 'translation')</title>
-<path d="M151.92,-165.74C141.82,-140.28 128.45,-109.42 113.81,-83.08 104.49,-66.32 91.79,-48.59 82.25,-36.03" fill="none" stroke="black" stroke-dasharray="5,2"></path>
-<polygon fill="black" points="148.73,-167.17 155.63,-175.21 155.25,-164.62 148.73,-167.17" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="147.81" y="-116.5">p1</text>
+<title>('cell composite', 'cytoplasm', 'transcript regulation complex', 'transcripts')-&gt;('cell composite', 'cytoplasm', 'translation')</title>
+<path d="M528.73,-72.54C528.73,-59.54 528.73,-46.16 528.73,-36.03" fill="none" stroke="black" stroke-dasharray="5,2"></path>
+<polygon fill="black" points="525.23,-72.82 528.73,-82.82 532.23,-72.82 525.23,-72.82" stroke="black"></polygon>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="528.73" y="-57.5">p2</text>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;nucleoid&#39;, &#39;chromosome&#39;) -->
-<g class="node" id="node8">
+<g class="node" id="node11">
 <title>('cell composite', 'nucleoid', 'chromosome')</title>
-<ellipse cx="699.81" cy="-326" fill="none" rx="42.22" ry="42.22" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="660.31" y="-322.9">chromosome</text>
+<ellipse cx="697.73" cy="-326" fill="none" rx="42.22" ry="42.22" stroke="black" stroke-width="2"></ellipse>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="658.23" y="-322.9">chromosome</text>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;nucleoid&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;nucleoid&#39;, &#39;chromosome&#39;) -->
-<g class="edge" id="edge8">
+<g class="edge" id="edge12">
 <title>('cell composite', 'nucleoid')-&gt;('cell composite', 'nucleoid', 'chromosome')</title>
-<path d="M615.22,-420.62C630.96,-403.2 653.85,-377.87 671.85,-357.94" fill="none" stroke="black" stroke-width="2"></path>
+<path d="M628.92,-419.29C641.25,-402.75 658.45,-379.68 672.57,-360.74" fill="none" stroke="black" stroke-width="2"></path>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;nucleoid&#39;, &#39;chromosome&#39;, &#39;genes&#39;) -->
-<g class="node" id="node9">
+<g class="node" id="node12">
 <title>('cell composite', 'nucleoid', 'chromosome', 'genes')</title>
-<ellipse cx="699.81" cy="-119" fill="none" rx="18.54" ry="18.54" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="682.31" y="-115.9">genes</text>
+<ellipse cx="697.73" cy="-119" fill="none" rx="18.54" ry="18.54" stroke="black" stroke-width="2"></ellipse>
+<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="680.23" y="-115.9">genes</text>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;nucleoid&#39;, &#39;chromosome&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;nucleoid&#39;, &#39;chromosome&#39;, &#39;genes&#39;) -->
-<g class="edge" id="edge9">
+<g class="edge" id="edge13">
 <title>('cell composite', 'nucleoid', 'chromosome')-&gt;('cell composite', 'nucleoid', 'chromosome', 'genes')</title>
-<path d="M699.81,-283.52C699.81,-238.94 699.81,-170.16 699.81,-137.88" fill="none" stroke="black" stroke-width="2"></path>
-</g>
-<!-- (&#39;cell composite&#39;, &#39;membrane&#39;, &#39;lipids&#39;) -->
-<g class="node" id="node11">
-<title>('cell composite', 'membrane', 'lipids')</title>
-<ellipse cx="589.81" cy="-326" fill="none" rx="18" ry="18" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="573.31" y="-322.9">lipids</text>
-</g>
-<!-- (&#39;cell composite&#39;, &#39;membrane&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;membrane&#39;, &#39;lipids&#39;) -->
-<g class="edge" id="edge11">
-<title>('cell composite', 'membrane')-&gt;('cell composite', 'membrane', 'lipids')</title>
-<path d="M482.97,-421C501.6,-407.39 526.28,-388.64 546.81,-370.55 557.8,-360.85 569.44,-348.95 577.83,-340.05" fill="none" stroke="black" stroke-width="2"></path>
-</g>
-<!-- (&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transporters&#39;) -->
-<g class="node" id="node12">
-<title>('cell composite', 'membrane', 'transporters')</title>
-<ellipse cx="454.81" cy="-326" fill="none" rx="41" ry="41" stroke="black" stroke-width="2"></ellipse>
-<text font-family="Times,serif" font-size="12.00" text-anchor="start" x="416.81" y="-322.9">transporters</text>
-</g>
-<!-- (&#39;cell composite&#39;, &#39;membrane&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transporters&#39;) -->
-<g class="edge" id="edge12">
-<title>('cell composite', 'membrane')-&gt;('cell composite', 'membrane', 'transporters')</title>
-<path d="M454.81,-407.1C454.81,-394.5 454.81,-380.09 454.81,-366.99" fill="none" stroke="black" stroke-width="2"></path>
-</g>
-<!-- (&#39;cell composite&#39;, &#39;membrane&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transmembrane transport&#39;) -->
-<!-- (&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transporters&#39;)&#45;&gt;(&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transmembrane transport&#39;) -->
-<g class="edge" id="edge16">
-<title>('cell composite', 'membrane', 'transporters')-&gt;('cell composite', 'membrane', 'transmembrane transport')</title>
-<path d="M438.02,-277.86C422.01,-232.91 398.78,-167.67 387.88,-137.06" fill="none" stroke="black" stroke-dasharray="5,2"></path>
-<polygon fill="black" points="434.76,-279.15 441.42,-287.4 441.36,-276.81 434.76,-279.15" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="431.81" y="-215.5">transporters</text>
+<path d="M697.73,-283.52C697.73,-238.94 697.73,-170.16 697.73,-137.88" fill="none" stroke="black" stroke-width="2"></path>
 </g>
 <!-- (&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transmembrane transport&#39;, &#39;e&#39;, &#39;x&#39;, &#39;t&#39;, &#39;e&#39;, &#39;r&#39;, &#39;n&#39;, &#39;a&#39;, &#39;l&#39;)_output -->
 <!-- (&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transmembrane transport&#39;, &#39;e&#39;, &#39;x&#39;, &#39;t&#39;, &#39;e&#39;, &#39;r&#39;, &#39;n&#39;, &#39;a&#39;, &#39;l&#39;)_output&#45;&gt;(&#39;cell composite&#39;, &#39;membrane&#39;, &#39;transmembrane transport&#39;) -->
 <g class="edge" id="edge18">
 <title>('cell composite', 'membrane', 'transmembrane transport', 'e', 'x', 't', 'e', 'r', 'n', 'a', 'l')_output-&gt;('cell composite', 'membrane', 'transmembrane transport')</title>
-<path d="M537.91,-297.43C536.61,-264.2 529.68,-208.39 499.81,-172.75 482.44,-152.02 455.28,-139.12 431.39,-131.27" fill="none" stroke="black" stroke-dasharray="5,2"></path>
-<polygon fill="black" points="534.42,-297.86 538.16,-307.77 541.42,-297.69 534.42,-297.86" stroke="black"></polygon>
-<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="534.81" y="-215.5">external</text>
+<path d="M358.47,-313.12C349.63,-281.43 324.63,-195.75 306.73,-172.75 295.28,-158.04 278.56,-145.97 263.54,-137.11" fill="none" stroke="black" stroke-dasharray="5,2"></path>
+<polygon fill="black" points="355.12,-314.12 361.15,-322.84 361.87,-312.27 355.12,-314.12" stroke="black"></polygon>
+<text font-family="Times,serif" font-size="10.00" text-anchor="start" x="342.73" y="-215.5">external</text>
 </g>
 </g>
 </svg>
