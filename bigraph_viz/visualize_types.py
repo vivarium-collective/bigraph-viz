@@ -730,21 +730,42 @@ def get_graphviz_fig(
             ports = [p for p in ports if p in valid_paths]
             if len(ports) < 2:
                 continue
-            # Pairwise edges. For typical bigraph signatures every
-            # edge has two endpoints, but we draw all pairs in case
-            # a hyperedge is being represented.
+            # Each pair routes through an invisible midpoint
+            # placed one rank below both endpoints. Both legs
+            # are rank-constraining, so the layout pulls the
+            # midpoint symmetrically beneath the two endpoints
+            # (which sit at the same place-graph rank already).
+            # The result is a subtle, symmetric V/U arcing
+            # outwards below the tree, with the anchor name
+            # floating at the joint.
             for i in range(len(ports)):
                 for j in range(i + 1, len(ports)):
-                    graph.edge(
-                        str(ports[i]), str(ports[j]),
-                        constraint='false',
+                    midpoint_id = f'__link__{anchor}__{i}_{j}'
+                    graph.node(
+                        midpoint_id,
+                        label='',
+                        shape='point',
+                        width='0.01',
+                        height='0.01',
+                        style='invis')
+                    edge_kwargs = dict(
                         color='#daa520',  # gold — link-graph edges
-                        penwidth='2.0',
+                        penwidth='2.5',
                         style='dashed',
                         arrowhead='none',
-                        label=str(anchor),
+                        arrowtail='none',
+                        dir='none')
+                    graph.edge(
+                        str(ports[i]), midpoint_id,
+                        tailport='s',
+                        **edge_kwargs)
+                    graph.edge(
+                        str(ports[j]), midpoint_id,
+                        tailport='s',
+                        xlabel=str(anchor),
                         fontcolor='#a07a10',
-                        fontsize='9')
+                        fontsize='16',
+                        **edge_kwargs)
 
     add_state_nodes()
     process_paths, collapse_map = add_process_nodes()
