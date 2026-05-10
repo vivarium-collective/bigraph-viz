@@ -704,6 +704,48 @@ def get_graphviz_fig(
     # First, apply hierarchical collapse/remove rules
     prune_subtrees()
 
+    def add_place_link_edges():
+        """Render link-graph edges between place-graph endpoints
+        that share the same wire anchor. Generic, non-process
+        nodes (a place-graph leaf whose value is a wire path) get
+        paired up here; both endpoints of a bond appear in the
+        diagram as a labelled curve, in addition to the place-graph
+        tree.
+
+        This is the bigraph view: place-graph nesting + link-graph
+        edges drawn on the same picture, regardless of whether the
+        endpoints sit inside a process or inside arbitrary state."""
+        endpoints = graph_dict.get('place_link_endpoints', [])
+        if not endpoints:
+            return
+        # Group endpoints by their shared anchor.
+        by_anchor = {}
+        for entry in endpoints:
+            by_anchor.setdefault(entry['anchor'], []).append(
+                tuple(entry['endpoint_path']))
+        # Skip any endpoint whose path was pruned by collapse/remove.
+        valid_paths = {tuple(n['path'])
+                       for n in graph_dict.get('state_nodes', [])}
+        for anchor, ports in by_anchor.items():
+            ports = [p for p in ports if p in valid_paths]
+            if len(ports) < 2:
+                continue
+            # Pairwise edges. For typical bigraph signatures every
+            # edge has two endpoints, but we draw all pairs in case
+            # a hyperedge is being represented.
+            for i in range(len(ports)):
+                for j in range(i + 1, len(ports)):
+                    graph.edge(
+                        str(ports[i]), str(ports[j]),
+                        constraint='false',
+                        color='#daa520',  # gold — link-graph edges
+                        penwidth='2.0',
+                        style='dashed',
+                        arrowhead='none',
+                        label=str(anchor),
+                        fontcolor='#a07a10',
+                        fontsize='9')
+
     add_state_nodes()
     process_paths, collapse_map = add_process_nodes()
     rewrite_collapsed_edges(collapse_map)
@@ -716,6 +758,7 @@ def get_graphviz_fig(
     # TODO: the second add_state_nodes() looks redundant
     # add_state_nodes()
     add_disconnected_edges()
+    add_place_link_edges()
     rank_node_groups()
     apply_custom_colors()
 
@@ -784,7 +827,7 @@ def plot_bigraph(
 
     schema = schema or {}
     try:
-        compiled_schema, compiled_state = core.realize(schema, state)
+        compiled_schema, compiled_state, _ = core.realize(schema, state)
     except Exception:
         compiled_schema, compiled_state = schema, state
 

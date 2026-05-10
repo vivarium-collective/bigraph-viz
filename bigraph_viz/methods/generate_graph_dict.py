@@ -62,6 +62,33 @@ def add_place_edge(graph, parent, child):
         })
 
 
+def _is_wire_path(value):
+    """Detect a wire path (a list whose first element is ``'_edges'``,
+    pointing to a shared anchor). Used to recognise bigraph link-graph
+    references inside arbitrary place-graph nodes — the bond between
+    two ports manifests as both ports referencing the same anchor."""
+    return (
+        isinstance(value, (list, tuple))
+        and len(value) >= 2
+        and value[0] == '_edges')
+
+
+def _wire_anchor(value):
+    """The anchor name a wire path points to, or None if not a wire."""
+    return value[1] if _is_wire_path(value) else None
+
+
+def add_link_endpoint(graph, endpoint_path, anchor):
+    """Record a place-graph node that references a link-graph wire
+    anchor. After the full traversal, every set of endpoints that
+    share an anchor is rendered as a link-graph edge in
+    ``get_graphviz_fig``."""
+    endpoints = graph.setdefault('place_link_endpoints', [])
+    endpoints.append({
+        'endpoint_path': tuple(endpoint_path),
+        'anchor': anchor})
+
+
 def get_single_wire(edge_path, graph_dict, port, schema_key, wire):
     """
     Add a connection from a port to its wire target.
@@ -260,7 +287,7 @@ def graphviz_composite(core, schema, state, path, options, graph):
 
     inner_state = state.get('config', {}).get('state', {}) # or state
     inner_schema = state.get('config', {}).get('schema', {}) # or schema
-    inner_schema, inner_state = core.realize(inner_schema, inner_state)
+    inner_schema, inner_state, _ = core.realize(inner_schema, inner_state)
     # inner_schema, inner_state = core.generate(inner_schema, inner_state)
 
     if len(path) > 1:
@@ -290,6 +317,11 @@ def graphviz_node(core, schema: Node, state, path, options, graph):
             'type': core.render(schema)
         }
         graph['state_nodes'].append(node_spec)
+        # Place-graph nodes whose value is a wire path are link-
+        # graph endpoints — the parent dict provides the place
+        # location, the wire path provides the link-graph anchor.
+        if _is_wire_path(state):
+            add_link_endpoint(graph, path, _wire_anchor(state))
 
     if len(path) > 1:
         add_place_edge(graph, path[:-1], path)
@@ -297,9 +329,17 @@ def graphviz_node(core, schema: Node, state, path, options, graph):
     if isinstance(state, dict):
         for key, value in state.items():
             if not is_schema_key(key):
-                attr = Empty()
+                # If the schema declares this child explicitly, use
+                # its declared sub-schema; otherwise descend with
+                # an empty dict so the graphviz_dict dispatcher
+                # picks up generic structural recursion. (Without
+                # this fallback, Node-typed nodes treat any extra
+                # dict child as opaque, which hides nested wires
+                # like ``mek.outputs.cleft``.)
                 if hasattr(schema, key):
                     attr = getattr(schema, key)
+                else:
+                    attr = {}
 
                 graph = core.call_method('generate_graph_dict',
                     attr,
@@ -342,6 +382,10 @@ def graphviz_dict(core, schema, state, path, options, graph):
             'type': core.render(schema)
         }
         graph['state_nodes'].append(node_spec)
+        # As in graphviz_node: a wire-path leaf inside a generic
+        # dict-typed parent is a link-graph endpoint.
+        if _is_wire_path(state):
+            add_link_endpoint(graph, path, _wire_anchor(state))
 
     if len(path) > 1:
         add_place_edge(graph, path[:-1], path)
