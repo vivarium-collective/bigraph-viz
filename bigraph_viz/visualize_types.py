@@ -33,6 +33,18 @@ class ResponsiveGraph:
         # Strip XML declaration and DOCTYPE so it can be embedded inline
         svg = re.sub(r'<\?xml[^?]*\?>\s*', '', svg)
         svg = re.sub(r'<!DOCTYPE[^>]*>\s*', '', svg)
+        # Fix the Graphviz viewBox/transform mismatch. Graphviz emits an
+        # inner <g transform="scale(s) translate(...)"> that scales content
+        # by s (typically ~1.39), but sets the viewBox to the UN-scaled
+        # extent. The post-scale content ends up beyond the viewBox bounds
+        # → right/bottom edges get clipped in browsers and image viewers.
+        # The SVG's width=Npt height=Npt attrs DO match the scaled extent,
+        # so we rewrite the viewBox to match before switching to width="100%".
+        wm = re.search(r'<svg[^>]*\bwidth="([0-9.]+)pt"', svg)
+        hm = re.search(r'<svg[^>]*\bheight="([0-9.]+)pt"', svg)
+        if wm and hm:
+            new_vb = 'viewBox="0 0 ' + wm.group(1) + ' ' + hm.group(1) + '"'
+            svg = re.sub(r'viewBox="[^"]+"', new_vb, svg, count=1)
         # Replace fixed width/height with 100% width and auto height
         svg = re.sub(
             r'<svg width="[^"]*" height="[^"]*"',
